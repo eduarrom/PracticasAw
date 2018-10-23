@@ -26,6 +26,7 @@
 	
 }
 
+
 .contAmigos{
 	display: grid;
 
@@ -45,6 +46,10 @@
 	
 	border-radius: 8px;
 	
+}
+
+.busqueda{
+	width: 60%;
 }
 
 .formularioBusqueda{

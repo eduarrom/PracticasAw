@@ -57,6 +57,7 @@ html{
 	margin-top: 70px;
 	font-family: K2D;
 	color:#212121;
+
 }
 .titulo{
 	width: 70%;
@@ -68,10 +69,16 @@ html{
 
 .seccion{
 	width: 70%;
-	margin: auto;
+	margin: auto;	
+	display: flex;
+	
+	flex-direction: column;
+	
+	justify-content: center;
+	align-items: center;
 }
 
-.login, .newUser, .resultados, .solucitudes, .amigos, .busqueda, .perfil, .contContestarPregunta,.seccionPreguntas, .seccionCrearPregunta{
+.login, .newUser, .resultados, .solucitudes, .amigos, .busqueda, .perfil, .contestarPregunta, .preguntas, .anadirPregunta{
 	background-color: rgb(0, 0, 0, 0.4);
 	color: #FFFFFF;
 
@@ -79,8 +86,9 @@ html{
 
 	border-radius: 8px;
 
+	width: 100%;
+	
 	margin:10px;
-
 }
 
 .inputText{
@@ -89,6 +97,7 @@ html{
 
 	border-radius: 8px;
 	padding-left: 10px;
+	padding-right: 10px;
 }
 
 .contBoton{
@@ -195,6 +204,14 @@ html{
 	width: 35px;
 	height: 35px;
 	margin: 10px;
+
+	border-radius: 100%;
+}
+
+.miniaturaPerfilGrande{
+	width: 150px;
+	height: 150px;
+	margin: 20px;
 
 	border-radius: 100%;
 }

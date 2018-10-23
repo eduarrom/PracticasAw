@@ -1,4 +1,4 @@
-.seccionPreguntas{
+.contPreguntas{
   display: flex;
   flex-direction: column;
   font-size: 30px;
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-.seccionCrearPregunta{
+.contCrearPregunta{
   display: flex;
   flex-direction: column;
   align-items: center;
