@@ -26,13 +26,13 @@
 	</div>
 	<div class="seccion">
 		<div class="login">
-			<form class="formularioLogin">
+			<form class="formularioLogin" action="/login" method="post">
 				<div class="contDatosLogin">
-					<span>Email</span><span><input type="text" class="inputText"/></span>
-					<span>Contraseña</span><span><input type="text" class="inputText"/></span>
+					<span>Email</span><span><input type="text" name="email" class="inputText"/></span>
+					<span>Contraseña</span><span><input type="password" name="pass" class="inputText"/></span>
 				</div>
 				<div class="contBoton">
-					<span><input type="button" value="Conectar" class="boton"/></span>
+					<span><input type="submit" value="Conectar" class="boton"/></span>
 				</div>		
 			</form>
 		</div>
