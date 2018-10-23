@@ -34,6 +34,7 @@ function parsePass(pass){
 
 function getUsers(email, pass, callback){
 	con.query("SELECT * FROM users where email = '" + email + "'", function (err, rows, fields) {
+		con.disconnect();
 		if (err) {
 			callback(err, null)
 		} else {
