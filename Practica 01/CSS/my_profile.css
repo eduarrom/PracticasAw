@@ -1,0 +1,21 @@
+.contPerfil{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.informacionPerfil {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	margin-bottom: 40px;
+}
+
+.perfil img{
+	width: 150px;
+	height: 150px;
+	margin: 20px;
+}

@@ -1,0 +1,36 @@
+.contContestarPregunta{
+  text-align: center;
+}
+
+.contAmigos{
+	display: flex;
+	flex-direction:column;
+
+	justify-content:center;
+	align-items: center;
+
+	margin-top: 30px;
+}
+.contAmigo{
+	display: grid;
+
+	grid-template-columns: 1fr 6fr 3fr;
+
+	grid-template-rows: 70px;
+
+	grid-column-gap: 15px;
+
+	justify-content: center;
+	align-items: center;
+
+	margin: 5px;
+	padding: 5px;
+
+	border: white 2px solid;
+
+	border-radius: 8px;
+
+	text-align: left;
+
+
+}
