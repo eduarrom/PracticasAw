@@ -5,6 +5,7 @@ let listaTareas = [
 { text: "Mudanza", done: false, tags: ["personal"] },
 ];
 
+console.log(createTask("@AW            @practica Preparar práctica AW"));
 
 function getTodoTask(tasks){
 
@@ -17,9 +18,7 @@ function getTodoTask(tasks){
 
 
 function findByTag(tasks, tag){
-	let res = tasks;
-	
-	return res.filter( 
+	return tasks.filter( 
 		f => f.tags.some(
 			e => e == tag
 		)
@@ -28,9 +27,7 @@ function findByTag(tasks, tag){
 }
 
 function findByTags(tasks, tags){
-	let res = tasks;
-	
-	return res.filter( 
+	return tasks.filter( 
 		f => f.tags.some( 
 			e => tags.some( 
 				t => e == t 
@@ -41,9 +38,7 @@ function findByTags(tasks, tags){
 }
 
 function countDone(tasks){
-	let res = tasks;
-	
-	return res.filter(
+	return tasks.filter(
 		f => {
 			if (f.done != undefined){
 				return f.done == true;
@@ -59,14 +54,12 @@ function createTask(texto){
 		tags: []
 	};
 	
-	let expresionTags = /(@\w*)/g;
+	let expresionTags = /@(\w*)/g;
 	
 	let tags = texto.match(expresionTags);
 	res.text = texto.replace(expresionTags, "").trim().replace(/\s+/g, " ");
 	
-	for (let t of tags){
-		res.tags.push(t.replace(/@/, ""));
-	}
+	tags.map( t => res.tags.push(t.replace(/@/, "")));
 	
 	return res;
 }
