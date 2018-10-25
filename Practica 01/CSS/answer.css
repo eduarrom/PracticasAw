@@ -1,0 +1,19 @@
+.seccionRespuestas{
+  padding-right: 40px;
+}
+.respuesta{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  border-radius: 10px;
+  margin: 5px;
+  padding: 5px;
+  width: 100%;
+  border: 2px solid white;
+  font-size: 20px;
+}
+
+.respuesta *{
+  margin-left: 10px;
+  margin-right: 10px;
+}
