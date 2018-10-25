@@ -1,0 +1,38 @@
+﻿.header{
+  display: none;
+}
+
+.formularioTareas{
+  display: none;
+}
+
+.contenedorTareas:before{
+  content:"Lista de Tareas";
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.nombreTarea:before{
+ content: "·";
+ margin-left: 15px;
+}
+
+.tag::before{
+  content: "(";
+}
+
+.tag::after{
+  content:")";
+}
+
+.botonTerminarTarea{
+  display: none;
+}
+
+.finalizada{
+  text-decoration:line-through;
+}
+
+.contenedorEliminar{
+  display: none;
+}
