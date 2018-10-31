@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var http = require('http');
 
 var app = express();
 
@@ -12,7 +13,7 @@ app.listen(3000, function () {
   console.log('Practica 1 en el puerto 3000');
 });
 
-var login = require('./login.js');
+var login = require('login');
 
 app.post('/login', function (req, res) {
 	if (login.parsePass(req.body.pass)){

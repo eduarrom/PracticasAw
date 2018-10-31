@@ -1,13 +1,24 @@
 {
   "name": "practica-01",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Practica 1 de Aplicaciones Web 2018-2019",
+  "main": "app.js",
   "scripts": {
+    "start": "node ./JavaScript/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eduarrom/PracticasAw/tree/master/Practica%2001"
+  },
+  "keywords": [
+    "node",
+    "practica01",
+    "aw",
+    "facebluff"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
