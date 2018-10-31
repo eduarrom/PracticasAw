@@ -1,0 +1,28 @@
+body {
+	background-color: lgrey;
+	font-family: serif;
+	text-align: center;
+}
+
+h1{
+	font-family: georgia;
+}
+
+p{
+	line-height: 50px;
+	margin-left: 50px;
+	text-align: left;
+}
+
+strong {
+	font-size: 30px;
+	font-weight: 50;
+}
+
+em {
+	text-decoration: underline;
+}
+
+var {
+	color: red;
+}

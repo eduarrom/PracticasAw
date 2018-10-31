@@ -1,0 +1,47 @@
+@import "https://fonts.googleapis.com/css?family=Indie+Flower";
+
+body{
+	font-family: 'Indie Flower';
+}
+
+.header{
+  text-align: center;
+
+}
+
+.nav{
+  display: none;
+}
+
+.tituloLista{
+  text-decoration: underline;
+}
+
+table.tablaPersonajes{
+  width: 80%;
+  text-align: center;
+  margin: auto;
+	page-break-before: always;
+}
+
+table.tablaPersonajes td,th{
+border: solid 3px black;
+}
+
+table.tablaPersonajes img{
+vertical-align: middle;
+margin: 5px;
+}
+.panelIzq{
+	width: 100%;
+}
+.panelDer{
+  width: 100%;
+  }
+.contIm{
+  float:left;
+  margin: 10px;
+}
+.footer{
+  display: none;
+}
