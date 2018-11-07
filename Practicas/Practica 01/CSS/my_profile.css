@@ -1,0 +1,19 @@
+.contPerfil{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.informacionPerfil {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	margin-bottom: 20px;	
+}
+
+.perfil{
+	width: 50%;
+}

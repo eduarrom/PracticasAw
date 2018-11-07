@@ -1,0 +1,23 @@
+.contPreguntas{
+  display: flex;
+  flex-direction: column;
+  font-size: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.contCrearPregunta{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pregunta{
+  border-radius: 10px;
+  margin: 5px;
+  padding: 5px;
+  width: 100%;
+  text-align: center;
+  border: 2px solid white;
+}

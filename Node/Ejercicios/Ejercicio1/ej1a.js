@@ -33,8 +33,10 @@ function eliminarEspacios(contenido){
 
 function b(){
     frep.freplace(fichero, /h/g , "Edu", function(err){
-        if (err){
-            console.log(err.message);
-        }
+        if (err != null) {
+			console.log(err);
+		} else {
+			console.log("Fichero escrito correctamente");
+		}
     })
 }

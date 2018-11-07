@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+	<link rel="stylesheet" href="./CSS/cabecera.css">
+    <link rel="stylesheet" href="./CSS/practica.css">
+	<link rel="stylesheet" href="./CSS/login.css">
+    <meta charset="utf-8">
+    <title>Bienvenido - FaceBluff</title>
+  </head>
+  <body>
+	<div class="header">
+	  <h1 class="tituloPagina">FaceBluFF</h1>
+	  <!-- Botones para no Registrado-->
+		<div class="user">
+			<span><h1>Usuario No Registrado</h1></span>
+		</div>
+		  <div class="nav">
+		  <a href="./login.html" class="linkNav"><div class="botonNav">Entrar</div></a>
+		  <a href="./new_user.html" class="linkNav"><div class="botonNav">Nuevo Usuario</div></a>
+
+	  </div>
+	</div>
+	<div class="content">
+	<div class="titulo">
+		<h1>Entrar</h1>
+	</div>
+	<div class="seccion">
+		<div class="login">
+			<form class="formularioLogin" action="/login" method="post">
+				<div class="contDatosLogin">
+					<span>Email</span><span><input type="text" name="email" class="inputText"/></span>
+					<span>Contraseña</span><span><input type="password" name="pass" class="inputText"/></span>
+				</div>
+				<div class="contBoton">
+					<span><input type="submit" value="Conectar" class="boton"/></span>
+				</div>		
+			</form>
+		</div>
+	</div>
+	</div>
+  </body>
+</html>

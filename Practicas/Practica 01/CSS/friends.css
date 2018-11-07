@@ -1,0 +1,65 @@
+.contSolicitud{
+	display: grid;
+
+	grid-template-columns: 1fr 6fr 3fr;
+
+	grid-template-rows: 70px;
+
+	grid-column-gap: 15px;
+	
+	justify-content: center;
+	align-items: center;
+	
+	margin: 5px;
+	padding: 5px;
+	
+	border: white 2px solid;
+	
+	border-radius: 8px;
+	
+}
+
+.contBusqueda{
+	
+	margin: 5px;
+	padding: 5px;
+	
+}
+
+
+.contAmigos{
+	display: grid;
+
+	grid-template-columns: 1fr 9fr;
+
+	grid-template-rows: 70px;
+
+	grid-column-gap: 15px;
+	
+	justify-content: center;
+	align-items: center;
+	
+	margin: 5px;
+	padding: 5px;
+	
+	border: white 2px solid;
+	
+	border-radius: 8px;
+	
+}
+
+.busqueda{
+	width: 60%;
+}
+
+.formularioBusqueda{
+	display: grid;
+
+	grid-template-columns: 1fr 5fr 2fr;
+	grid-column-gap: 15px;
+	
+	grid-template-rows: 50px;
+	
+	justify-content: center;
+	align-items: center;
+}
