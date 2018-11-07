@@ -1,0 +1,32 @@
+td, th {
+    border: 2px solid black; 
+}
+
+th {
+    background: gray; 
+    color: white;
+}
+
+table {
+    border-collapse: collapse;
+	width: 20%;
+	margin-left: 40%;
+	text-align: center;
+}
+
+caption {
+	font-size: 50px;
+}
+
+.azul {
+	color: blue;
+}
+
+.resaltado {
+	text-decoration: underline;
+	background: yellow;
+}
+
+#nombrenumeroA {
+	color: purple;
+}

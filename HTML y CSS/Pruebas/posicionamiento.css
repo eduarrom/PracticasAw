@@ -1,0 +1,30 @@
+p {
+padding: 5px;
+background-color: #F0F0FF;
+width: 50%;
+}
+p.flotante_izq {
+float: left;
+width: 40%;
+background-color: #FFA000;
+}
+p.flotante_dch {
+float: right;
+width: 40%;
+background-color: #FFA000;
+}
+p.abs{
+	position: absolute;
+	left: 55px;
+	top: 500px;
+}
+p.rel{
+	position: relative;
+	left: 55px;
+	top: 0px;
+}
+p.fix{
+	position: fixed;
+	left: 55px;
+	top: 1500px;
+}

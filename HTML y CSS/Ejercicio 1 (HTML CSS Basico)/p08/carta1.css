@@ -1,0 +1,23 @@
+body{
+  background-color: yellow;
+  background-image:
+}
+
+em{
+  color: black;
+  text-decoration:underline;
+  font-weight:lighter;
+   background-color: white;
+}
+
+p{
+  color: green;
+  text-decoration:underline;
+  font-weight:normal;
+}
+
+strong{
+  color: blue;
+  text-decoration:underline;
+  font-weight:lighter;
+}

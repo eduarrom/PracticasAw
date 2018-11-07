@@ -1,0 +1,159 @@
+*{
+	margin:0px;
+	padding:0px;
+	border: solid 0px red;
+}
+
+body{
+	color: white;
+	font-family: 'Helvetica';
+	background-color: hsl(60, 20%, 45%);
+}
+
+.header{
+	background-color: black;
+	width:50%;
+	text-align: center;
+	height: 70px;
+	line-height: 70px;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	font-size: 20px;
+	border-bottom: solid 1px white;
+	font-family: Lucida Console;
+}
+
+.header:hover{
+	background-image: url("Recursos/anim.gif");
+	background-position: left;
+	background-size: 10%;
+	background-repeat: repeat-y;
+}
+
+.nav{
+	background-color: black;
+	position: fixed;
+	top: 0px;
+	left: 50%;
+	height: 70px;
+	width:50%;
+	border-bottom: solid 1px white;
+	text-transform: uppercase;
+}
+
+	.boton{
+		background: black;
+		color: white;
+		text-align: center;
+		width: 22.5%;
+		height: 100%;
+		line-height: 70px;
+		display: inline-block;
+		border-left: 1px;
+		border-right: 1px;
+		border-color: black;
+		border-style: solid;
+		margin: 0;
+	}
+
+	.boton:hover{
+		animation-duration: 1s;
+		animation-name: cambioColor;
+		color: #ff5c5c;
+		border-color: #ff5c5c;
+		border-style: solid;
+	}
+
+	@keyframes cambioColor {
+			from{
+				color:black;
+				border-color: black;
+				border-style: solid;
+			}
+			to{
+				color: #ff5c5c;
+				border-color: #ff5c5c;
+				border-style: solid;
+			}
+		}
+
+.content{
+	margin-top: 90px;
+	background-color: hsl(60, 33%, 20%);
+	background-attachment: fixed;
+	padding-top: 10px;
+	padding-left: 10%;
+	padding-right: 10%;
+}
+
+.panelIzq{
+	display: inline-block;
+}
+
+	.tituloSeccion{
+		color: black;
+	}
+
+	.lista{
+		margin-left: 35px;
+	}
+
+		.tituloLista{
+			color: yellow;
+		}
+
+.panelDer{
+
+	margin:auto;
+	display: block;
+	text-align: center;
+
+}
+
+	.tituloImagen{
+		color: yellow;
+	}
+	
+table.tablaPersonajes{
+	width: 100%;
+	text-align: center;
+}
+
+	.contIm, table.tablaPersonajes td,th{
+		border: solid 2px black;
+		border-radius: 10px;
+		padding: 5px;
+	}
+
+	table.tablaPersonajes img{
+		vertical-align: middle;
+
+	}
+
+.contIm{
+	display: inline-table;
+	margin:20px;
+}
+
+.footer{
+	margin-top: 40px;
+	width: 100%;
+	height: 50px;
+	float: right;
+	display: block;
+	background: black;
+	text-align: right;
+	border-top: solid 1px white
+
+}
+
+	.linkFooter{
+		margin-right: 30px;
+		color: white;
+		text-decoration: underline;
+		line-height: 50px;
+		font-style: italic;
+	}
+
+

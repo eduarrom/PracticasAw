@@ -1,0 +1,69 @@
+*{
+	margin: 0;
+	padding: 0;
+	border: solid 0px red;
+}
+
+.content{
+	display: flex;
+	margin: 5%;
+	font-family: Arial;
+	flex-direction: row-reverse;
+}
+
+.panelIz{
+	display: flex;
+	flex-direction: column-reverse;
+	flex-basis: 25%;
+	flex-shrink: 1;
+}
+
+.panelDer{
+	display: flex;
+	flex-basis: 75%;
+	background:  url('./recursos/bla.jpg') rgba(60, 179, 113, 0.8);
+	flex-shrink: 4;
+}
+
+ .contacto{
+	display: flex;
+	justify-content: space-between;
+	background-color: lightGrey;
+ }
+ 
+ .fotoContacto{
+	margin: 5%;
+	margin-right: 10%;
+	border-radius: 100%;
+	flex-basis: 80px;
+	flex-shrink: 0; 
+ }
+ 
+ .fotoContacto:hover{
+	 cursor: pointer;
+ }
+ 
+ .datos{
+	display: flex;
+	flex-grow: 3;
+	flex-direction: column;
+	justify-content:center;
+	flex-wrap: wrap;
+	border-bottom: solid 1px grey;
+	flex-shrink: 0;
+	flex-basis: 150px;
+	background-color: lightGrey;
+	padding-right: 10px;
+ }
+ 
+.contacto:last-child .datos{
+	border-bottom: none;
+ }
+
+ .nombreUsuario:hover{
+	color: red;
+ }
+ 
+ .estadoUsuario{
+	font-size: 13px;
+ }
