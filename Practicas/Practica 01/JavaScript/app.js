@@ -54,6 +54,15 @@ app.post('/login', function (request, response) {
 					usuario.imagenPerfil = rows[0]
 				}
 			}
+			/*
+			response.cookie("usuario", {
+				email: rows[0].email,
+				nombre: rows[0].nombre,
+				sexo: rows[0].sexo,
+				fechaNacimiento: rows[0].fechaNacimiento,
+				imagenPerfil: rows[0].imagenPerfil
+			})
+			*/
 		})
 	} else {
 		response.redirect("/login.html");
