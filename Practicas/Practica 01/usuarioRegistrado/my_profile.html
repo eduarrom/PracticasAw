@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
   <head>
-	<link rel="stylesheet" href="./CSS/cabecera.css">
-    <link rel="stylesheet" href="./CSS/practica.css">
-	<link rel="stylesheet" href="./CSS/add_question.css">
+	<link rel="stylesheet" href="../CSS/cabecera.css">
+    <link rel="stylesheet" href="../CSS/practica.css">
+	<link rel="stylesheet" href="../CSS/my_profile.css">
     <meta charset="utf-8">
-    <title>Bienvenido - FaceBluff</title>
+    <title>Tu Perfil - FaceBluff</title>
   </head>
   <body>
 	<div class="header">
@@ -23,23 +23,28 @@
 		</div>
     </div>
 	<div class="content">
-	<div class="titulo">
-		<h1>Añadir Pregunta</h1>
-	</div>
-	<div class="seccion">
-		<div class="anadirPregunta">
-			<form class="formularioAnadirPregunta" action="/login" method="post">
-				<div class="contDatosPregunta">
-					<span>Pregunta</span><span><input type="text" class="inputText"/></span>
-					<span>Respuestas (separador ;)</span><span><textarea class="inputText"></textarea></span>
-					<span>Respuesta Correcta (nº)</span><span><input type="text" class="inputText"/></span>
+		<div class="titulo">
+		  <h1>Tu Perfil</h1>
+		</div>
+		<div class="seccion">
+			<div class="perfil">
+			
+				<div class="informacionPerfil">
+					<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" class="miniaturaPerfilGrande" alt="Prueba">
+					
+					<h2 id="nombreUsuario">Casper asdasdasda</h2>
+					<h3 id="edadUsuario">20 años</h3>
+					<h3 id="sexoUsuario">Hombre</h3>
+					<h3 id="puntuacionUsuario">50 puntos</h3>
+				
 				</div>
 				<div class="contBoton">
-					<span><input type="submit" value="Crear" class="boton"/></span>
-				</div>		
-			</form>
+					<button type="button" name="botonModificarPerfil" class="boton modificarPerfil" onClick="location.href = './modify_user.html';">Modificar Perfil</button>
+				</div>
+			
+				
 		</div>
+	  </div>
 	</div>
-	</div>
-  </body>
+</body>
 </html>
