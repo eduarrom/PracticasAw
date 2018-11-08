@@ -51,17 +51,12 @@ class DAOTasks {
                         if(err){
                             callback(new Error("Error de acceso a la base de datos"),null)
                         } else {
-                            let query = "insert into tag (taskId, tag) values "
-                            let primera = true;
-                            let taskTag = [];
-                            task.tags.forEach(function(e){
-                                taskTag.push(rows.insertId, e);            
-                                if (primera == false){
-                                    query += ",";
-                                }
-                                query += "(?,?)"
-                                primera = false;
-                            })
+
+                            let ret = crearQuery(task,rows.insertId);
+
+                            let taskTag = ret.taskTag;
+                            let query = ret.query;
+
                             connection.query(
                                 query,
                                 taskTag,
@@ -81,6 +76,7 @@ class DAOTasks {
             }
         })
     }
+
 
     markTaskDone(idTask, callback) {
         this.pool.getConnection(function(err, connection){
@@ -119,6 +115,24 @@ class DAOTasks {
         })
     }
 }
+
+function crearQuery(task,id){
+
+    let query = "insert into tag (taskId, tag) values "
+    let primera = true;
+    let taskTag = [];
+    task.tags.forEach(function(e){
+        taskTag.push(id, e);            
+        if (primera == false){
+            query += ",";
+        }
+        query += "(?,?)"
+        primera = false;
+        })
+
+    return {query:query,taskTag:taskTag};
+}
+
 
 module.exports = DAOTasks;
    
