@@ -1,6 +1,8 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var dao = require('./integration/dao.js');
+const express = require('express');
+const bodyParser = require('body-parser');
+const daoUsers = require('daoUsers');
+const parser = require('parser');
+const mysql = require('mysql');
 
 var app = express();
 
@@ -8,6 +10,15 @@ app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
 app.use(express.static('.'));
+
+var pool = mysql.createPool({
+	host: "localhost",
+	user: "root",
+	password: "1234",
+	database: "facebluff"
+  });
+
+var daoUser = new daoUsers(pool);
 
 app.listen(3000, function () {
   console.log('Practica 1 en el puerto 3000');
@@ -21,12 +32,6 @@ let usuario = {
 	fotoPerfil: null
 }
 
-app.get('/usuarioRegistrado/' + /.*/, function(request, response){
-	if (usuario.email == null){
-		response.redirect("/login.html");
-	}
-})
-
 app.get('/', function(request, response){
 	if (usuario.email == null){
 		response.redirect("/login.html");
@@ -36,22 +41,22 @@ app.get('/', function(request, response){
 })
 
 app.post('/login', function (request, response) {
-	if (dao.parsePass(request.body.pass)){
-		dao.getUsers(request.body.email, request.body.pass, function(err, rows){
+	if (parser.parsePass(request.body.pass)){
+		daoUser.getUser(request.body.email, request.body.pass, function(err, rows){
 			if (err) {
 				response.write(err.message);
 			} else {			
 				if (rows.length == 0){
 					response.redirect("/login.html");
-				} else if (rows[0].pass != request.body.pass) {
+				} else if (rows[0].password != request.body.pass) {
 					response.redirect("/login.html");
 				} else {
 					response.redirect("/usuarioRegistrado/friends.html");
 					usuario.email = rows[0].email;
-					usuario.nombre = rows[0].nombre;
-					usuario.sexo = rows[0].sexo;
-					usuario.fechaNacimiento = rows[0].fechaNacimiento;
-					usuario.imagenPerfil = rows[0]
+					usuario.nombre = rows[0].name;
+					usuario.sexo = rows[0].gender;
+					usuario.fechaNacimiento = rows[0].birthdate;
+					usuario.imagenPerfil = rows[0].image;
 				}
 			}
 			/*
@@ -69,7 +74,20 @@ app.post('/login', function (request, response) {
 	}
 });
 
-app.get('./usuarioRegistrado/my_profile.html', function(request, response){
-	response.
-	request.document.getElementById("nombreUsuario").write(usuario.nombre);
+app.post('/new_user', function(request, response){
+	let user = {
+		email: request.body.email,
+		name: request.body.name,
+		password: request.body.pass,
+		gender: request.body.gender,
+		birthdate: request.body.birth,
+		image: request.body.image == "" ? null : request.body.image
+	}
+	daoUser.addUser(user,function(err){
+		if (err){
+			response.redirect("/new_user.html");
+		} else {
+			response.redirect("/login.html");
+		}
+	})
 })
