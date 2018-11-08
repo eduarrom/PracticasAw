@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var dao = require('dao');
+var dao = require('./integration/dao.js');
 
 var app = express();
 
