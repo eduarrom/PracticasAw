@@ -16,6 +16,7 @@ const pool = mysql.createPool({
 let daoUser = new DAOUsers(pool);
 let daoTask = new DAOTasks(pool);
 
+
 daoUser.isUserCorrect("usuario@ucm.es", "mipass", cb_isUserCorrect);
 
 function cb_isUserCorrect(err, result){
@@ -75,5 +76,11 @@ function cb_insertTask(err, result){
 }
 
 
+daoTask.deleteCompleted("usuario@ucm.es",cb_deleteCompleted);
+
+function cb_deleteCompleted(err){
+    if(err) console.log(err);
+    else console.log("Se ha borrado bien");
+}
 
 

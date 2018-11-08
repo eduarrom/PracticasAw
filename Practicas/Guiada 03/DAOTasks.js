@@ -8,7 +8,7 @@ class DAOTasks {
     getAllTasks(email, callback) {
         this.pool.getConnection(function(err, connection){
             if(err){
-                callback("Error de conexion a la base de datos", null);
+                callback(new Error("Error de conexion a la base de datos"), null);
             }else{
                 connection.query(
                     "select * from task left join tag on tag.taskId = task.id where task.user = ? order by task.id",
@@ -16,7 +16,7 @@ class DAOTasks {
                     function(err, rows){
                         connection.release();
                         if(err){
-                            callback("Error de acceso a la base de datos",null)
+                            callback(new Error("Error de acceso a la base de datos"),null)
                         } else {
                             let tareas = [];
                             rows.forEach(function(e){
@@ -42,14 +42,14 @@ class DAOTasks {
     insertTask(email, task, callback) {
         this.pool.getConnection(function(err, connection){
             if(err){
-                callback("Error de conexion a la base de datos", null);
+                callback(new Error("Error de conexion a la base de datos"), null);
             }else{
                 connection.query(
                     "insert into task (user,text,done) values (?,?,?)",
                     [email,task.text,task.done],
                     function(err, rows){
                         if(err){
-                            callback("Error de acceso a la base de datos",null)
+                            callback(new Error("Error de acceso a la base de datos"),null)
                         } else {
                             let query = "insert into tag (taskId, tag) values "
                             let primera = true;
@@ -68,7 +68,7 @@ class DAOTasks {
                                 function(err, rows){
                                     connection.release();
                                     if(err){
-                                        callback("Error de acceso a la base de datos",null)
+                                        callback(new Error("Error de acceso a la base de datos"),null)
                                     } else {
                                         callback(null)
                                     }
@@ -85,7 +85,7 @@ class DAOTasks {
     markTaskDone(idTask, callback) {
         this.pool.getConnection(function(err, connection){
             if(err){
-                callback(err("Error de conexion a la base de datos"), null);
+                callback(new Error("Error de conexion a la base de datos"), null);
             }else{
                 connection.query(
                     "update task set done = 1 where id = ?",
@@ -93,7 +93,7 @@ class DAOTasks {
                     function(err, rows){
                         connection.release();
                         if(err){
-                            callback("Error de acceso a la base de datos",null)
+                            callback(new Error("Error de acceso a la base de datos"),null)
                         } else {
                             callback(null);
                         }
@@ -104,7 +104,19 @@ class DAOTasks {
     }
 
     deleteCompleted(email, callback) {
-        
+        this.pool.getConnection((err,connection)=>{
+
+            if(err) callback(new Error("Error de conexión a la base de datos"));
+            else
+            connection.query("DELETE FROM task WHERE user = ? and done = true;",[email],(err)=>{
+                
+                connection.release();
+                
+                if(err) callback(new Error("Error de acceso a la base de datos"));
+                else
+                    callback(null);
+            })
+        })
     }
 }
 
