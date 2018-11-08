@@ -64,6 +64,16 @@ function cb_markTaskDone(err, result){
    }
 }
 
+daoTask.insertTask("usuario@ucm.es", {text: "Lavarse", done: 0, tags:["bañera", "higiene", "hueles"]}, cb_insertTask);
+
+function cb_insertTask(err, result){
+   if (err) {
+       console.log(err);
+   } else {
+       console.log("Tarea insertada correctamente")
+   }
+}
+
 
 
 

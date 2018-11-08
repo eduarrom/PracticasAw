@@ -51,10 +51,22 @@ class DAOTasks {
                         if(err){
                             callback("Error de acceso a la base de datos",null)
                         } else {
+                            let query = "insert into tag (taskId, tag) values "
+                            let primera = true;
+                            let taskTag = [];
+                            task.tags.forEach(function(e){
+                                taskTag.push(rows.insertId, e);            
+                                if (primera == false){
+                                    query += ",";
+                                }
+                                query += "(?,?)"
+                                primera = false;
+                            })
                             connection.query(
-                                "insert into task (user,text,done) values (?,?,?)",
-                                [email,task.text,task.done],
+                                query,
+                                taskTag,
                                 function(err, rows){
+                                    connection.release();
                                     if(err){
                                         callback("Error de acceso a la base de datos",null)
                                     } else {
