@@ -44,5 +44,28 @@ dao.sendFriendRequest(1,2,(err)=>{
     if(err) console.log(err);
     else console.log("peticion enviada correctamente");
 });
+
+dao.getFriends(2,(err,lista)=>{
+    if(err) console.log(err);
+    else console.log(lista);
+});
+
+dao.getFriends(1,(err,lista)=>{
+    if(err) console.log(err);
+    else console.log(lista);
+});
+
+dao.getPendingFriendRequest(2,(err,lista)=>{
+    if(err) console.log(err);
+    else console.log(lista);
+});
+
+dao.getPendingFriendRequest(1,(err,lista)=>{
+    if(err) console.log(err);
+    else console.log(lista);
+});
+
+dao.confirmRequest(1,2,true,(err)=>{if(err)console.log(err)});
+
 */
 
