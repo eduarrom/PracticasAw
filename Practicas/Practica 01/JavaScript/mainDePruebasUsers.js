@@ -6,7 +6,7 @@ let parser = require("parser");
 let pool = require("mysql").createPool({
 	host: "localhost",
 	user: "root",
-	password: "1234",
+	password: "",
 	database: "facebluff"
   });
 
@@ -29,7 +29,7 @@ let user2 = {
     birthdate:new Date(),
     image:""
 }
-
+/*
 if(parser.parseUser(user1)){
     dao.addUser(user1,(err)=> {
         
@@ -53,12 +53,12 @@ if(parser.parseUser(user2)){
 } else {
     console.log("Formato de usuario incorrecto");
 }
-
-dao.sendFriendRequest(1,12,(err)=>{
+*/
+dao.sendFriendRequest(1,2,(err)=>{
     if(err) console.log(err);
     else console.log("Peticion enviada correctamente");
 });
-
+/*
 dao.getFriends(2,(err,lista)=>{
     if(err) console.log(err);
     else console.log(lista);
@@ -81,4 +81,4 @@ dao.getPendingFriendRequest(1,(err,lista)=>{
 
 
 dao.confirmRequest(1,12,true,(err)=>{if(err)console.log(err)});
-
+*/
