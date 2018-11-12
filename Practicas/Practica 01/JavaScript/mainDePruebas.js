@@ -1,5 +1,6 @@
 
 let DAO = require("daoUsers");
+let PreguntasDao = require("daoQuestions");
 
 let parser = require("parser");
 
@@ -11,6 +12,7 @@ let pool = require("mysql").createPool({
   });
 
 let dao = new DAO(pool);
+let preguntasDao = new PreguntasDao(pool);
 
 let user1 = {
     email:"c@ucm.es",
@@ -53,12 +55,10 @@ if(parser.parseUser(user2)){
 } else {
     console.log("Formato de usuario incorrecto");
 }
-*/
 dao.sendFriendRequest(1,2,(err)=>{
     if(err) console.log(err);
     else console.log("Peticion enviada correctamente");
 });
-/*
 dao.getFriends(2,(err,lista)=>{
     if(err) console.log(err);
     else console.log(lista);
@@ -81,4 +81,18 @@ dao.getPendingFriendRequest(1,(err,lista)=>{
 
 
 dao.confirmRequest(1,12,true,(err)=>{if(err)console.log(err)});
+
+preguntasDao.addQuestion("¿como me llamo?",["Carlos","Edu","Jose"],1,(err)=>{
+    if (err) console.log(err);
+    else console.log("Pregunta añadida correctamente");
+})
+
+preguntasDao.getRandomQuestions(1,(err,lista)=> console.log(lista));
+preguntasDao.getRandomQuestions(1,(err,lista)=> console.log(lista));
+preguntasDao.getRandomQuestions(2,(err,lista)=> console.log(lista));
 */
+
+preguntasDao.answerQuestion(4,1,1,1, (err)=>{ 
+    if(err) console.log(err);
+    else console.log("pregunta respondida correctamente");
+});
