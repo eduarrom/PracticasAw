@@ -1,15 +1,25 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const daoUsers = require('daoUsers');
-const parser = require('parser');
 const mysql = require('mysql');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const saUsers = require('saUsers');
 
 var app = express();
 
+//Usar bodyParser para obtener los atributos pasados por post
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
-app.use(express.static('.'));
+//Usar cookieParser para analizar y obtener las cookies
+app.use(cookieParser());
+
+//Usar el directorio public para los directorios estaticos
+app.use(express.static(path.join(__dirname, "../public")));
+
+//Usar ejs y el directorio views de public para las paginas dinamicas
+app.set("view engine","ejs");
+app.set("views", path.join(__dirname, "../public", "views"))
 
 var pool = mysql.createPool({
 	host: "localhost",
@@ -18,63 +28,73 @@ var pool = mysql.createPool({
 	database: "facebluff"
   });
 
-var daoUser = new daoUsers(pool);
-
 app.listen(3000, function () {
   console.log('Practica 1 en el puerto 3000');
 });
 
-let usuario = {
-	email: null,
-	nombre: null,
-	sexo: null,
-	fechaNacimiento: null,
-	fotoPerfil: null
-}
-
 app.get('/', function(request, response){
-	if (usuario.email == null){
-		response.redirect("/login.html");
+	if (request.cookies.usuario != undefined){
+		response.redirect("/login");
 	} else {
-		response.redirect("/usuarioRegistrado/friends.html");
+		response.redirect("/friends");
 	}
 })
 
-app.post('/login', function (request, response) {
-	if (parser.parsePass(request.body.pass)){
-		daoUser.getUser(request.body.email, request.body.pass, function(err, rows){
-			if (err) {
-				response.write(err.message);
-			} else {			
-				if (rows.length == 0){
-					response.redirect("/login.html");
-				} else if (rows[0].password != request.body.pass) {
-					response.redirect("/login.html");
-				} else {
-					response.redirect("/usuarioRegistrado/friends.html");
-					usuario.email = rows[0].email;
-					usuario.nombre = rows[0].name;
-					usuario.sexo = rows[0].gender;
-					usuario.fechaNacimiento = rows[0].birthdate;
-					usuario.imagenPerfil = rows[0].image;
-				}
-			}
-			/*
-			response.cookie("usuario", {
-				email: rows[0].email,
-				nombre: rows[0].nombre,
-				sexo: rows[0].sexo,
-				fechaNacimiento: rows[0].fechaNacimiento,
-				imagenPerfil: rows[0].imagenPerfil
-			})
-			*/
-		})
-	} else {
-		response.redirect("/login.html");
-	}
+app.get('/login', function(request, response){
+	response.status(200);
+	response.render("login", null)
+})
+
+app.post('/doLogin', function (request, response) {
+	let res = saUsers.doLogin({
+		email: request.body.email,
+		name: null,
+		gender: null,
+		years: null,
+		image: null,
+		points: null
+	}, request.body.pass, pool, function(cod, err, content){
+		switch(cod){
+			case 0:
+				response.cookie("user", content);
+				response.redirect("/friends");
+				break;
+			case -1:
+				response.redirect("/login");
+				break;
+			case -2:
+				response.redirect("/login");
+				break;
+			case -3:
+				response.redirect("/login");
+				break;
+			case -5:
+				response.redirect("/login");
+				break;
+			default:
+				response.redirect("/login");
+				break;
+		}
+		response.end();
+	});
 });
 
-app.post('/new_user', function(request, response){
+app.get('/new_user', function(request, response){
+	response.status(200);
+	response.render("new_user", {user: request.cookies.user})
+});
+
+app.get('/friends', function(request, response){
+	response.status(200);
+	response.render("friends", {user: request.cookies.user})
+});
+
+app.get('/my_profile', function(request, response){
+	response.status(200);
+	response.render("my_profile", {user: request.cookies.user})
+});
+
+app.post('/addUser', function(request, response){
 	let user = {
 		email: request.body.email,
 		name: request.body.name,
@@ -90,4 +110,9 @@ app.post('/new_user', function(request, response){
 			response.redirect("/login.html");
 		}
 	})
+})
+
+app.get('/desconectar', function(request, response){
+	response.clearCookie("user");
+	response.redirect("/login");
 })

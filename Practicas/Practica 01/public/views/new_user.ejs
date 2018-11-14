@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
   <head>
-	<link rel="stylesheet" href="./CSS/cabecera.css">
-    <link rel="stylesheet" href="./CSS/practica.css">
-	<link rel="stylesheet" href="./CSS/new_user.css">
+	<link rel="stylesheet" href="/CSS/cabecera.css">
+    <link rel="stylesheet" href="/CSS/practica.css">
+	<link rel="stylesheet" href="/CSS/new_user.css">
     <meta charset="utf-8">
     <title>Nuevo usuario - FaceBluff</title>
   </head>
@@ -15,9 +15,8 @@
 			<span><h1>Usuario No Registrado</h1></span>
 		</div>
 		  <div class="nav">
-		  <a href="./login.html" class="linkNav"><div class="botonNav">Entrar</div></a>
-		  <a href="./new_user.html" class="linkNav"><div class="botonNav">Nuevo Usuario</div></a>
-
+		  <a href="./login" class="linkNav"><div class="botonNav">Entrar</div></a>
+		  <a href="./new_user" class="linkNav"><div class="botonNav">Nuevo Usuario</div></a>
 	  </div>
 	</div>
 	<div class="content">
@@ -26,15 +25,15 @@
 		</div>
 		<div class="seccion">
 			<div class="newUser">
-				<form class="formularioNewUser" action="/new_user" method="POST">
+				<form class="formularioNewUser" action="/addUser" method="POST">
 					<div class="contDatosNewUser">
 						<span>Email</span><span><input type="text" name="email" class="inputText"/></span>
 						<span>Contraseña</span><span><input type="password" name="pass" class="inputText"/></span>
 						<span>Nombre completo</span><span><input type="text" name="name" class="inputText"/></span>
 						<span>Sexo</span>
 						<span>
-							<input type="radio" name="gender" class="inputRadio" value="Masculino" checked="checked"/> Masculino
-							<input type="radio" name="gender" class="inputRadio" value="Femenino"/> Femenino
+							<input type="radio" name="gender" class="inputRadio" value="Hombre" checked="checked"/> Masculino
+							<input type="radio" name="gender" class="inputRadio" value="Mujer"/> Femenino
 							<input type="radio" name="gender" class="inputRadio" value="Otro"/> Otro
 						</span>
 						<span>Fecha de nacimiento</span><span><input type="date" name="birth" class="inputText"/></span>

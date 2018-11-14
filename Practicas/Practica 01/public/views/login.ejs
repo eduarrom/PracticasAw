@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
   <head>
-	<link rel="stylesheet" href="./CSS/cabecera.css">
-    <link rel="stylesheet" href="./CSS/practica.css">
-	<link rel="stylesheet" href="./CSS/login.css">
+	<link rel="stylesheet" href="/CSS/cabecera.css">
+    <link rel="stylesheet" href="/CSS/practica.css">
+	<link rel="stylesheet" href="/CSS/login.css">
     <meta charset="utf-8">
     <title>Bienvenido - FaceBluff</title>
   </head>
@@ -15,9 +15,8 @@
 			<span><h1>Usuario No Registrado</h1></span>
 		</div>
 		  <div class="nav">
-		  <a href="./login.html" class="linkNav"><div class="botonNav">Entrar</div></a>
-		  <a href="./new_user.html" class="linkNav"><div class="botonNav">Nuevo Usuario</div></a>
-
+		  <a href="/login" class="linkNav"><div class="botonNav">Entrar</div></a>
+		  <a href="/new_user" class="linkNav"><div class="botonNav">Nuevo Usuario</div></a>
 	  </div>
 	</div>
 	<div class="content">
@@ -26,7 +25,7 @@
 	</div>
 	<div class="seccion">
 		<div class="login">
-			<form class="formularioLogin" action="/login" method="post">
+			<form class="formularioLogin" action="/doLogin" method="post">
 				<div class="contDatosLogin">
 					<span>Email</span><span><input type="text" name="email" class="inputText"/></span>
 					<span>Contraseña</span><span><input type="password" name="pass" class="inputText"/></span>

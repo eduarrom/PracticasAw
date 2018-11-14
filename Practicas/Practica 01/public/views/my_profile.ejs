@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+	<link rel="stylesheet" href="/CSS/cabecera.css">
+    <link rel="stylesheet" href="/CSS/practica.css">
+	<link rel="stylesheet" href="/CSS/my_profile.css">
+    <meta charset="utf-8">
+    <title>Tu Perfil - FaceBluff</title>
+  </head>
+  <body>
+	<div class="header">
+	  <h1 class="tituloPagina">FaceBluFF</h1>
+	  <!-- Botones para Registrado-->
+		<div class="user">
+				<% if (user.image != ""){ %>
+					<img src=<%= "/images/users/" + user.image %> alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
+				<% } else { %>
+					<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
+				<% } %>
+			<span><h1><%= user.points %> Puntos</h1></span>
+		</div>
+		<div class="nav">
+			<a href="/my_profile" class="linkNav"><div class="botonNav">Perfil</div></a>
+			<a href="/friends" class="linkNav"><div class="botonNav">Amigos</div></a>
+			<a href="/questions.html" class="linkNav"><div class="botonNav">Preguntas</div></a>
+			<a href="/desconectar" class="linkNav"><div class="botonNav">Desconectar</div></a>
+		</div>
+    </div>
+	<div class="content">
+		<div class="titulo">
+		  <h1>Tu Perfil</h1>
+		</div>
+		<div class="seccion">
+			<div class="perfil">
+			
+				<div class="informacionPerfil">
+					<% if (user.image != ""){ %>
+						<img src=<%= "/images/users/" + user.image %> class="miniaturaPerfilGrande" alt="Prueba">
+					<% } else { %>
+						<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" class="miniaturaPerfilGrande" alt="Prueba">
+					<% } %>
+					
+					
+					<h2 id="nombreUsuario"><%= user.name%></h2>
+					<h3 id="edadUsuario"><%= user.years %> Años</h3>
+					<h3 id="sexoUsuario"><%= user.gender %></h3>
+					<h3 id="puntuacionUsuario"><%= user.points %> Puntos</h3>
+				
+				</div>
+				<div class="contBoton">
+					<button type="button" name="botonModificarPerfil" class="boton modificarPerfil" onClick="location.href = './modify_user.html';">Modificar Perfil</button>
+				</div>
+			
+				
+		</div>
+	  </div>
+	</div>
+</body>
+</html>
