@@ -92,7 +92,7 @@ preguntasDao.getRandomQuestions(1,(err,lista)=> console.log(lista));
 preguntasDao.getRandomQuestions(2,(err,lista)=> console.log(lista));
 */
 
-preguntasDao.answerQuestion(4,1,1,1, (err)=>{ 
+preguntasDao.answerQuestion({questionId:4, answer:1,userId:1,callback: (err)=>{ 
     if(err) console.log(err);
     else console.log("pregunta respondida correctamente");
-});
+}});

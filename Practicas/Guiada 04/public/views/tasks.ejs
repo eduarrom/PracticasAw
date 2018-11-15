@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <link rel="shortcut icon" href="image/logo.png">
+    <link rel="stylesheet" href="css/index.css" media="screen">
+    <link rel="stylesheet" href="css/print.css" media="print">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Tareas</title>
+  </head>
+  <body>
+	<div class="header">
+		<img class="logo" src="image/logo.png" alt="Logo"/>
+		<div class="user">
+			<img class="user-icon" src="image/user-icon.png" alt="Imagen de Usuario"/>
+			<div class="user-info">
+				<p>usuario@gmail.com</p>
+				<a class="logout" href="">Desconectar</a>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="formularioTareas">
+			<form method="POST" action="/addTask">
+				<input class="inputTarea" type="text" name="tarea">
+				<input class="botonAnadirTarea" type="submit" value="Añadir">
+			</form>
+		</div>
+		<div class="contenedorTareas">
+
+		<% lista.forEach(function(task){ %>
+			<%if (task.done){ %>
+			<div class="tarea finalizada">
+			<%}else{%>
+			<div class = "tarea">
+			<%}%>
+				<div class=contenedorDatos>
+					<span class="nombreTarea"><%=task.text%></span>
+					<% task.tags.forEach(function(tag){ %>
+					<span class="tag"> <%=tag%> </span>
+					<% }) %>
+				</div>
+				<a class="botonTerminarTarea" href=""><span>Marcar como Terminada</span></a>
+			</div>
+			<% }); %>
+		</div>
+		<div class="contenedorEliminar">
+			<a class="botonEliminar" href=""><span>Eliminar Tareas Terminadas</span></a>
+		</div>
+	</div>
+  </body>
+</html>
