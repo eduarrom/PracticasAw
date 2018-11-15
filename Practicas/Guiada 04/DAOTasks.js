@@ -51,24 +51,28 @@ class DAOTasks {
                         if(err){
                             callback(new Error("Error de acceso a la base de datos"),null)
                         } else {
-
                             let ret = crearQuery(task,rows.insertId);
 
                             let taskTag = ret.taskTag;
                             let query = ret.query;
-
-                            connection.query(
-                                query,
-                                taskTag,
-                                function(err, rows){
-                                    connection.release();
-                                    if(err){
-                                        callback(new Error("Error de acceso a la base de datos"),null)
-                                    } else {
-                                        callback(null)
+                            
+                            if (taskTag.length == 0) {
+                                connection.release();
+                                callback(null);
+                            }else{
+                                connection.query(
+                                    query,
+                                    taskTag,
+                                    function(err, rows){
+                                        connection.release();
+                                        if(err){
+                                            callback(new Error("Error de acceso a la base de datos"),null)
+                                        } else {
+                                            callback(null)
+                                        }
                                     }
-                                }
-                            )
+                                )
+                            }
                             
                         }
                     }

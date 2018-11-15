@@ -20,7 +20,10 @@ app.use(body_parser.urlencoded({extended:false}));
 app.get("/tasks",(request,response)=>{
 
     taskDao.getAllTasks("usuario@ucm.es",(err,list)=>{
-        if(!err)
+            if(err){
+                console.log(err);
+                list = [];
+            }
             response.render("tasks.ejs",{error:err,lista:list});
     })
 });
@@ -29,10 +32,16 @@ app.post("/addTask",(request,response)=>{
 
     taskDao.insertTask("usuario@ucm.es",{text:request.body.tarea,done:0,tags:[]},(err)=>{
         if (err){console.log(err)}
-        else
-            response.redirect("/tasks");
+        response.redirect("/tasks");
     });
-})
+});
+
+app.get("/finish/:taskId",(request,response)=>{
+    taskDao.markTaskDone(request.params.taskId,(err)=>{
+        if (err){console.log(err)}
+        response.redirect("/tasks");
+    })
+});
 
 
 app.listen(config.port,(err)=>{
