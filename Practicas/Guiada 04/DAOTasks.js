@@ -19,16 +19,18 @@ class DAOTasks {
                             callback(new Error("Error de acceso a la base de datos"),null)
                         } else {
                             let tareas = [];
+                            let tareasInsertadas = 0;
                             rows.forEach(function(e){
-                                if (tareas.length < e.id){
+                                if (tareas[tareasInsertadas - 1] != null && tareas[tareasInsertadas - 1].id == e.id){
+                                    tareas[tareasInsertadas - 1].tags.push(e.tag);
+                                } else {
                                     tareas.push({
                                         id: e.id,
                                         text: e.text,
                                         done: e.done,
                                         tags: [e.tag]
                                     });
-                                } else {
-                                    tareas[e.id - 1].tags.push(e.tag);
+                                    tareasInsertadas++;
                                 }
                             });
                             callback(null, tareas);
@@ -44,14 +46,15 @@ class DAOTasks {
             if(err){
                 callback(new Error("Error de conexion a la base de datos"), null);
             }else{
+                let tarea = parsearTarea(task);
                 connection.query(
                     "insert into task (user,text,done) values (?,?,?)",
-                    [email,task.text,task.done],
+                    [email,tarea.text,task.done],
                     function(err, rows){
                         if(err){
                             callback(new Error("Error de acceso a la base de datos"),null)
                         } else {
-                            let ret = crearQuery(task,rows.insertId);
+                            let ret = crearQuery(tarea,rows.insertId);
 
                             let taskTag = ret.taskTag;
                             let query = ret.query;
@@ -108,7 +111,7 @@ class DAOTasks {
 
             if(err) callback(new Error("Error de conexión a la base de datos"));
             else
-            connection.query("DELETE FROM task WHERE user = ? and done = true;",[email],(err)=>{
+            connection.query("DELETE FROM task WHERE user = ? and done = 1;",[email],(err)=>{
                 
                 connection.release();
                 
@@ -121,7 +124,7 @@ class DAOTasks {
 }
 
 function crearQuery(task,id){
-
+    
     let query = "insert into tag (taskId, tag) values "
     let primera = true;
     let taskTag = [];
@@ -137,6 +140,24 @@ function crearQuery(task,id){
     return {query:query,taskTag:taskTag};
 }
 
+function parsearTarea(task){
+    let tarea = {
+		text: "",
+		tags: []
+    };
+    
+    let expresionTags = /@(\w*)/g;
+
+    let texto = task.text;
+
+	let tags = texto.match(expresionTags);
+	
+	tarea.text = texto.replace(expresionTags, "").trim().replace(/\s+/g, " ");
+
+    tags.map( t => tarea.tags.push(t.replace(/@/, "")));
+    
+    return tarea;
+}
 
 module.exports = DAOTasks;
    
