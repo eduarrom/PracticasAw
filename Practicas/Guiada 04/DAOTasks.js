@@ -30,6 +30,7 @@ class DAOTasks {
                                         done: e.done,
                                         tags: [e.tag]
                                     });
+                                    if(tareas[tareasInsertadas].tags[0]==null) tareas[tareasInsertadas].tags=[];
                                     tareasInsertadas++;
                                 }
                             });
@@ -154,7 +155,7 @@ function parsearTarea(task){
 	
 	tarea.text = texto.replace(expresionTags, "").trim().replace(/\s+/g, " ");
 
-    tags.map( t => tarea.tags.push(t.replace(/@/, "")));
+    if(tags != null && tags.length>0) tags.map( t => tarea.tags.push(t.replace(/@/, "")));
     
     return tarea;
 }
