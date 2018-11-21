@@ -164,7 +164,13 @@ function parsearTarea(task){
 	tarea.text = texto.replace(expresionTags, "").trim().replace(/\s+/g, " ");
 
     if (tags != null){
-        tags.map( t => tarea.tags.push(t.replace(/@/, "")));
+        tags.map( t => {
+            if (!tarea.tags.find(e => {
+                return "@" + e == t
+            })){
+                tarea.tags.push(t.replace(/@/, ""))
+            }
+        });
     }
     
     return tarea;
