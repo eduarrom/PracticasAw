@@ -36,9 +36,15 @@
 			<%}%>
 				<div class=contenedorDatos>
 					<span class="nombreTarea"><%=task.text%></span>
+<<<<<<< HEAD
 					<% task.tags.forEach(function(tag){ %>
 						<span class="tag"> <%=tag%> </span>
 					<% }) %>
+=======
+					<% for(let i = 0; i<task.tags.length; i++){ %>
+					<span class="tag"> <%=task.tags[i]%> </span>
+					<% } %>
+>>>>>>> bbbd80ff8cedc26558af7d221672fb0d1b7863d4
 				</div>
 				<a class="botonTerminarTarea" href=<%="/finish/"+task.id%>><span>Marcar como Terminada</span></a>
 			</div>
