@@ -32,13 +32,9 @@ class DAOTasks {
                                         done: e.done,
                                         tags: []
                                     });
-<<<<<<< HEAD
                                     if (e.tag != null){
                                         tareas[tareasInsertadas].tags.push(e.tag);
                                     }
-=======
-                                    if(tareas[tareasInsertadas].tags[0]==null) tareas[tareasInsertadas].tags=[];
->>>>>>> bbbd80ff8cedc26558af7d221672fb0d1b7863d4
                                     tareasInsertadas++;
                                 }
                             });
@@ -167,13 +163,9 @@ function parsearTarea(task){
 	
 	tarea.text = texto.replace(expresionTags, "").trim().replace(/\s+/g, " ");
 
-<<<<<<< HEAD
-    if (tarea.tags.length > 0){
+    if (tags != null){
         tags.map( t => tarea.tags.push(t.replace(/@/, "")));
     }
-=======
-    if(tags != null && tags.length>0) tags.map( t => tarea.tags.push(t.replace(/@/, "")));
->>>>>>> bbbd80ff8cedc26558af7d221672fb0d1b7863d4
     
     return tarea;
 }
