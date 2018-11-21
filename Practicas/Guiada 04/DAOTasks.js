@@ -22,14 +22,19 @@ class DAOTasks {
                             let tareasInsertadas = 0;
                             rows.forEach(function(e){
                                 if (tareas[tareasInsertadas - 1] != null && tareas[tareasInsertadas - 1].id == e.id){
-                                    tareas[tareasInsertadas - 1].tags.push(e.tag);
+                                    if (e.tag != null){
+                                        tareas[tareasInsertadas - 1].tags.push(e.tag);
+                                    }
                                 } else {
                                     tareas.push({
                                         id: e.id,
                                         text: e.text,
                                         done: e.done,
-                                        tags: [e.tag]
+                                        tags: []
                                     });
+                                    if (e.tag != null){
+                                        tareas[tareasInsertadas].tags.push(e.tag);
+                                    }
                                     tareasInsertadas++;
                                 }
                             });
@@ -45,41 +50,45 @@ class DAOTasks {
         this.pool.getConnection(function(err, connection){
             if(err){
                 callback(new Error("Error de conexion a la base de datos"), null);
-            }else{
+            }else{         
                 let tarea = parsearTarea(task);
-                connection.query(
-                    "insert into task (user,text,done) values (?,?,?)",
-                    [email,tarea.text,task.done],
-                    function(err, rows){
-                        if(err){
-                            callback(new Error("Error de acceso a la base de datos"),null)
-                        } else {
-                            let ret = crearQuery(tarea,rows.insertId);
+                if(tarea.text != ""){
+                    connection.query(
+                        "insert into task (user,text,done) values (?,?,?)",
+                        [email,tarea.text,task.done],
+                        function(err, rows){
+                            if(err){
+                                callback(new Error("Error de acceso a la base de datos"),null)
+                            } else {
+                                let ret = crearQuery(tarea,rows.insertId);
 
-                            let taskTag = ret.taskTag;
-                            let query = ret.query;
-                            
-                            if (taskTag.length == 0) {
-                                connection.release();
-                                callback(null);
-                            }else{
-                                connection.query(
-                                    query,
-                                    taskTag,
-                                    function(err, rows){
-                                        connection.release();
-                                        if(err){
-                                            callback(new Error("Error de acceso a la base de datos"),null)
-                                        } else {
-                                            callback(null)
+                                let taskTag = ret.taskTag;
+                                let query = ret.query;
+                                
+                                if (taskTag.length == 0) {
+                                    connection.release();
+                                    callback(null);
+                                }else{
+                                    connection.query(
+                                        query,
+                                        taskTag,
+                                        function(err, rows){
+                                            connection.release();
+                                            if(err){
+                                                callback(new Error("Error de acceso a la base de datos"),null)
+                                            } else {
+                                                callback(null)
+                                            }
                                         }
-                                    }
-                                )
+                                    )
+                                }
+                                
                             }
-                            
                         }
-                    }
-                )
+                    )
+                } else {
+                    callback(new Error("Tarea vacia"),null)
+                }
             }
         })
     }
@@ -154,7 +163,9 @@ function parsearTarea(task){
 	
 	tarea.text = texto.replace(expresionTags, "").trim().replace(/\s+/g, " ");
 
-    tags.map( t => tarea.tags.push(t.replace(/@/, "")));
+    if (tarea.tags.length > 0){
+        tags.map( t => tarea.tags.push(t.replace(/@/, "")));
+    }
     
     return tarea;
 }
