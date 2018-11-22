@@ -27,6 +27,15 @@ app.use(express.static("public"));
 app.use(body_parser.urlencoded({extended:false}));
 app.use(expressSession({resave:false, saveUninitialized:false, secret:"foobar34", store:sessionStore}));
 
+function controlAcceso(request, response, next){
+    if (request.session.currentUser != null){
+        response.locals.userEmail = request.session.currentUser;
+        next();
+    } else {
+        response.redirect("/login");
+    }
+}
+
 app.get("/login",(request,response)=>{
     response.render("login.ejs",{errorMsg:null});
 });
@@ -48,18 +57,18 @@ app.get("/logout",(request,response)=>{
     response.redirect("/login");
 })
 
-app.get("/tasks",(request,response)=>{
+app.get("/tasks",controlAcceso,(request,response)=>{
 
     taskDao.getAllTasks(request.session.currentUser,(err,list)=>{
             if(err){
                 console.log(err);
                 list = [];
             }
-            response.render("tasks.ejs",{userEmail:request.session.currentUser,error:err,lista:list});
+            response.render("tasks.ejs",{error:err,lista:list});
     })
 });
 
-app.post("/addTask",(request,response)=>{
+app.post("/addTask",controlAcceso,(request,response)=>{
     
     taskDao.insertTask(request.session.currentUser,{text:request.body.tarea,done:0},(err)=>{
         if (err){console.log(err)}
@@ -67,14 +76,14 @@ app.post("/addTask",(request,response)=>{
     });
 });
 
-app.get("/finish/:taskId",(request,response)=>{
+app.get("/finish/:taskId",controlAcceso,(request,response)=>{
     taskDao.markTaskDone(request.params.taskId,(err)=>{
         if (err){console.log(err)}
         response.redirect("/tasks");
     })
 });
 
-app.get("/deleteCompleted",(request,response)=>{
+app.get("/deleteCompleted",controlAcceso,(request,response)=>{
     taskDao.deleteCompleted(request.session.currentUser,(err)=>{
         if (err){console.log(err)}
         response.redirect("/tasks");
