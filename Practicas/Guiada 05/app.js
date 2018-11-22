@@ -90,6 +90,16 @@ app.get("/deleteCompleted",controlAcceso,(request,response)=>{
     })
 });
 
+app.get("/imagenUsuario",(request,response)=>{
+
+    userDao.getUserImageName(request.session.currentUser,(err,image)=>{
+        if(err || image==null){
+            response.sendFile(path.join(__dirname, "profile_imgs", "NoPerfil.png"));
+        }else{
+            response.sendFile(path.join(__dirname, "profile_imgs", image));
+        }
+    })
+});
 
 app.listen(config.port,(err)=>{
     if (err) {
