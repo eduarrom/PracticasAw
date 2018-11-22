@@ -24,9 +24,11 @@
                 </div> 
             </form>
         </div>
+        <% if (errorMsg != null) { %>
         <div class="contenedorError">
             <span class="error"><%= errorMsg %></span>
         </div>
+        <% } %>
 	</div>
   </body>
 </html>
