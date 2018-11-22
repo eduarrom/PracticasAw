@@ -17,7 +17,7 @@ const sessionStore = new MySqlStore(config.mysqlConfig);
 const app = express();
 const pool = mysql.createPool(config.mysqlConfig);
 
-const taskDao = new DAOUsers(pool);
+const taskDao = new DAOTasks(pool);
 const userDao = new DAOUsers(pool);
 
 app.set("view engine","ejs");
@@ -43,7 +43,7 @@ app.post("/login",(request,response)=>{
     })
 })
 
-app.post("logout",(request,response)=>{
+app.get("/logout",(request,response)=>{
     request.session.destroy();
     response.redirect("/login");
 })
@@ -55,7 +55,7 @@ app.get("/tasks",(request,response)=>{
                 console.log(err);
                 list = [];
             }
-            response.render("tasks.ejs",{error:err,lista:list});
+            response.render("tasks.ejs",{usuario:request.session.currentUser,error:err,lista:list});
     })
 });
 
