@@ -55,7 +55,7 @@ app.get("/tasks",(request,response)=>{
                 console.log(err);
                 list = [];
             }
-            response.render("tasks.ejs",{usuario:request.session.currentUser,error:err,lista:list});
+            response.render("tasks.ejs",{userEmail:request.session.currentUser,error:err,lista:list});
     })
 });
 
