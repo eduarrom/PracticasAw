@@ -12,12 +12,12 @@
 	  <h1 class="tituloPagina">FaceBluFF</h1>
 	  <!-- Botones para Registrado-->
 		<div class="user">
-				<% if (user.image != ""){ %>
-					<img src=<%= "/images/users/" + user.image %> alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
+				<% if (currentUser.image != ""){ %>
+					<img src=<%= "/images/users/" + currentUser.image %> alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
 				<% } else { %>
 					<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
 				<% } %>
-			<span><h1><%= user.points %> Puntos</h1></span>
+			<span><h1><%= currentUser.points %> Puntos</h1></span>
 		</div>
 		<div class="nav">
 			<a href="/my_profile" class="linkNav"><div class="botonNav">Perfil</div></a>
@@ -34,17 +34,17 @@
 			<div class="perfil">
 			
 				<div class="informacionPerfil">
-					<% if (user.image != ""){ %>
-						<img src=<%= "/images/users/" + user.image %> class="miniaturaPerfilGrande" alt="Prueba">
+					<% if (currentUser.image != ""){ %>
+						<img src=<%= "/images/users/" + currentUser.image %> class="miniaturaPerfilGrande" alt="Prueba">
 					<% } else { %>
 						<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" class="miniaturaPerfilGrande" alt="Prueba">
 					<% } %>
 					
 					
-					<h2 id="nombreUsuario"><%= user.name%></h2>
-					<h3 id="edadUsuario"><%= user.years %> Años</h3>
-					<h3 id="sexoUsuario"><%= user.gender %></h3>
-					<h3 id="puntuacionUsuario"><%= user.points %> Puntos</h3>
+					<h2 id="nombreUsuario"><%= currentUser.name%></h2>
+					<h3 id="edadUsuario"><%= currentUser.years %> Años</h3>
+					<h3 id="sexoUsuario"><%= currentUser.gender %></h3>
+					<h3 id="puntuacionUsuario"><%= currentUser.points %> Puntos</h3>
 				
 				</div>
 				<div class="contBoton">

@@ -1,15 +1,25 @@
+//Definicion de modulos externos
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const expressSession = require("express-session");
+const expressMySqlSession = require("express-mysql-session");
+
+//Definicion de modulos creados
+const config = require("./config");
 const saUsers = require('saUsers');
+
+const pool = mysql.createPool(config.mysqlConfig);
+
+const MySqlStore = expressMySqlSession(expressSession);
+const sessionStore = new MySqlStore(config.mysqlConfig);
 
 var app = express();
 
 //Usar bodyParser para obtener los atributos pasados por post
-app.use(bodyParser.urlencoded());
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
 
 //Usar cookieParser para analizar y obtener las cookies
 app.use(cookieParser());
@@ -21,28 +31,27 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.set("view engine","ejs");
 app.set("views", path.join(__dirname, "../public", "views"))
 
-var pool = mysql.createPool({
-	host: "localhost",
-	user: "root",
-	password: "1234",
-	database: "facebluff"
-  });
+app.use(expressSession({resave:false, saveUninitialized:false, secret:"foobar34", store:sessionStore}));
 
 app.listen(3000, function () {
   console.log('Practica 1 en el puerto 3000');
 });
 
-app.get('/', function(request, response){
-	if (request.cookies.usuario != undefined){
-		response.redirect("/login");
-	} else {
-		response.redirect("/friends");
-	}
+function controlAcceso(request, response, next){
+    if (request.session.currentUser != null){
+        response.locals.currentUser = request.session.currentUser;
+        next();
+    } else {
+        response.redirect("/login");
+    }
+}
+
+app.get('/', controlAcceso, function(request, response){
+	response.redirect("/friends");
 })
 
 app.get('/login', function(request, response){
-	response.status(200);
-	response.render("login", null)
+	response.render("login", {error: null})
 })
 
 app.post('/doLogin', function (request, response) {
@@ -56,20 +65,12 @@ app.post('/doLogin', function (request, response) {
 	}, request.body.pass, pool, function(cod, err, content){
 		switch(cod){
 			case 0:
-				response.cookie("user", content);
-				response.redirect("/friends");
+				request.session.currentUser = content;
+				response.locals.currentUser = request.session.currentUser;
+				response.redirect("/friends");	
 				break;
-			case -1:
-				response.redirect("/login");
-				break;
-			case -2:
-				response.redirect("/login");
-				break;
-			case -3:
-				response.redirect("/login");
-				break;
-			case -5:
-				response.redirect("/login");
+			case -1, -2, -3, -5:
+				response.render("/login", {error: err.msg});
 				break;
 			default:
 				response.redirect("/login");
@@ -80,18 +81,17 @@ app.post('/doLogin', function (request, response) {
 });
 
 app.get('/new_user', function(request, response){
-	response.status(200);
-	response.render("new_user", {user: request.cookies.user})
+	response.render("new_user.ejs",)
 });
 
-app.get('/friends', function(request, response){
-	response.status(200);
-	response.render("friends", {user: request.cookies.user})
+app.get('/friends', controlAcceso, function(request, response){
+	saUsers.getFriends(request.session.currentUser.id, pool, function(friends){
+		response.render("friends.ejs", {friends: friends});
+	});
 });
 
-app.get('/my_profile', function(request, response){
-	response.status(200);
-	response.render("my_profile", {user: request.cookies.user})
+app.get('/my_profile', controlAcceso, function(request, response){
+	response.render("my_profile.ejs")
 });
 
 app.post('/addUser', function(request, response){
@@ -113,6 +113,6 @@ app.post('/addUser', function(request, response){
 })
 
 app.get('/desconectar', function(request, response){
-	response.clearCookie("user");
+	request.session.destroy();
 	response.redirect("/login");
 })

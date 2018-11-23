@@ -8,30 +8,13 @@
     <title>Mis amigos - FaceBluff</title>
   </head>
   <body>
-	<div class="header">
-	  <h1 class="tituloPagina">FaceBluFF</h1>
-	  <!-- Botones para Registrado-->
-		<div class="user">
-				<% if (user.image != ""){ %>
-					<img src=<%= "/images/users/" + user.image %> alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
-				<% } else { %>
-					<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
-				<% } %>
-			<span><h1><%= user.points %> Puntos</h1></span>
-		</div>
-		<div class="nav">
-			<a href="/my_profile" class="linkNav"><div class="botonNav">Perfil</div></a>
-			<a href="/friends" class="linkNav"><div class="botonNav">Amigos</div></a>
-			<a href="/questions.html" class="linkNav"><div class="botonNav">Preguntas</div></a>
-			<a href="/desconectar" class="linkNav"><div class="botonNav">Desconectar</div></a>
-		</div>
-    </div>
+	<%- include("headerLogged.ejs") %>
 	<div class="content">
 		<div class="titulo">
 			<h1>Solicitudes de amistad</h1>
 		</div>
 		<div class="seccion">
-			<div class="solucitudes">
+			<div class="solucitudes">	
 				<div class="contSolicitud">
 					<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfil"/>
 					<span class="nombreUsuarioSolicitudes">Bruja Piruja</span>
@@ -73,15 +56,16 @@
 		</div>
 		<div class="seccion">
 			<div class="amigos">
-				<div class="contAmigos">
-					<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfil"/>
-					<span>Mike Wazowski</span>
-				</div>
-			
-				<div class="contAmigos">
-					<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfil"/>
-					<span>Lucia Pinhead</span>
-				</div>
+				<% friends.forEach(function(friend){ %>
+					<div class="contAmigos">
+						<% if (friend.image != ""){ %>
+							<img src=<%= "/images/users/" + friend.image %> alt="Imagen de Usuario" class="miniaturaPerfil"/>
+						<% } else { %>
+							<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfil"/>
+						<% } %>
+						<span>friend.name</span>
+					</div>
+				<% }) %>
 			</div>
 		</div>
 	</div>

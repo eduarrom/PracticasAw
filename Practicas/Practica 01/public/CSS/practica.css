@@ -215,3 +215,7 @@ html{
 
 	border-radius: 100%;
 }
+
+.error{
+	color: red;
+}
