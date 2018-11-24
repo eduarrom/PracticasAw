@@ -86,7 +86,6 @@ app.get('/new_user', function(request, response){
 
 app.get('/friends', controlAcceso, function(request, response){
 	saUsers.getFriends(request.session.currentUser.id, pool, function(friends){
-
 		saUsers.getPendingFriendRequest(request.session.currentUser.id,pool,(err,friendRequest)=>{
 			response.render("friends.ejs", {friendRequest:friendRequest, friends: friends});
 		})

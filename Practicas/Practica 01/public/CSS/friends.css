@@ -48,6 +48,13 @@
 	
 }
 
+.contSinAmigos{
+	display: flex;
+	justify-content: center;
+	align-items: center
+	
+}
+
 .busqueda{
 	width: 60%;
 }

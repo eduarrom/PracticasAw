@@ -53,16 +53,23 @@
 		</div>
 		<div class="seccion">
 			<div class="amigos">
-				<% friends.forEach(function(friend){ %>
-					<div class="contAmigos">
-						<% if (friend.image != ""){ %>
-							<img src=<%= "/images/users/" + friend.image %> alt="Imagen de Usuario" class="miniaturaPerfil"/>
-						<% } else { %>
-							<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfil"/>
-						<% } %>
-						<span>friend.name</span>
+				<% if (friends.length != 0) { %>
+					<% friends.forEach(function(friend){ %>
+						<div class="contAmigos">
+							<% if (friend.image != ""){ %>
+								<img src=<%= "/images/users/" + friend.image %> alt="Imagen de Usuario" class="miniaturaPerfil"/>
+							<% } else { %>
+								<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfil"/>
+							<% } %>
+							<span><%= friend.name %></span>
+						</div>
+					<% }) %>
+				<% } else { %>
+					<div class="contSinAmigos">
+						<span></span>
+						<span>No tienes amigos</span>
 					</div>
-				<% }) %>
+				<% } %>
 			</div>
 		</div>
 	</div>
