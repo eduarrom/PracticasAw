@@ -6,6 +6,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const expressSession = require("express-session");
 const expressMySqlSession = require("express-mysql-session");
+const multer = require("multer");
 
 //Definicion de modulos creados
 const config = require("./config");
@@ -15,6 +16,8 @@ const pool = mysql.createPool(config.mysqlConfig);
 
 const MySqlStore = expressMySqlSession(expressSession);
 const sessionStore = new MySqlStore(config.mysqlConfig);
+
+const multerFactory = multer({dest: path.join(__dirname, "../public/images","users")} );
 
 var app = express();
 
@@ -102,20 +105,23 @@ app.get('/my_profile', controlAcceso, function(request, response){
 	response.render("my_profile.ejs")
 });
 
-app.post('/addUser', function(request, response){
+app.post('/addUser',multerFactory.single("image"), function(request, response){
 	let user = {
 		email: request.body.email,
 		name: request.body.name,
 		password: request.body.pass,
 		gender: request.body.gender,
-		birthdate: request.body.birth,
-		image: request.body.image == "" ? null : request.body.image
+		birthdate: request.body.birth
 	}
-	daoUser.addUser(user,function(err){
+	
+	if(request.file == null) user.image=null;
+	else user.image = request.file.filename;
+
+	saUsers.addUser(user,pool,function(err){
 		if (err){
-			response.redirect("/new_user.html");
+			response.redirect("/new_user");
 		} else {
-			response.redirect("/login.html");
+			response.redirect("/login");
 		}
 	})
 })
