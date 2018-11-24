@@ -15,20 +15,30 @@
 		</div>
 		<div class="seccion">
 			<div class="solucitudes">
-
-				<% friendRequest.forEach((request)=>{ %>
-				<div class="contSolicitud">
-					<img src= <%= "/images/users/" + request.image %> alt="Imagen de Usuario" class="miniaturaPerfil"/>
-					<span class="nombreUsuarioSolicitudes"> <%= request.name %> </span>
-					<form action="/answerRequest" method="post">
-					<input type="hidden" name="id" value= <%= request.id %> >
-					<div class="contBoton">
-						<input type="submit" name="botonSolicitud" class="botonPequeno aceptarSolicitud" value="Aceptar"></input>
-						<input type="submit" name="botonSolicitud" class="botonPequeno rechazarSolicitud" value="Rechazar"></input>
+				<% if (friendRequest.length != 0) { %>
+					<% friendRequest.forEach((request)=>{ %>
+					<div class="contSolicitud">
+						<% if (request.image != ""){ %>
+							<img src=<%= "/images/users/" + request.image.image %> alt="Imagen de Usuario" class="miniaturaPerfil"/>
+						<% } else { %>
+							<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfil"/>
+						<% } %>
+						<span class="nombreUsuarioSolicitudes"> <%= request.name %> </span>
+						<form action="/answerRequest" method="post">
+						<input type="hidden" name="id" value= <%= request.id %> >
+						<div class="contBoton">
+							<input type="submit" name="botonSolicitud" class="botonPequeno aceptarSolicitud" value="Aceptar"></input>
+							<input type="submit" name="botonSolicitud" class="botonPequeno rechazarSolicitud" value="Rechazar"></input>
+						</div>
+						</form>
 					</div>
-					</form>
-				</div>
-				<%})%>
+					<%})%>
+				<% } else { %>
+					<div class="contSinAmigos">
+						<span></span>
+						<span>No tienes solicitudes</span>
+					</div>
+				<% } %>
 			</div>
 		</div>
 		<div class="titulo">
