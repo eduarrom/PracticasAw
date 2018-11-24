@@ -14,24 +14,21 @@
 			<h1>Solicitudes de amistad</h1>
 		</div>
 		<div class="seccion">
-			<div class="solucitudes">	
+			<div class="solucitudes">
+
+				<% friendRequest.forEach((request)=>{ %>
 				<div class="contSolicitud">
-					<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfil"/>
-					<span class="nombreUsuarioSolicitudes">Bruja Piruja</span>
+					<img src= <%= "/images/users/" + request.image %> alt="Imagen de Usuario" class="miniaturaPerfil"/>
+					<span class="nombreUsuarioSolicitudes"> <%= request.name %> </span>
+					<form action="/answerRequest" method="post">
+					<input type="hidden" name="id" value= <%= request.id %> >
 					<div class="contBoton">
-						<button type="button" name="botonAceptarSolicitud" class="botonPequeno aceptarSolicitud" onClick="">Aceptar</button>
-						<button type="button" name="botonRechazarSolicitud" class="botonPequeno rechazarSolicitud" onClick="">Rechazar</button>
+						<input type="submit" name="botonSolicitud" class="botonPequeno aceptarSolicitud" value="Aceptar"></input>
+						<input type="submit" name="botonSolicitud" class="botonPequeno rechazarSolicitud" value="Rechazar"></input>
 					</div>
+					</form>
 				</div>
-				
-				<div class="contSolicitud">
-					<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfil"/>
-					<span class="nombreUsuarioSolicitudes">Stuart Minion</span>
-					<div class="contBoton">
-						<button type="button" name="botonAceptarSolicitud" class="botonPequeno aceptarSolicitud" onClick="">Aceptar</button>
-						<button type="button" name="botonRechazarSolicitud" class="botonPequeno rechazarSolicitud" onClick="">Rechazar</button>
-					</div>
-				</div>
+				<%})%>
 			</div>
 		</div>
 		<div class="titulo">

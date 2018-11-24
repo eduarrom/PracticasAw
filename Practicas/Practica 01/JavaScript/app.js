@@ -86,9 +86,18 @@ app.get('/new_user', function(request, response){
 
 app.get('/friends', controlAcceso, function(request, response){
 	saUsers.getFriends(request.session.currentUser.id, pool, function(friends){
-		response.render("friends.ejs", {friends: friends});
+
+		saUsers.getPendingFriendRequest(request.session.currentUser.id,pool,(err,friendRequest)=>{
+			response.render("friends.ejs", {friendRequest:friendRequest, friends: friends});
+		})
 	});
 });
+
+app.post("/answerRequest",controlAcceso,(request,response)=>{
+	saUsers.confirmRequest(request.body.id,request.session.currentUser.id,request.body.botonSolicitud=="Aceptar",pool,(err)=>{
+		response.redirect("/friends");
+	})
+})
 
 app.get('/my_profile', controlAcceso, function(request, response){
 	response.render("my_profile.ejs")
