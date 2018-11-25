@@ -126,6 +126,31 @@ app.post('/addUser',multerFactory.single("image"), function(request, response){
 	})
 })
 
+app.get('/modify_user',controlAcceso,(request,response)=>{
+	response.render("modify_user.ejs",{user:request.session.currentUser});
+})
+
+app.post("/doModify",controlAcceso,multerFactory.single("image"),(request,response)=>{
+	let user = {
+		email: request.body.email,
+		name: request.body.name,
+		password: request.body.pass,
+		gender: request.body.gender,
+		birthdate: request.body.birth
+	}
+	
+	if(request.file == null) user.image=null;
+	else user.image = request.file.filename;
+
+	saUsers.modifyUser(request.session.currentUser.id,user,pool,(err)=>{
+		if(!err){
+			request.session.currentUser = user;
+			response.locals.currentUser = request.session.currentUser;
+		}
+		response.redirect("my_profile");
+	})
+})
+
 app.get('/desconectar', function(request, response){
 	request.session.destroy();
 	response.redirect("/login");
