@@ -15,6 +15,11 @@
 		</div>
 		<div class="seccion">
 			<div class="newUser">
+					<% if (error != null) { %>
+						<div class="contError">
+							<span class="error"><pre><%= error %></pre></span>
+						</div>
+					<% } %>
 				<form class="formularioNewUser" action="/addUser" method="POST" enctype="multipart/form-data">
 					<div class="contDatosNewUser">
 						<span>Email</span><span><input type="text" name="email" class="inputText"/></span>

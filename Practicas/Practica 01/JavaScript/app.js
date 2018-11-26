@@ -87,7 +87,7 @@ app.post('/doLogin', function (request, response) {
 });
 
 app.get('/new_user', function(request, response){
-	response.render("new_user.ejs",)
+	response.render("new_user.ejs",{error:null})
 });
 
 app.get('/friends', controlAcceso, function(request, response){
@@ -120,17 +120,21 @@ app.post('/addUser',multerFactory.single("image"), function(request, response){
 	if(request.file == null) user.image=null;
 	else user.image = request.file.filename;
 
-	saUsers.addUser(user,pool,function(err){
-		if (err){
-			response.redirect("/new_user");
-		} else {
+	saUsers.addUser(user,pool,function(code,err){
+		switch(code){		
+		case -5:
+		case -1:
+			response.render("new_user.ejs",{error:err});
+			break;
+		default:
 			response.redirect("/login");
+			break
 		}
 	})
 })
 
 app.get('/modify_user',controlAcceso,(request,response)=>{
-	response.render("modify_user.ejs",{user:request.session.currentUser});
+	response.render("modify_user.ejs",{user:request.session.currentUser,error:null});
 })
 
 app.post("/doModify",controlAcceso,multerFactory.single("image"),(request,response)=>{
@@ -158,15 +162,22 @@ app.post("/doModify",controlAcceso,multerFactory.single("image"),(request,respon
 			case 0: 
 				request.session.currentUser = userMod;
 				response.locals.currentUser = request.session.currentUser;
+				response.redirect("my_profile");
 				break;
+			case -5:
 			case -1:
+				response.render("modify_user.ejs",{user:request.session.currentUser,error:err});
 				break;
 		}		
-		response.redirect("my_profile");
 	})
 })
 
 app.get('/desconectar', function(request, response){
 	request.session.destroy();
 	response.redirect("/login");
+})
+
+
+app.use(function(request, response, next){
+	response.render("404.ejs",{currentUser:request.session.currentUser});
 })
