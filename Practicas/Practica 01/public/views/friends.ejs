@@ -18,10 +18,10 @@
 				<% if (friendRequest.length != 0) { %>
 					<% friendRequest.forEach((request)=>{ %>
 					<div class="contSolicitud">
-						<% if (request.image != ""){ %>
-							<img src=<%= "/images/users/" + request.image.image %> alt="Imagen de Usuario" class="miniaturaPerfil"/>
+						<% if (request.image != null){ %>
+							<img src=<%= "/images/users/" + request.image %> alt="Imagen de Usuario" class="miniaturaPerfil"/>
 						<% } else { %>
-							<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfil"/>
+							<img src="/images/users/noImage.png"  alt="Imagen de Usuario" class="miniaturaPerfil"/>
 						<% } %>
 						<span class="nombreUsuarioSolicitudes"> <%= request.name %> </span>
 						<form action="/answerRequest" method="post">
@@ -66,10 +66,10 @@
 				<% if (friends.length != 0) { %>
 					<% friends.forEach(function(friend){ %>
 						<div class="contAmigos">
-							<% if (friend.image != ""){ %>
+							<% if (friend.image != null){ %>
 								<img src=<%= "/images/users/" + friend.image %> alt="Imagen de Usuario" class="miniaturaPerfil"/>
 							<% } else { %>
-								<img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfil"/>
+								<img src="/images/users/noImage.png" alt="Imagen de Usuario" class="miniaturaPerfil"/>
 							<% } %>
 							<span><%= friend.name %></span>
 						</div>

@@ -134,19 +134,31 @@ app.post("/doModify",controlAcceso,multerFactory.single("image"),(request,respon
 	let user = {
 		email: request.body.email,
 		name: request.body.name,
-		password: request.body.pass,
+		password: request.body.password,
 		gender: request.body.gender,
-		birthdate: request.body.birth
+		birthdate: request.body.birth,
+		points: request.session.currentUser.points
 	}
 	
-	if(request.file == null) user.image=null;
-	else user.image = request.file.filename;
-
-	saUsers.modifyUser(request.session.currentUser.id,user,pool,(err)=>{
-		if(!err){
-			request.session.currentUser = user;
-			response.locals.currentUser = request.session.currentUser;
+	if (request.body.deleteImage){
+		user.image = null;
+	} else {
+		if(request.file == null){
+			user.image=request.session.currentUser.image;
+		} else {
+			user.image = request.file.filename;
 		}
+	}
+
+	saUsers.modifyUser(request.session.currentUser.id,user,request.body.imageCheck,pool,(cod, err, userMod)=>{
+		switch(cod){
+			case 0: 
+				request.session.currentUser = userMod;
+				response.locals.currentUser = request.session.currentUser;
+				break;
+			case -1:
+				break;
+		}		
 		response.redirect("my_profile");
 	})
 })

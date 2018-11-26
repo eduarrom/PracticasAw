@@ -2,10 +2,10 @@
     <h1 class="tituloPagina">FaceBluFF</h1>
     <!-- Botones para Registrado-->
       <div class="user">
-              <% if (currentUser.image != ""){ %>
+              <% if (currentUser.image != null){ %>
                   <img src=<%= "/images/users/" + currentUser.image %> alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
               <% } else { %>
-                  <img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
+                  <img src="/images/users/noImage.png" alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
               <% } %>
           <span><h1><%= currentUser.points %> Puntos</h1></span>
       </div>

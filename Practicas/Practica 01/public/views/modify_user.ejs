@@ -15,19 +15,20 @@
 			</div>
 			<div class="seccion">
 				<div class="newUser">
-					<form action="/doModify" method="POST" class="formularioModifyUser">
+					<form action="/doModify" method="POST" class="formularioModifyUser" enctype="multipart/form-data">
 						<div class="contDatosModifyUser">
 							<span>Email</span><span><input name="email" type="text" class="inputText" value= <%= user.email %> /></span>
-							<span>Contraseña</span><span><input name="password" type="text" class="inputText" value= <%= user.password %>/></span>
-							<span>Nombre completo</span><span><input name="name" type="text" class="inputText" value= <%= user.name %>/></span>
+							<span>Contraseña</span><span><input name="password" type="password" class="inputText" /></span>
+							<span>Nombre completo</span><span><input name="name" type="text" class="inputText" value= '<%= user.name %>' /></span>
 							<span>Sexo</span>
 							<span>
-								<input type="radio" name="gender" class="inputRadio" value="Masculino" <%= user.gender=="Hombre" ? "checked":"" %> /> Masculino
-								<input type="radio" name="gender" class="inputRadio" value="Femenino" <%= user.gender=="Mujer" ? "checked":"" %> /> Femenino
+								<input type="radio" name="gender" class="inputRadio" value="Hombre" <%= user.gender=="Hombre" ? "checked":"" %> /> Masculino
+								<input type="radio" name="gender" class="inputRadio" value="Mujer" <%= user.gender=="Mujer" ? "checked":"" %> /> Femenino
 								<input type="radio" name="gender" class="inputRadio" value="Otro" <%= user.gender=="Otro" ? "checked":"" %> /> Otro
 							</span>
-							<span>Fecha de nacimiento</span><span><input name="birth" type="date" class="inputText" value= <%= user.birthdate %>/></span>
-							<span>Imagen de perfil</span><span><input name="image" type="file" class="inputArchivo" vale= <%= user.image %> /></span>
+							<span>Fecha de nacimiento</span><span><input name="birth" type="date" class="inputText" value='<%= user.birthdate %>' /></span>
+							<span>Imagen de perfil</span><span><input name="image" type="file" class="inputArchivo"/></span>
+							<span><input name="deleteImage" type="checkbox" value='false'/> Borrar Imagen</span>
 						</div>
 						<div class="contBoton">
 							<span><input type="submit" value="Guardar Cambios" class="boton"/></span>
