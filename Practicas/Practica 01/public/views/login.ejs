@@ -22,10 +22,12 @@
 				</div>
 				<div class="contBoton">
 					<span><input type="submit" value="Conectar" class="boton"/></span>
-					<% if (error != null) { %>
-							<span class="error"><%= error %></span>
-					<% } %>
 				</div>
+				<% if (error != null) { %>
+					<div class="contError">
+						<span class="error"><%= error %></span>
+					</div>
+				<% } %>
 			</form>
 		</div>
 	</div>

@@ -216,6 +216,21 @@ html{
 	border-radius: 100%;
 }
 
+.contError{
+	display:flex;
+
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	background-color: red;
+	padding: 10px;
+	margin-left:auto;
+	margin-right:auto;
+	border-radius: 8px;
+}
+
 .error{
-	color: red;
+	color: white;
+	
 }

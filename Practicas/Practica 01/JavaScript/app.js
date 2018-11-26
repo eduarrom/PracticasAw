@@ -72,8 +72,11 @@ app.post('/doLogin', function (request, response) {
 				response.locals.currentUser = request.session.currentUser;
 				response.redirect("/friends");	
 				break;
-			case -1, -2, -3, -5:
-				response.render("/login", {error: err.msg});
+			case -1:
+			case -2:
+			case -3:
+			case -5:
+				response.render("login.ejs", {error: err});
 				break;
 			default:
 				response.redirect("/login");
