@@ -23,7 +23,7 @@
 					<form action="/doModify" method="POST" class="formularioModifyUser" enctype="multipart/form-data">
 						<div class="contDatosModifyUser">
 							<span>Email</span><span><input name="email" type="text" class="inputText" value= <%= user.email %> /></span>
-							<span>Contraseña</span><span><input name="password" type="password" class="inputText" /></span>
+							<span>Contraseña</span><span><input name="password" type="password" class="inputText" placeholder="Dejar en blanco si no se quiere cambiar"/></span>
 							<span>Nombre completo</span><span><input name="name" type="text" class="inputText" value= '<%= user.name %>' /></span>
 							<span>Sexo</span>
 							<span>
