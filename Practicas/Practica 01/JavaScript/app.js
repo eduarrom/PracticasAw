@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const expressSession = require("express-session");
 const expressMySqlSession = require("express-mysql-session");
 const multer = require("multer");
+const inputParser = require('input-parser');
 
 //Definicion de modulos creados
 const config = require("./config");
@@ -17,7 +18,9 @@ const pool = mysql.createPool(config.mysqlConfig);
 const MySqlStore = expressMySqlSession(expressSession);
 const sessionStore = new MySqlStore(config.mysqlConfig);
 
-const multerFactory = multer({dest: path.join(__dirname, "../public/images","users")} );
+//const multerFactory = multer({dest: path.join(__dirname, "../public/images","users")} );
+
+const multerFactory = multer({ storage: multer.memoryStorage() });
 
 var app = express();
 
@@ -57,8 +60,8 @@ app.get('/login', function(request, response){
 	response.render("login", {error: null})
 })
 
-app.post('/doLogin', function (request, response) {
-	let res = saUsers.doLogin({
+app.post('/doLogin', inputParser.loginParser, function (request, response) {
+	saUsers.doLogin({
 		email: request.body.email,
 		name: null,
 		gender: null,
@@ -98,7 +101,7 @@ app.get('/friends', controlAcceso, function(request, response){
 	});
 });
 
-app.post("/answerRequest",controlAcceso,(request,response)=>{
+app.post("/answerRequest", controlAcceso, (request,response)=>{
 	saUsers.confirmRequest(request.body.id,request.session.currentUser.id,request.body.botonSolicitud=="Aceptar",pool,(err)=>{
 		response.redirect("/friends");
 	})
@@ -108,7 +111,7 @@ app.get('/my_profile', controlAcceso, function(request, response){
 	response.render("my_profile.ejs")
 });
 
-app.post('/addUser',multerFactory.single("image"), function(request, response){
+app.post('/addUser', multerFactory.single("image"), inputParser.newUserParser, function(request, response){
 	let user = {
 		email: request.body.email,
 		name: request.body.name,
@@ -118,7 +121,7 @@ app.post('/addUser',multerFactory.single("image"), function(request, response){
 	}
 	
 	if(request.file == null) user.image=null;
-	else user.image = request.file.filename;
+	else user.image = request.file.buffer;
 
 	saUsers.addUser(user,pool,function(code,err){
 		switch(code){		
@@ -133,11 +136,11 @@ app.post('/addUser',multerFactory.single("image"), function(request, response){
 	})
 })
 
-app.get('/modify_user',controlAcceso,(request,response)=>{
+app.get('/modify_user', controlAcceso, (request,response)=>{
 	response.render("modify_user.ejs",{user:request.session.currentUser,error:null});
 })
 
-app.post("/doModify",controlAcceso,multerFactory.single("image"),(request,response)=>{
+app.post("/doModify", controlAcceso, multerFactory.single("image"), inputParser.modifyUserParser, (request,response)=>{
 	let user = {
 		email: request.body.email,
 		name: request.body.name,
@@ -172,9 +175,13 @@ app.post("/doModify",controlAcceso,multerFactory.single("image"),(request,respon
 	})
 })
 
-app.get('/desconectar', function(request, response){
+app.get('/disconnect', function(request, response){
 	request.session.destroy();
 	response.redirect("/login");
+})
+
+app.get("/getImageCurrentUser", function(request, response){
+	response.end(new Buffer(request.session.currentUser.image));
 })
 
 
