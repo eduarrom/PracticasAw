@@ -8,6 +8,7 @@ const expressSession = require("express-session");
 const expressMySqlSession = require("express-mysql-session");
 const multer = require("multer");
 const inputParser = require('input-parser');
+const fs = require('fs');
 
 //Definicion de modulos creados
 const config = require("./config");
@@ -66,7 +67,6 @@ app.post('/doLogin', inputParser.loginParser, function (request, response) {
 		name: null,
 		gender: null,
 		years: null,
-		image: null,
 		points: null
 	}, request.body.pass, pool, function(cod, err, content){
 		switch(cod){
@@ -180,8 +180,24 @@ app.get('/disconnect', function(request, response){
 	response.redirect("/login");
 })
 
-app.get("/getImageCurrentUser", function(request, response){
-	response.end(new Buffer(request.session.currentUser.image));
+app.get("/getUserImage/:email", function(request, response){
+	let email = request.params.email;
+	saUsers.getImage(email, pool, function(cod, image){
+		switch (cod){
+			case 0:
+				response.end(image);
+				break;
+			case -1:
+				fs.readFile(path.join(__dirname, "../public/images/users","noImage.png"), function(err, data){
+					response.end(data);
+				});
+				break;
+			case -2:
+				response.status(400);
+				response.end("Peticion Incorrecta");
+				break;
+		}
+	})
 })
 
 

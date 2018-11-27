@@ -17,12 +17,8 @@
 			<div class="perfil">
 			
 				<div class="informacionPerfil">
-					<% if (currentUser.image != null){ %>
-						<img src=<%= "/images/users/" + currentUser.image %> class="miniaturaPerfilGrande" alt="Prueba">
-					<% } else { %>
-						<img src="/images/users/noImage.png" class="miniaturaPerfilGrande" alt="Prueba">
-					<% } %>
-					
+						<img src='/getUserImage/<%= currentUser.email %>' class="miniaturaPerfilGrande" alt="Prueba">
+	
 					
 					<h2 id="nombreUsuario"><%= currentUser.name%></h2>
 					<h3 id="edadUsuario"><%= currentUser.years %> Años</h3>
