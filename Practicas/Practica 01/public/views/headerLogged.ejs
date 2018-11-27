@@ -2,17 +2,13 @@
     <h1 class="tituloPagina">FaceBluFF</h1>
     <!-- Botones para Registrado-->
       <div class="user">
-              <% if (currentUser.image != null){ %>
-                  <img src=<%= "/images/users/" + currentUser.image %> alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
-              <% } else { %>
-                  <img src="/images/users/noImage.png" alt="Imagen de Usuario" class="miniaturaPerfilPequena"/>
-              <% } %>
-          <span><h1><%= currentUser.points %> Puntos</h1></span>
+            <img src='/getUserImage/<%= currentUser.email %>' alt="Imagen de Usuario" class="miniaturaPerfilPequena">
+            <span><h1><%= currentUser.points %> Puntos</h1></span>
       </div>
       <div class="nav">
           <a href="/my_profile" class="linkNav"><div class="botonNav">Perfil</div></a>
           <a href="/friends" class="linkNav"><div class="botonNav">Amigos</div></a>
           <a href="/questions" class="linkNav"><div class="botonNav">Preguntas</div></a>
-          <a href="/desconectar" class="linkNav"><div class="botonNav">Desconectar</div></a>
+          <a href="/disconnect" class="linkNav"><div class="botonNav">Desconectar</div></a>
       </div>
   </div>
