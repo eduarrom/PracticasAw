@@ -61,10 +61,13 @@
 			<div class="amigos">
 				<% if (friends.length != 0) { %>
 					<% friends.forEach(function(friend){ %>
+						
+						<a href=<%="/profile/"+friend.id %>>
 						<div class="contAmigos">
 							<img src='/getUserImage/<%= friend.email %>' alt="Imagen de Perfil" class="miniaturaPerfil"/>
 							<span><%= friend.name %></span>
 						</div>
+						</a>
 					<% }) %>
 				<% } else { %>
 					<div class="contSinAmigos">

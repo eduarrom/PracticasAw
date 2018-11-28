@@ -6,7 +6,7 @@
             <span><h1><%= currentUser.points %> Puntos</h1></span>
       </div>
       <div class="nav">
-          <a href="/my_profile" class="linkNav"><div class="botonNav">Perfil</div></a>
+          <a href= <%= "/profile/"+currentUser.id %> class="linkNav"><div class="botonNav">Perfil</div></a>
           <a href="/friends" class="linkNav"><div class="botonNav">Amigos</div></a>
           <a href="/questions" class="linkNav"><div class="botonNav">Preguntas</div></a>
           <a href="/disconnect" class="linkNav"><div class="botonNav">Desconectar</div></a>

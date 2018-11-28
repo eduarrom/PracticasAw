@@ -18,16 +18,17 @@
         <div class="resultados">
 
           <% list.forEach((amigo)=>{ %>
+          <a href= <%="/profile/"+amigo.id %> >
           <div class="contResultado">
             <img src=<%= "/getUserImage/"+amigo.email %> alt="Imagen del perfil" class="miniaturaPerfil">
             <h2><%= amigo.name %> </h2>
-			<div class="contBoton">
-        <% if(amigo.type != null){ %>
-        <input type="submit" name="botonSolicitarAmistad" class="botonMediano" value="Solicitar amistad"></input>
-        <% } %>
-        <input type="hidden" name="id" value= <%= amigo.id %> </input>
-			</div>
+            <div class="contBoton">
+              <% if(amigo.status == null || amigo.status == 2){ %>
+              <input type="submit" name="botonSolicitarAmistad" class="botonMediano" value="Solicitar amistad"></input>
+              <% } %>
+            </div>
           </div>
+          </a>
           <% }) %>
           
         </div>

@@ -108,8 +108,10 @@ app.post("/answerRequest", controlAcceso, (request,response)=>{
 	})
 })
 
-app.get('/my_profile', controlAcceso, function(request, response){
-	response.render("my_profile.ejs")
+app.get('/profile/:id', controlAcceso, function(request, response){
+	saUsers.getUserData(request.params.id,pool,(err,user)=>{
+		response.render("profile.ejs",{user:user,canModify:request.params.id == request.session.currentUser.id});
+	})
 });
 
 app.post('/addUser', multerFactory.single("image"), inputParser.newUserParser, function(request, response){
@@ -191,7 +193,7 @@ app.post("/doModify", controlAcceso, multerFactory.single("image"), inputParser.
 				case 0: 
 					request.session.currentUser = userMod;
 					response.locals.currentUser = request.session.currentUser;
-					response.redirect("my_profile");
+					response.redirect("profile/"+request.session.id);
 					break;
 				case -5:
 				case -1:
