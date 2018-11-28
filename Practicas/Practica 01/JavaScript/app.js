@@ -3,17 +3,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const expressSession = require("express-session");
 const expressMySqlSession = require("express-mysql-session");
 const multer = require("multer");
-const inputParser = require('input-parser');
+const inputParser = require("./input-parser");
 const fs = require('fs');
 const sharp = require('sharp');
 
 //Definicion de modulos creados
 const config = require("./config");
-const saUsers = require('saUsers');
+const saUsers = require('./business/saUsers');
 
 const pool = mysql.createPool(config.mysqlConfig);
 
@@ -28,9 +27,6 @@ var app = express();
 
 //Usar bodyParser para obtener los atributos pasados por post
 app.use(bodyParser.urlencoded({extended:false}));
-
-//Usar cookieParser para analizar y obtener las cookies
-app.use(cookieParser());
 
 //Usar el directorio public para los directorios estaticos
 app.use(express.static(path.join(__dirname, "../public")));
@@ -240,12 +236,17 @@ app.get("/getCurrentUserImage", function(request, response){
 	
 })
 
-app.post("/buscarAmigo",controlAcceso,(request,response)=>{
-	saUsers.searchByName(request.body.name,request.session.currentUser.id,pool,(err,list)=>{
+app.get("/searchFriend",controlAcceso,(request,response)=>{
+	saUsers.searchByName(request.query.name,request.session.currentUser.id,pool,(err,list)=>{
 		response.render("search.ejs",{list:list});
 	});
 })
 
+app.post("/sendFriendRequest",controlAcceso,(request,response)=>{
+	saUsers.sendFriendRequest(request.session.currentUser.id,request.body.id,pool,(err)=>{
+		response.redirect("/friends");
+	})
+})
 app.use(function(request, response, next){
 	response.render("404.ejs",{currentUser:request.session.currentUser});
 })

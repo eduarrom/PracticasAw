@@ -20,3 +20,12 @@
 	color:white;
 	text-decoration: none;
 }
+
+a, h2{
+	color:white;
+	text-decoration: none;
+}
+
+.botonMediano:hover{
+	cursor: pointer;
+}

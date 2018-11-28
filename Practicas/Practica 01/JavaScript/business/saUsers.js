@@ -1,5 +1,5 @@
-const daoUsers = require('daoUsers');
-const dateFormat = require('dateFormat');
+const daoUsers = require('../integration/daoUsers');
+const dateFormat = require('../dateFormat');
 
 function doLogin(user, pass, pool, callback){
     let daoUser = new daoUsers(pool);	
@@ -120,6 +120,12 @@ function getUserData(id,pool,callback){
 	});
 }
 
+function sendFriendRequest(originUserId,destinationUserId,pool,callback){
+	let daoUser = new daoUsers(pool);
+	daoUser.sendFriendRequest(originUserId,destinationUserId,callback);
+}
+
+
 module.exports = {
 	doLogin: doLogin,
 	getFriends: getFriends,
@@ -129,5 +135,6 @@ module.exports = {
 	modifyUser:modifyUser,
 	getImage: getImage,
 	searchByName:searchByName,
-	getUserData:getUserData
+	getUserData:getUserData,
+	sendFriendRequest:sendFriendRequest
 }
