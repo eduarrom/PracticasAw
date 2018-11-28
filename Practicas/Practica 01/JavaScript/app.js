@@ -175,7 +175,11 @@ app.post("/doModify", controlAcceso, multerFactory.single("image"), inputParser.
 				user.image = null;
 			} else {
 				if(request.file == null){
-					user.image= new Buffer(request.session.currentUser.image);
+					if (request.session.currentUser.image != null){
+						user.image = new Buffer(request.session.currentUser.image);
+					} else {
+						user.image = null;
+					}
 				}
 			}
 		} else {
