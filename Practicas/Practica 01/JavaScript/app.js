@@ -9,6 +9,7 @@ const expressMySqlSession = require("express-mysql-session");
 const multer = require("multer");
 const inputParser = require('input-parser');
 const fs = require('fs');
+const sharp = require('sharp');
 
 //Definicion de modulos creados
 const config = require("./config");
@@ -117,23 +118,35 @@ app.post('/addUser', multerFactory.single("image"), inputParser.newUserParser, f
 		name: request.body.name,
 		password: request.body.pass,
 		gender: request.body.gender,
-		birthdate: request.body.birth
+		birthdate: request.body.birth,
+		image: null
+	}
+
+	if (request.file === undefined){
+		image= new Buffer("");
+	} else {
+		image = request.file.buffer;
 	}
 	
-	if(request.file == null) user.image=null;
-	else user.image = request.file.buffer;
+	sharp(image).resize(200).png({compressionLevel: 8}).toBuffer(function(err, data){
 
-	saUsers.addUser(user,pool,function(code,err){
-		switch(code){		
-		case -5:
-		case -1:
-			response.render("new_user.ejs",{error:err});
-			break;
-		default:
-			response.redirect("/login");
-			break
+		if(!err){
+			user.image = data;
 		}
-	})
+
+		saUsers.addUser(user,pool,function(code,err){
+			switch(code){		
+			case -5:
+			case -1:
+				response.render("new_user.ejs",{error:err});
+				break;
+			default:
+				response.redirect("/login");
+				break
+			}
+		})
+	});
+	
 })
 
 app.get('/modify_user', controlAcceso, (request,response)=>{
@@ -149,29 +162,39 @@ app.post("/doModify", controlAcceso, multerFactory.single("image"), inputParser.
 		birthdate: request.body.birth,
 		points: request.session.currentUser.points
 	}
-	
-	if (request.body.deleteImage){
-		user.image = null;
+
+	if (request.file === undefined){
+		image= new Buffer("");
 	} else {
-		if(request.file == null){
-			user.image=request.session.currentUser.image;
-		} else {
-			user.image = request.file.filename;
-		}
+		image = request.file.buffer;
 	}
 
-	saUsers.modifyUser(request.session.currentUser.id,user,request.body.imageCheck,pool,(cod, err, userMod)=>{
-		switch(cod){
-			case 0: 
-				request.session.currentUser = userMod;
-				response.locals.currentUser = request.session.currentUser;
-				response.redirect("my_profile");
-				break;
-			case -5:
-			case -1:
-				response.render("modify_user.ejs",{user:request.session.currentUser,error:err});
-				break;
-		}		
+	sharp(image).resize(200, 200).jpeg({ quality: 20 }).toBuffer(function(err, data){
+		if(err){
+			if (request.body.deleteImage){
+				user.image = null;
+			} else {
+				if(request.file == null){
+					user.image= new Buffer(request.session.currentUser.image);
+				}
+			}
+		} else {
+			user.image = data;
+		}
+
+		saUsers.modifyUser(request.session.currentUser.id,user,pool,(cod, err, userMod)=>{
+			switch(cod){
+				case 0: 
+					request.session.currentUser = userMod;
+					response.locals.currentUser = request.session.currentUser;
+					response.redirect("my_profile");
+					break;
+				case -5:
+				case -1:
+					response.render("modify_user.ejs",{user:request.session.currentUser,error:err});
+					break;
+			}		
+		})
 	})
 })
 
@@ -200,6 +223,16 @@ app.get("/getUserImage/:email", function(request, response){
 	})
 })
 
+app.get("/getCurrentUserImage", function(request, response){
+	if (request.session.currentUser.image != null){
+		response.end(new Buffer(request.session.currentUser.image));
+	} else {
+		fs.readFile(path.join(__dirname, "../public/images/users","noImage.png"), function(err, data){
+			response.end(data);
+		});
+	}
+	
+})
 
 app.use(function(request, response, next){
 	response.render("404.ejs",{currentUser:request.session.currentUser});
