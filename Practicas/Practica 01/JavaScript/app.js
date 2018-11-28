@@ -238,6 +238,12 @@ app.get("/getCurrentUserImage", function(request, response){
 	
 })
 
+app.post("/buscarAmigo",controlAcceso,(request,response)=>{
+	saUsers.searchByName(request.body.name,request.session.currentUser.id,pool,(err,list)=>{
+		response.render("search.ejs",{list:list});
+	});
+})
+
 app.use(function(request, response, next){
 	response.render("404.ejs",{currentUser:request.session.currentUser});
 })

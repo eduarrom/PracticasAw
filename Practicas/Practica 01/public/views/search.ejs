@@ -16,14 +16,19 @@
       </div>
       <div class="seccion">
         <div class="resultados">
+
+          <% list.forEach((amigo)=>{ %>
           <div class="contResultado">
-            <img src="https://ih0.redbubble.net/image.397239149.0705/flat,550x550,075,f.jpg" alt="Prueba" class="miniaturaPerfil">
-            <h2>Nombre del amigo</h2>
+            <img src=<%= "/getUserImage/"+amigo.email %> alt="Imagen del perfil" class="miniaturaPerfil">
+            <h2><%= amigo.name %> </h2>
 			<div class="contBoton">
-				<button type="button" name="botonSolicitarAmistad" class="botonMediano" onClick="">Solicitar amistad</button></button>
+        <% if(amigo.type != null){ %>
+        <input type="submit" name="botonSolicitarAmistad" class="botonMediano" value="Solicitar amistad"></input>
+        <% } %>
+        <input type="hidden" name="id" value= <%= amigo.id %> </input>
 			</div>
           </div>
-
+          <% }) %>
           
         </div>
       </div>

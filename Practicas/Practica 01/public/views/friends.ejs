@@ -43,11 +43,11 @@
 		<div class="seccion">
 			<div class="busqueda">
 				<div class="contBusqueda">
-					<form class="formularioBusqueda">
+					<form class="formularioBusqueda" action="/buscarAmigo" method="POST">
 						<span>Nombre</span>
-						<span><input type="text" class="inputText"/></span>
+						<span><input type="text" class="inputText" name="name"/></span>
 						<div class="contBoton">
-							<button type="button" name="botonBuscar" class="botonPequeno" onClick="">Buscar</button>
+							<input type="submit" name="botonBuscar" class="botonPequeno" value="Buscar"></input>
 						</div>
 					</form>
 				</div>
