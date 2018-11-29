@@ -19,7 +19,6 @@ function doLogin(user, pass, pool, callback){
 					gender: rows[0].gender,
 					birthdate: dateFormat.calculateDate(rows[0].birthdate),
 					years: dateFormat.calculateAge(rows[0].birthdate),
-					image: rows[0].image,
 					points: rows[0].points,
 				})				
 			}
@@ -43,10 +42,6 @@ function getPendingFriendRequest(id,pool,callback){
 	daoUser.getPendingFriendRequest(id,(err,result)=>{
 		if (result==null) callback(err,[]);
 		else{
-			result.forEach((request)=>{
-				if(request.image==null)
-					request.image = "noImage.png";
-			})
 			callback(err,result);
 		}
 	});
@@ -70,7 +65,6 @@ function addUser(newUserData,pool,callback){
 				gender: newUserData.gender,
 				birthdate: dateFormat.calculateDate(new Date(newUserData.birthdate)),
 				years: dateFormat.calculateAge(new Date(newUserData.birthdate)),
-				image: newUserData.image,
 				points: newUserData.points,
 			})			
 		}
@@ -90,7 +84,6 @@ function modifyUser(userId,newUserData,pool,callback){
 				gender: newUserData.gender,
 				birthdate: dateFormat.calculateDate(new Date(newUserData.birthdate)),
 				years: dateFormat.calculateAge(new Date(newUserData.birthdate)),
-				image: newUserData.image,
 				points: newUserData.points,
 			})			
 		}
@@ -135,7 +128,6 @@ function getUserData(id,pool,callback){
 			gender: rows[0].gender,
 			birthdate: dateFormat.calculateDate(rows[0].birthdate),
 			years: dateFormat.calculateAge(rows[0].birthdate),
-			image: rows[0].image,
 			points: rows[0].points,
 		})		
 	});

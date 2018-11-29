@@ -94,17 +94,26 @@ app.get('/login', function(request, response){
 
 app.post('/doLogin', [
 	body('email')
-	.custom(value => expresionEmail.test(value)).withMessage('El formato del email no es correcto')
-	.not().isEmpty().withMessage('El email no puede dejarse en blanco'),
+	.not().isEmpty().withMessage('El email no puede dejarse en blanco')
+	.custom(value => expresionEmail.test(value)).withMessage('El formato del email no es correcto'),
 	body('pass')
-	.custom(value => expresionPass.test(value)).withMessage('El formato de la contraseña no es correcto')
 	.not().isEmpty().withMessage('La contraseña no puede dejarse en blanco')
-	.isLength({ min: 8 }).withMessage('La contraseña tiene que tener como minimo 8 caracteres'),
+	.isLength({ min: 8 }).withMessage('La contraseña tiene que tener como minimo 8 caracteres')
+	.custom(value => expresionPass.test(value)).withMessage('El formato de la contraseña no es correcto'),
 ], function (request, response) {
 
-	var errors = validationResult(request);
-	if (!errors.isEmpty()) {
-		return response.status(422).render("login.ejs", { errors: errors.array() });
+	var errors = validationResult(request).array();
+	if (errors.length > 0) {
+		let params = [];
+		errores = errors.filter(function(elem){
+			if (params.indexOf(elem.param) == -1){
+				params.push(elem.param);
+				return true;
+			} else {
+				return false;
+			}
+		})
+		return response.status(422).render("login.ejs", { errors: errores });
 	}
 
 	saUsers.doLogin({
@@ -140,22 +149,31 @@ app.get('/new_user', function(request, response){
 
 app.post('/addUser', multerFactory.single("image"), [
 	body('email')
-	.custom(value => expresionEmail.test(value)).withMessage('El formato del email no es correcto')
-	.not().isEmpty().withMessage('El email no puede dejarse en blanco'),
+	.not().isEmpty().withMessage('El email no puede dejarse en blanco')
+	.custom(value => expresionEmail.test(value)).withMessage('El formato del email no es correcto'),
 	body('pass')
-	.custom(value => expresionPass.test(value)).withMessage('El formato de la contraseña no es correcto')
 	.not().isEmpty().withMessage('La contraseña no puede dejarse en blanco')
-	.isLength({ min: 8 }).withMessage('La contraseña tiene que tener como minimo 8 caracteres'),
+	.isLength({ min: 8 }).withMessage('La contraseña tiene que tener como minimo 8 caracteres')
+	.custom(value => expresionPass.test(value)).withMessage('El formato de la contraseña no es correcto'),
 	body('name')
-	.custom(value => expresionName.test(value)).withMessage('El formato del nombre no es correcto')
-	.not().isEmpty().withMessage('El nombre no puede dejarse en blanco'),
+	.not().isEmpty().withMessage('El nombre no puede dejarse en blanco')
+	.custom(value => expresionName.test(value)).withMessage('El formato del nombre no es correcto'),
 	body('birth')
 	.not().isEmpty().withMessage('La fecha no puede dejarse en blanco')
 ], function(request, response){
 
-	var errors = validationResult(request);
-	if (!errors.isEmpty()) {
-		return response.status(422).render("new_user.ejs", { errors: errors.array() });
+	var errors = validationResult(request).array();
+	if (errors.length > 0) {
+		let params = [];
+		errores = errors.filter(function(elem){
+			if (params.indexOf(elem.param) == -1){
+				params.push(elem.param);
+				return true;
+			} else {
+				return false;
+			}
+		})
+		return response.status(422).render("new_user.ejs", { errors: errores });
 	}
 
 	let user = {
@@ -219,21 +237,30 @@ app.get('/modify_user', controlAcceso, (request,response)=>{
 
 app.post("/doModify", controlAcceso, multerFactory.single("image"), [
 	body('email')
-	.custom(value => expresionEmail.test(value)).withMessage('El formato del email no es correcto')
-	.not().isEmpty().withMessage('El email no puede dejarse en blanco'),
+	.not().isEmpty().withMessage('El email no puede dejarse en blanco')
+	.custom(value => expresionEmail.test(value)).withMessage('El formato del email no es correcto'),
 	body('password')
-	.custom(value =>  value.length == 0 || expresionPass.test(value)).withMessage('El formato de la contraseña no es correcto')
-	.custom(value => value.length == 0 || value.length >= 8).withMessage('La contraseña tiene que tener como minimo 8 caracteres'),
+	.custom(value => value.length == 0 || value.length >= 8).withMessage('La contraseña tiene que tener como minimo 8 caracteres')
+	.custom(value =>  value.length == 0 || expresionPass.test(value)).withMessage('El formato de la contraseña no es correcto'),
 	body('name')
-	.custom(value => expresionName.test(value)).withMessage('El formato del nombre no es correcto')
-	.not().isEmpty().withMessage('El nombre no puede dejarse en blanco'),
+	.not().isEmpty().withMessage('El nombre no puede dejarse en blanco')
+	.custom(value => expresionName.test(value)).withMessage('El formato del nombre no es correcto'),
 	body('birth')
 	.not().isEmpty().withMessage('La fecha no puede dejarse en blanco')
 ], (request,response)=>{
 
-	var errors = validationResult(request);
-	if (!errors.isEmpty()) {
-		return response.status(422).render("modify_user.ejs", { errors: errors.array() });
+	var errors = validationResult(request).array();
+	if (errors.length > 0) {
+		let params = [];
+		errores = errors.filter(function(elem){
+			if (params.indexOf(elem.param) == -1){
+				params.push(elem.param);
+				return true;
+			} else {
+				return false;
+			}
+		})
+		return response.status(422).render("modify_user.ejs", { errors: errores });
 	}
 
 	let user = {
@@ -306,17 +333,6 @@ app.get("/getUserImage/:email", function(request, response){
 				break;
 		}
 	})
-})
-
-app.get("/getCurrentUserImage", function(request, response){
-	if (request.session.currentUser.image != null){
-		response.end(new Buffer(request.session.currentUser.image));
-	} else {
-		fs.readFile(path.join(__dirname, "../public/images/users","noImage.png"), function(err, data){
-			response.end(data);
-		});
-	}
-	
 })
 
 app.get("/searchFriend",controlAcceso,(request,response)=>{
