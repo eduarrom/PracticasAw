@@ -14,4 +14,13 @@ questionsRouter.get("/questions",controlAcceso,(request,response)=>{
     })
 })
 
+questionsRouter.get("/question/:id",controlAcceso,(request,response)=>{
+    saQuestions.getQuestion(request.params.id,(err,question)=>{
+        saQuestions.getWhoAnswered(request.params.id,(err,users)=>{
+            
+            response.render("question.ejs",{question,users});
+        })
+    });
+})
+
 module.exports = questionsRouter;

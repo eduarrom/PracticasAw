@@ -21,3 +21,8 @@
   text-align: center;
   border: 2px solid white;
 }
+
+.pregunta a{
+  color:white;
+  text-decoration: none;
+}

@@ -10,7 +10,7 @@ class DaoQuestion{
             
             if(err) callback(new Error("Error al obtener la conexion"));
             else
-                connection.query("insert into questions (question,questioner) VALUES (?,?);",[question,userId],(err,info)=>{
+                connection.query("insert into questions (text,questioner) VALUES (?,?);",[question,userId],(err,info)=>{
                     
                     if(err) callback(new Error("Error al introducir una nueva pregunta"));
                     else {
@@ -74,6 +74,43 @@ class DaoQuestion{
                     else    callback(null);
                 });
         });
+    }
+
+    getQuestions(questionId,callback){
+
+        this.pool.getConnection((err,connection)=>{
+
+            if(err) callback(new Error("Error al obtener la conexion"));
+            else
+                connection.query("select * from questions where id = ?;",[questionId],(err,question)=>{
+                    if(err || question == null || question.length == 0){
+                        connection.release();
+                        callback(new Error("Error al obtener la pregunta"),null);
+                    }
+                    else{
+                        connection.query("select * from possibleanswers where id = ?",[questionId],(err,answers)=>{
+                            connection.release();
+                            if(err){
+                                callback(new Error("Error al obtener las posibles respuestas"),null);
+                            }else
+                                callback(null,{question:question,possibleAnswers:answers});
+                        })
+
+                    }
+                })
+        })
+    }
+
+    getAnswers(questionId,callback){
+        this.pool.getConnection((err,connection)=>{
+            if(err) callback(new Error("Error al obtener la conexion"));
+            else
+            connection.query("select name,users.id,choosen,supplanted from users,answers where respondent = users.id and question = ?;",[questionId],((err,result)=>{
+                connection.release();
+                if(err) callback(new Error("Error al obtener quien ha respondido"),null);
+                else callback(null,result);
+            }));
+        })
     }
 }
 

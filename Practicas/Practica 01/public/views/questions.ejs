@@ -26,7 +26,7 @@
 					<% if(preguntas == null || preguntas==0){ %>
 						<h2>No hay preguntas disponibles</h2>
 						<% }else{ preguntas.forEach((pregunta)=>{%>
-			  	<div class="pregunta"><a><%= pregunta.question %></a></div>
+			  	<div class="pregunta"><a href="/questions/question/<%=pregunta.id%>"><%= pregunta.text %></a></div>
 				<% })}; %>
 				
 			<div class="contCrearPregunta">
