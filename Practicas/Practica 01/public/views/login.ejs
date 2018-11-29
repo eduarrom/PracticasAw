@@ -15,9 +15,13 @@
 	</div>
 	<div class="seccion">
 		<div class="login">
-				<% if (error != null) { %>
+				<% if (errors != null) { %>
 					<div class="contError">
-						<span class="error"><pre><%= error %></pre></span>
+						<ul>
+						<% errors.forEach(error=>{ %>
+							<li><span class="error"><%= error.msg %></span></li>
+						<% }) %>
+						</ul>
 					</div>
 				<% } %>
 			<form class="formularioLogin" action="/doLogin" method="post">

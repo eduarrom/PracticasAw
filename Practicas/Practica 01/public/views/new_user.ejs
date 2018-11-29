@@ -15,9 +15,13 @@
 		</div>
 		<div class="seccion">
 			<div class="newUser">
-					<% if (error != null) { %>
+					<% if (errors != null) { %>
 						<div class="contError">
-							<span class="error"><pre><%= error %></pre></span>
+							<ul>
+							<% errors.forEach(error=>{ %>
+								<li><span class="error"><%= error.msg %></span></li>
+							<% }) %>
+							</ul>
 						</div>
 					<% } %>
 				<form class="formularioNewUser" action="/addUser" method="POST" enctype="multipart/form-data">

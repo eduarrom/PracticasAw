@@ -8,9 +8,9 @@ function doLogin(user, pass, pool, callback){
 			callback(-5, err.message, null);
 		} else {			
 			if (rows.length == 0){
-				callback(-1, "- Usuario no encontrado", null);
+				callback(-1, "Usuario no encontrado", null);
 			} else if (rows[0].password != pass) {
-				callback(-2, "- Contraseña incorrecta", null);
+				callback(-2, "Contraseña incorrecta", null);
 			} else {
 				callback(0, "Login correcto", {
 					id: rows[0].id,
@@ -59,7 +59,22 @@ function confirmRequest(originUserId,destinationUserId,accept,pool,callback){
 
 function addUser(newUserData,pool,callback){
 	let daoUser = new daoUsers(pool);
-	daoUser.addUser(newUserData,callback);
+	daoUser.addUser(newUserData,function(err, id){
+		if (err){
+			callback(-1, err.message, null)
+		} else {
+			callback(0, "Insercion correcta", {
+				id: id,
+				email: newUserData.email,
+				name: newUserData.name,
+				gender: newUserData.gender,
+				birthdate: dateFormat.calculateDate(new Date(newUserData.birthdate)),
+				years: dateFormat.calculateAge(new Date(newUserData.birthdate)),
+				image: newUserData.image,
+				points: newUserData.points,
+			})			
+		}
+	})
 }
 
 function modifyUser(userId,newUserData,pool,callback){

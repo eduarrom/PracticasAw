@@ -23,7 +23,7 @@ class DAOUser{
 	})
 	}
 
-	getUser(email, pass, callback){
+	getUser(email, callback){
 		this.pool.getConnection(function(err, connection) {
 			if (err) {
 				callback(new Error("Error al obtener la conexion"), null);
@@ -54,10 +54,10 @@ class DAOUser{
 				
 				connection.release();
 
-				if(err) callback(new Error("Error al introducir nuevo usuario"));
+				if(err) callback(new Error("El email ya esta registrado"), null);
 				else{
 					user.id = info.insertId;
-					callback(null);
+					callback(null, user.id);
 				}
 			});
 	})
@@ -113,7 +113,7 @@ class DAOUser{
 		
 							connection.release();
 							
-							if (err) callback(new Error("Error al modificar usuario"));
+							if (err) callback(new Error("El email ya esta registrado"));
 							else callback(null);
 						}
 					)
@@ -125,7 +125,7 @@ class DAOUser{
 		
 							connection.release();
 							
-							if (err) callback(new Error("Error al modificar usuario"));
+							if (err) callback(new Error("El email ya esta registrado"));
 							else callback(null);
 						}
 					)

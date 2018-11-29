@@ -9,10 +9,9 @@ function calculateAge(birthDate)
     birthDay = birthDate.getDate();
     age = todayYear - birthYear;
 
-    if (todayMonth < (birthMonth - 1)){
+    if (todayMonth < birthMonth){
         age--;
-    }
-    if (((birthMonth - 1) == todayMonth) && (todayDay < birthDay)){
+    } else if ((birthMonth == todayMonth) && (todayDay < birthDay)){
         age--;
     }
     

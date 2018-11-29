@@ -15,23 +15,27 @@
 			</div>
 			<div class="seccion">
 				<div class="newUser">
-						<% if (error != null) { %>
+						<% if (errors != null) { %>
 							<div class="contError">
-								<span class="error"><pre><%= error %></pre></span>
+								<ul>
+								<% errors.forEach(error=>{ %>
+									<li><span class="error"><%= error.msg %></span></li>
+								<% }) %>
+								</ul>
 							</div>
 						<% } %>
 					<form action="/doModify" method="POST" class="formularioModifyUser" enctype="multipart/form-data">
 						<div class="contDatosModifyUser">
-							<span>Email</span><span><input name="email" type="text" class="inputText" value= <%= user.email %> /></span>
+							<span>Email</span><span><input name="email" type="text" class="inputText" value= <%= currentUser.email %> /></span>
 							<span>Contraseña</span><span><input name="password" type="password" class="inputText" placeholder="Dejar en blanco si no se quiere cambiar"/></span>
-							<span>Nombre completo</span><span><input name="name" type="text" class="inputText" value= '<%= user.name %>' /></span>
+							<span>Nombre completo</span><span><input name="name" type="text" class="inputText" value= '<%= currentUser.name %>' /></span>
 							<span>Sexo</span>
 							<span>
-								<input type="radio" name="gender" class="inputRadio" value="Hombre" <%= user.gender=="Hombre" ? "checked":"" %> /> Masculino
-								<input type="radio" name="gender" class="inputRadio" value="Mujer" <%= user.gender=="Mujer" ? "checked":"" %> /> Femenino
-								<input type="radio" name="gender" class="inputRadio" value="Otro" <%= user.gender=="Otro" ? "checked":"" %> /> Otro
+								<input type="radio" name="gender" class="inputRadio" value="Hombre" <%= currentUser.gender=="Hombre" ? "checked":"" %> /> Masculino
+								<input type="radio" name="gender" class="inputRadio" value="Mujer" <%= currentUser.gender=="Mujer" ? "checked":"" %> /> Femenino
+								<input type="radio" name="gender" class="inputRadio" value="Otro" <%= currentUser.gender=="Otro" ? "checked":"" %> /> Otro
 							</span>
-							<span>Fecha de nacimiento</span><span><input name="birth" type="date" class="inputText" value='<%= user.birthdate %>' /></span>
+							<span>Fecha de nacimiento</span><span><input name="birth" type="date" class="inputText" value='<%= currentUser.birthdate %>' /></span>
 							<span>Imagen de perfil</span><span><input name="image" type="file" class="inputArchivo" accept="image/*"/></span>
 							<span>Borrar Imagen</span><span><input name="deleteImage" type="checkbox" value='false'/></span>
 						</div>

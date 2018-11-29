@@ -6,11 +6,36 @@ const path = require('path');
 const expressSession = require("express-session");
 const expressMySqlSession = require("express-mysql-session");
 const multer = require("multer");
-const inputParser = require("./input-parser");
+const { body, validationResult } = require('express-validator/check');
 const fs = require('fs');
 const sharp = require('sharp');
 
-//Definicion de modulos creados
+/*
+*
+*	Expresiones regulares para parseo de campos
+*
+*/
+
+/*
+	Desde el principio del string hasta el final solo aceptamos caracteres
+	alfanumericos
+*/
+const expresionPass = /^\w+$/;
+
+/*
+	Al principio del string 1 o mas caracteres alfanumericos, una @, 
+	1 o mas caracteres alfanumericos, un punto y 1 o mas caracteres alfanumericos.
+*/
+const expresionEmail = /^\w+(@){1}\w+(\.){1}\w+$/
+
+const expresionName = /^[A-Z]{1}[a-zA-Z\s]+$/
+
+/*
+*
+*	Definicion de modulos creados
+*
+*/
+
 const config = require("./config");
 const saUsers = require('./business/saUsers');
 
@@ -18,9 +43,6 @@ const pool = mysql.createPool(config.mysqlConfig);
 
 const MySqlStore = expressMySqlSession(expressSession);
 const sessionStore = new MySqlStore(config.mysqlConfig);
-
-//const multerFactory = multer({dest: path.join(__dirname, "../public/images","users")} );
-
 const multerFactory = multer({ storage: multer.memoryStorage() });
 
 var app = express();
@@ -41,6 +63,12 @@ app.listen(3000, function () {
   console.log('Practica 1 en el puerto 3000');
 });
 
+/*
+*
+*	Funcion para controlar el acceso a determinadas paginas
+*
+*/
+
 function controlAcceso(request, response, next){
     if (request.session.currentUser != null){
         response.locals.currentUser = request.session.currentUser;
@@ -50,15 +78,35 @@ function controlAcceso(request, response, next){
     }
 }
 
+/*
+*
+*	Definicion de rutas
+*
+*/
+
 app.get('/', controlAcceso, function(request, response){
 	response.redirect("/friends");
 })
 
 app.get('/login', function(request, response){
-	response.render("login", {error: null})
+	response.render("login", {errors: null})
 })
 
-app.post('/doLogin', inputParser.loginParser, function (request, response) {
+app.post('/doLogin', [
+	body('email')
+	.custom(value => expresionEmail.test(value)).withMessage('El formato del email no es correcto')
+	.not().isEmpty().withMessage('El email no puede dejarse en blanco'),
+	body('pass')
+	.custom(value => expresionPass.test(value)).withMessage('El formato de la contraseña no es correcto')
+	.not().isEmpty().withMessage('La contraseña no puede dejarse en blanco')
+	.isLength({ min: 8 }).withMessage('La contraseña tiene que tener como minimo 8 caracteres'),
+], function (request, response) {
+
+	var errors = validationResult(request);
+	if (!errors.isEmpty()) {
+		return response.status(422).render("login.ejs", { errors: errors.array() });
+	}
+
 	saUsers.doLogin({
 		email: request.body.email,
 		name: null,
@@ -76,7 +124,7 @@ app.post('/doLogin', inputParser.loginParser, function (request, response) {
 			case -2:
 			case -3:
 			case -5:
-				response.render("login.ejs", {error: err});
+				response.render("login.ejs", {errors: [{msg: err}]	});
 				break;
 			default:
 				response.redirect("/login");
@@ -87,30 +135,29 @@ app.post('/doLogin', inputParser.loginParser, function (request, response) {
 });
 
 app.get('/new_user', function(request, response){
-	response.render("new_user.ejs",{error:null})
+	response.render("new_user.ejs",{errors:null})
 });
 
-app.get('/friends', controlAcceso, function(request, response){
-	saUsers.getFriends(request.session.currentUser.id, pool, function(friends){
-		saUsers.getPendingFriendRequest(request.session.currentUser.id,pool,(err,friendRequest)=>{
-			response.render("friends.ejs", {friendRequest:friendRequest, friends: friends});
-		})
-	});
-});
+app.post('/addUser', multerFactory.single("image"), [
+	body('email')
+	.custom(value => expresionEmail.test(value)).withMessage('El formato del email no es correcto')
+	.not().isEmpty().withMessage('El email no puede dejarse en blanco'),
+	body('pass')
+	.custom(value => expresionPass.test(value)).withMessage('El formato de la contraseña no es correcto')
+	.not().isEmpty().withMessage('La contraseña no puede dejarse en blanco')
+	.isLength({ min: 8 }).withMessage('La contraseña tiene que tener como minimo 8 caracteres'),
+	body('name')
+	.custom(value => expresionName.test(value)).withMessage('El formato del nombre no es correcto')
+	.not().isEmpty().withMessage('El nombre no puede dejarse en blanco'),
+	body('birth')
+	.not().isEmpty().withMessage('La fecha no puede dejarse en blanco')
+], function(request, response){
 
-app.post("/answerRequest", controlAcceso, (request,response)=>{
-	saUsers.confirmRequest(request.body.id,request.session.currentUser.id,request.body.botonSolicitud=="Aceptar",pool,(err)=>{
-		response.redirect("/friends");
-	})
-})
+	var errors = validationResult(request);
+	if (!errors.isEmpty()) {
+		return response.status(422).render("new_user.ejs", { errors: errors.array() });
+	}
 
-app.get('/profile/:id', controlAcceso, function(request, response){
-	saUsers.getUserData(request.params.id,pool,(err,user)=>{
-		response.render("profile.ejs",{user:user,canModify:request.params.id == request.session.currentUser.id});
-	})
-});
-
-app.post('/addUser', multerFactory.single("image"), inputParser.newUserParser, function(request, response){
 	let user = {
 		email: request.body.email,
 		name: request.body.name,
@@ -134,9 +181,8 @@ app.post('/addUser', multerFactory.single("image"), inputParser.newUserParser, f
 
 		saUsers.addUser(user,pool,function(code,err){
 			switch(code){		
-			case -5:
 			case -1:
-				response.render("new_user.ejs",{error:err});
+				response.render("new_user.ejs",{errors: [{msg: err}]} );
 				break;
 			default:
 				response.redirect("/login");
@@ -147,11 +193,49 @@ app.post('/addUser', multerFactory.single("image"), inputParser.newUserParser, f
 	
 })
 
-app.get('/modify_user', controlAcceso, (request,response)=>{
-	response.render("modify_user.ejs",{user:request.session.currentUser,error:null});
+app.get('/friends', controlAcceso, function(request, response){
+	saUsers.getFriends(request.session.currentUser.id, pool, function(friends){
+		saUsers.getPendingFriendRequest(request.session.currentUser.id,pool,(err,friendRequest)=>{
+			response.render("friends.ejs", {friendRequest:friendRequest, friends: friends});
+		})
+	});
+});
+
+app.post("/answerRequest", controlAcceso, (request,response)=>{
+	saUsers.confirmRequest(request.body.id,request.session.currentUser.id,request.body.botonSolicitud=="Aceptar",pool,(err)=>{
+		response.redirect("/friends");
+	})
 })
 
-app.post("/doModify", controlAcceso, multerFactory.single("image"), inputParser.modifyUserParser, (request,response)=>{
+app.get('/profile/:id', controlAcceso, function(request, response){
+	saUsers.getUserData(request.params.id,pool,(err,user)=>{
+		response.render("profile.ejs",{user:user,canModify:request.params.id == request.session.currentUser.id});
+	})
+});
+
+app.get('/modify_user', controlAcceso, (request,response)=>{
+	response.render("modify_user.ejs",{user:request.session.currentUser,errors:null});
+})
+
+app.post("/doModify", controlAcceso, multerFactory.single("image"), [
+	body('email')
+	.custom(value => expresionEmail.test(value)).withMessage('El formato del email no es correcto')
+	.not().isEmpty().withMessage('El email no puede dejarse en blanco'),
+	body('password')
+	.custom(value =>  value.length == 0 || expresionPass.test(value)).withMessage('El formato de la contraseña no es correcto')
+	.custom(value => value.length == 0 || value.length >= 8).withMessage('La contraseña tiene que tener como minimo 8 caracteres'),
+	body('name')
+	.custom(value => expresionName.test(value)).withMessage('El formato del nombre no es correcto')
+	.not().isEmpty().withMessage('El nombre no puede dejarse en blanco'),
+	body('birth')
+	.not().isEmpty().withMessage('La fecha no puede dejarse en blanco')
+], (request,response)=>{
+
+	var errors = validationResult(request);
+	if (!errors.isEmpty()) {
+		return response.status(422).render("modify_user.ejs", { errors: errors.array() });
+	}
+
 	let user = {
 		email: request.body.email,
 		name: request.body.name,
@@ -189,11 +273,10 @@ app.post("/doModify", controlAcceso, multerFactory.single("image"), inputParser.
 				case 0: 
 					request.session.currentUser = userMod;
 					response.locals.currentUser = request.session.currentUser;
-					response.redirect("profile/"+request.session.id);
+					response.redirect("profile/"+request.session.currentUser.id);
 					break;
-				case -5:
 				case -1:
-					response.render("modify_user.ejs",{user:request.session.currentUser,error:err});
+					response.render("modify_user.ejs",{user:request.session.currentUser,errors: [{ msg: err}]});
 					break;
 			}		
 		})
@@ -247,6 +330,7 @@ app.post("/sendFriendRequest",controlAcceso,(request,response)=>{
 		response.redirect("/friends");
 	})
 })
+
 app.use(function(request, response, next){
 	response.render("404.ejs",{currentUser:request.session.currentUser});
 })
