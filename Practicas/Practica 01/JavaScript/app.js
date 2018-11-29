@@ -8,7 +8,6 @@ const expressMySqlSession = require("express-mysql-session");
 const multer = require("multer");
 const { body, validationResult } = require('express-validator/check');
 const fs = require('fs');
-const sharp = require('sharp');
 
 /*
 *
@@ -185,29 +184,20 @@ app.post('/addUser', multerFactory.single("image"), [
 		image: null
 	}
 
-	if (request.file === undefined){
-		image= new Buffer("");
-	} else {
-		image = request.file.buffer;
+	if (request.file !== undefined){
+		user.image = request.file.buffer;
 	}
-	
-	sharp(image).resize(200).png({compressionLevel: 8}).toBuffer(function(err, data){
 
-		if(!err){
-			user.image = data;
+	saUsers.addUser(user,pool,function(code,err){
+		switch(code){		
+		case -1:
+			response.render("new_user.ejs",{errors: [{msg: err}]} );
+			break;
+		default:
+			response.redirect("/login");
+			break
 		}
-
-		saUsers.addUser(user,pool,function(code,err){
-			switch(code){		
-			case -1:
-				response.render("new_user.ejs",{errors: [{msg: err}]} );
-				break;
-			default:
-				response.redirect("/login");
-				break
-			}
-		})
-	});
+	})
 	
 })
 
@@ -246,7 +236,7 @@ app.post("/doModify", controlAcceso, multerFactory.single("image"), [
 	.not().isEmpty().withMessage('El nombre no puede dejarse en blanco')
 	.custom(value => expresionName.test(value)).withMessage('El formato del nombre no es correcto'),
 	body('birth')
-	.not().isEmpty().withMessage('La fecha no puede dejarse en blanco')
+	.not().isEmpty().withMessage('La fecha no puede dejarse en blanco'),
 ], (request,response)=>{
 
 	var errors = validationResult(request).array();
@@ -269,45 +259,31 @@ app.post("/doModify", controlAcceso, multerFactory.single("image"), [
 		password: request.body.password,
 		gender: request.body.gender,
 		birthdate: request.body.birth,
-		points: request.session.currentUser.points
+		points: request.session.currentUser.points,
+		image: null,
 	}
 
-	if (request.file === undefined){
-		image= new Buffer("");
+	if (request.body.deleteImage){
+		user.image = null;
 	} else {
-		image = request.file.buffer;
+		if (request.file !== undefined){
+			user.image = request.file.buffer;
+		}
 	}
 
-	sharp(image).resize(200, 200).jpeg({ quality: 20 }).toBuffer(function(err, data){
-		if(err){
-			if (request.body.deleteImage){
-				user.image = null;
-			} else {
-				if(request.file == null){
-					if (request.session.currentUser.image != null){
-						user.image = new Buffer(request.session.currentUser.image);
-					} else {
-						user.image = null;
-					}
-				}
-			}
-		} else {
-			user.image = data;
-		}
-
-		saUsers.modifyUser(request.session.currentUser.id,user,pool,(cod, err, userMod)=>{
-			switch(cod){
-				case 0: 
-					request.session.currentUser = userMod;
-					response.locals.currentUser = request.session.currentUser;
-					response.redirect("profile/"+request.session.currentUser.id);
-					break;
-				case -1:
-					response.render("modify_user.ejs",{user:request.session.currentUser,errors: [{ msg: err}]});
-					break;
-			}		
-		})
+	saUsers.modifyUser(request.session.currentUser.id,user,pool,(cod, err, userMod)=>{
+		switch(cod){
+			case 0: 
+				request.session.currentUser = userMod;
+				response.locals.currentUser = request.session.currentUser;
+				response.redirect("profile/"+request.session.currentUser.id);
+				break;
+			case -1:
+				response.render("modify_user.ejs",{user:request.session.currentUser,errors: [{ msg: err}]});
+				break;
+		}		
 	})
+
 })
 
 app.get('/disconnect', function(request, response){
