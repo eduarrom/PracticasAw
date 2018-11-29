@@ -29,3 +29,10 @@ a, h2{
 .botonMediano:hover{
 	cursor: pointer;
 }
+
+.contSinResultados{
+	display: flex;
+	justify-content: center;
+	align-items: center
+	
+}

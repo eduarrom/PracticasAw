@@ -3,7 +3,7 @@ const dateFormat = require('../dateFormat');
 
 function doLogin(user, pass, pool, callback){
     let daoUser = new daoUsers(pool);	
-	daoUser.getUser(user.email, pass, function(err, rows){
+	daoUser.getUser(user.email, function(err, rows){
 		if (err) {
 			callback(-5, err.message, null);
 		} else {			
@@ -115,7 +115,13 @@ function getImage(email, pool, callback){
 function searchByName(name,currentUserId,pool,callback){
 	let daoUser = new daoUsers(pool);
 
-	daoUser.findByName(name,currentUserId,callback);
+	daoUser.findByName(name,currentUserId,function(err, result){
+		if (err){
+
+		} else {
+			callback(null,result);
+		}
+	})
 }
 
 function getUserData(id,pool,callback){

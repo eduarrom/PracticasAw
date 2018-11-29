@@ -16,25 +16,29 @@
       </div>
       <div class="seccion">
         <div class="resultados">
-
-          <% list.forEach((amigo)=>{ %>
-          
-          <div class="contResultado">
-            <img src=<%= "/getUserImage/"+amigo.email %> alt="Imagen del perfil" class="miniaturaPerfil">
-            <a href= <%="/profile/"+amigo.id %> ><h2><%= amigo.name %> </h2> </a>
-            <div class="contBoton">
-              <% if(amigo.status == null || amigo.status == 2){ %>
-              <form action="/sendFriendRequest" method="post">
-                <input type="submit" name="botonSolicitarAmistad" class="botonMediano" value="Solicitar amistad"></input>
-                <input type="hidden" name="id" value=<%=amigo.id%>>
-              </form>
-              <% }else if(amigo.status == 0){ %>
-                <h2>Pendiente</h2>
-              <% } %>
+          <% if (list != undefined) { %>
+            <% list.forEach((amigo)=>{ %>
+            
+            <div class="contResultado">
+              <img src= '/getUserImage/<%= amigo.email %>' alt="Imagen del perfil" class="miniaturaPerfil">
+              <a href='/profile/<%=+ amigo.id %>' ><h2><%= amigo.name %> </h2> </a>
+              <div class="contBoton">
+                <% if(amigo.status == null || amigo.status == 2){ %>
+                <form action="/sendFriendRequest" method="post">
+                  <input type="submit" name="botonSolicitarAmistad" class="botonMediano" value="Solicitar amistad"></input>
+                  <input type="hidden" name="id" value=<%=amigo.id%>>
+                </form>
+                <% }else if(amigo.status == 0){ %>
+                  <h2>Pendiente</h2>
+                <% } %>
+              </div>
             </div>
-          </div>
-          <% }) %>
-          
+            <% }) %>
+          <% } else { %>
+            <div class="contSinResultados">
+                <span>No se han encontrado resultados</span>
+              </div>
+          <% } %>
         </div>
       </div>
     </div>
