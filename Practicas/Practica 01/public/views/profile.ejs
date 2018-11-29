@@ -17,7 +17,7 @@
 			<div class="perfil">
 			
 				<div class="informacionPerfil">
-					<img src='/getUserImage/<%= user.email %>' class="miniaturaPerfilGrande" alt="Imagen de Perfil">
+					<img src='/users/getUserImage/<%= user.email %>' class="miniaturaPerfilGrande" alt="Imagen de Perfil">
 					<h2 id="nombreUsuario"><%= user.name%></h2>
 					<h3 id="edadUsuario"><%= user.years+" Años" %> </h3>
 					<h3 id="sexoUsuario"><%= user.gender %> </h3>
@@ -26,7 +26,7 @@
 				</div>
 				<% if(canModify){ %>
 				<div class="contBoton">
-					<form action="/modify_user" method="get">
+					<form action="/users/modify_user" method="get">
 						<input type="submit" name="botonModificarPerfil" class="boton modificarPerfil" value="Modificar Perfil"></input>
 					</form>
 				</div>

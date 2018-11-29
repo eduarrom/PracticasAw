@@ -18,9 +18,9 @@
 				<% if (friendRequest.length != 0) { %>
 					<% friendRequest.forEach((request)=>{ %>
 					<div class="contSolicitud">
-						<img src='/getUserImage/<%= request.email %>' alt="Imagen de Perfil" class="miniaturaPerfil"/>
+						<img src='/users/getUserImage/<%= request.email %>' alt="Imagen de Perfil" class="miniaturaPerfil"/>
 						<span class="nombreUsuarioSolicitudes"> <%= request.name %> </span>
-						<form action="/answerRequest" method="post">
+						<form action="/users/answerRequest" method="post">
 						<input type="hidden" name="id" value= <%= request.id %> >
 						<div class="contBoton">
 							<input type="submit" name="botonSolicitud" class="botonPequeno aceptarSolicitud" value="Aceptar"></input>
@@ -43,7 +43,7 @@
 		<div class="seccion">
 			<div class="busqueda">
 				<div class="contBusqueda">
-					<form class="formularioBusqueda" action="/searchFriend" method="GET">
+					<form class="formularioBusqueda" action="/users/searchFriend" method="GET">
 						<span>Nombre</span>
 						<span><input type="text" class="inputText" name="name"/></span>
 						<div class="contBoton">
@@ -62,9 +62,9 @@
 				<% if (friends.length != 0) { %>
 					<% friends.forEach(function(friend){ %>
 						
-						<a href=<%="/profile/"+friend.id %>>
+						<a href=<%="/users/profile/"+friend.id %>>
 						<div class="contAmigos">
-							<img src='/getUserImage/<%= friend.email %>' alt="Imagen de Perfil" class="miniaturaPerfil"/>
+							<img src='/users/getUserImage/<%= friend.email %>' alt="Imagen de Perfil" class="miniaturaPerfil"/>
 							<span><%= friend.name %></span>
 						</div>
 						</a>

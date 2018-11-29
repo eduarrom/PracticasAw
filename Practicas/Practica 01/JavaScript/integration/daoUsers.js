@@ -1,6 +1,6 @@
 class DAOUser{
 	constructor(pool){
-		this.pool = pool;
+		this.pool = require("./pool");
 	}
 
 	getUserData(id, callback){

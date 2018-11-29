@@ -20,11 +20,11 @@
             <% list.forEach((amigo)=>{ %>
             
             <div class="contResultado">
-              <img src= '/getUserImage/<%= amigo.email %>' alt="Imagen del perfil" class="miniaturaPerfil">
-              <a href='/profile/<%=+ amigo.id %>' ><h2><%= amigo.name %> </h2> </a>
+              <img src= '/users/getUserImage/<%= amigo.email %>' alt="Imagen del perfil" class="miniaturaPerfil">
+              <a href='/users/profile/<%=+ amigo.id %>' ><h2><%= amigo.name %> </h2> </a>
               <div class="contBoton">
                 <% if(amigo.status == null || amigo.status == 2){ %>
-                <form action="/sendFriendRequest" method="post">
+                <form action="/users/sendFriendRequest" method="post">
                   <input type="submit" name="botonSolicitarAmistad" class="botonMediano" value="Solicitar amistad"></input>
                   <input type="hidden" name="id" value=<%=amigo.id%>>
                 </form>

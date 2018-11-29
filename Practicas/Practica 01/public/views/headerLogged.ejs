@@ -2,13 +2,13 @@
     <h1 class="tituloPagina">FaceBluFF</h1>
     <!-- Botones para Registrado-->
       <div class="user">
-            <img src='/getUserImage/<%= currentUser.email %>' alt="Imagen de Usuario" class="miniaturaPerfilPequena">
+            <img src='/users/getUserImage/<%= currentUser.email %>' alt="Imagen de Usuario" class="miniaturaPerfilPequena">
             <span><h1><%= currentUser.points %> Puntos</h1></span>
       </div>
       <div class="nav">
-          <a href= '/profile/<%= currentUser.id %>'' class="linkNav"><div class="botonNav">Perfil</div></a>
-          <a href="/friends" class="linkNav"><div class="botonNav">Amigos</div></a>
-          <a href="/questions" class="linkNav"><div class="botonNav">Preguntas</div></a>
-          <a href="/disconnect" class="linkNav"><div class="botonNav">Desconectar</div></a>
+          <a href= '/users/profile/<%= currentUser.id %>'' class="linkNav"><div class="botonNav">Perfil</div></a>
+          <a href="/users/friends" class="linkNav"><div class="botonNav">Amigos</div></a>
+          <a href="/questions/questions" class="linkNav"><div class="botonNav">Preguntas</div></a>
+          <a href="/users/disconnect" class="linkNav"><div class="botonNav">Desconectar</div></a>
       </div>
   </div>

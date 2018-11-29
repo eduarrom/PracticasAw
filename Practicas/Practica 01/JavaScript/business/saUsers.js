@@ -1,8 +1,8 @@
 const daoUsers = require('../integration/daoUsers');
 const dateFormat = require('../dateFormat');
 
-function doLogin(user, pass, pool, callback){
-    let daoUser = new daoUsers(pool);	
+function doLogin(user, pass, callback){
+    let daoUser = new daoUsers();	
 	daoUser.getUser(user.email, function(err, rows){
 		if (err) {
 			callback(-5, err.message, null);
@@ -26,8 +26,8 @@ function doLogin(user, pass, pool, callback){
 	})
 }
 
-function getFriends(id, pool, callback){
-	let daoUser = new daoUsers(pool);
+function getFriends(id, callback){
+	let daoUser = new daoUsers();
 	daoUser.getFriends(id, function(err, friends){
 		if (err){
 			callback(null);
@@ -37,8 +37,8 @@ function getFriends(id, pool, callback){
 	})
 }
 
-function getPendingFriendRequest(id,pool,callback){
-	let daoUser = new daoUsers(pool);
+function getPendingFriendRequest(id,callback){
+	let daoUser = new daoUsers();
 	daoUser.getPendingFriendRequest(id,(err,result)=>{
 		if (result==null) callback(err,[]);
 		else{
@@ -47,13 +47,13 @@ function getPendingFriendRequest(id,pool,callback){
 	});
 }
 
-function confirmRequest(originUserId,destinationUserId,accept,pool,callback){
-	let daoUser = new daoUsers(pool);
+function confirmRequest(originUserId,destinationUserId,accept,callback){
+	let daoUser = new daoUsers();
 	daoUser.confirmRequest(originUserId,destinationUserId,accept,callback);
 }
 
-function addUser(newUserData,pool,callback){
-	let daoUser = new daoUsers(pool);
+function addUser(newUserData,callback){
+	let daoUser = new daoUsers();
 	daoUser.addUser(newUserData,function(err, id){
 		if (err){
 			callback(-1, err.message, null)
@@ -71,8 +71,8 @@ function addUser(newUserData,pool,callback){
 	})
 }
 
-function modifyUser(userId,newUserData,pool,callback){
-	let daoUser = new daoUsers(pool);
+function modifyUser(userId,newUserData,callback){
+	let daoUser = new daoUsers();
 	daoUser.modifyUser(userId,newUserData,function(err){
 		if (err){
 			callback(-1, err.message, null)
@@ -90,8 +90,8 @@ function modifyUser(userId,newUserData,pool,callback){
 	})
 }
 
-function getImage(email, pool, callback){
-	let daoUser = new daoUsers(pool);
+function getImage(email,  callback){
+	let daoUser = new daoUsers();
 	daoUser.getUserImage(email, function(err, rows){
 		if (err){
 			callback(-2, null)
@@ -105,8 +105,8 @@ function getImage(email, pool, callback){
 	})
 }
 
-function searchByName(name,currentUserId,pool,callback){
-	let daoUser = new daoUsers(pool);
+function searchByName(name,currentUserId,callback){
+	let daoUser = new daoUsers();
 
 	daoUser.findByName(name,currentUserId,function(err, result){
 		if (err){
@@ -117,8 +117,8 @@ function searchByName(name,currentUserId,pool,callback){
 	})
 }
 
-function getUserData(id,pool,callback){
-	let daoUser = new daoUsers(pool);
+function getUserData(id,callback){
+	let daoUser = new daoUsers();
 
 	daoUser.getUserData(id,(err,rows)=>{
 		callback(0, {
@@ -133,8 +133,8 @@ function getUserData(id,pool,callback){
 	});
 }
 
-function sendFriendRequest(originUserId,destinationUserId,pool,callback){
-	let daoUser = new daoUsers(pool);
+function sendFriendRequest(originUserId,destinationUserId,callback){
+	let daoUser = new daoUsers();
 	daoUser.sendFriendRequest(originUserId,destinationUserId,callback);
 }
 

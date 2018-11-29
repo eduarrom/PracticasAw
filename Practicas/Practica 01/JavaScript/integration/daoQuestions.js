@@ -1,7 +1,7 @@
 class DaoQuestion{
     
-    constructor(pool){
-		this.pool = pool;
+    constructor(){
+		this.pool = require("./pool");
 	}
 
 

@@ -50,11 +50,14 @@
 	text-decoration: none;
 }
 
+.contAmigos span{
+	color: white;
+	text-decoration: none;
+}
 .contSinAmigos{
 	display: flex;
 	justify-content: center;
-	align-items: center
-	
+	align-items: center	
 }
 
 .busqueda{

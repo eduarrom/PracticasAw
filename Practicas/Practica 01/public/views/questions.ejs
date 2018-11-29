@@ -20,20 +20,18 @@
 
       <div class="seccion">
 
-        <!--CUANDO LAS PREGUNTAS SEAN REALES HAY QUE RODEARLAS DE "<a>"-->
+    
 		<div class="preguntas">
 			<div class="contPreguntas">
-			  <div class="pregunta">
-				¿Cual es la peor pelicula de la historia?
-			  </div>
-			  <div class="pregunta">
-				¿En qué escuela estudiaste?
-			  </div>
-			</div>
-
+					<% if(preguntas == null || preguntas==0){ %>
+						<h2>No hay preguntas disponibles</h2>
+						<% }else{ preguntas.forEach((pregunta)=>{%>
+			  	<div class="pregunta"><a><%= pregunta.question %></a></div>
+				<% })}; %>
+				
 			<div class="contCrearPregunta">
 			  <div class="titulo">
-				<h1>¡Añade tus preguntas!</h1>
+				<h3>¡Añade tus preguntas!</h3>
 			  </div>
 			  <div class="contBoton">
 				  <div class="contBoton">

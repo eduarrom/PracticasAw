@@ -24,7 +24,7 @@
 								</ul>
 							</div>
 						<% } %>
-					<form action="/doModify" method="POST" class="formularioModifyUser" enctype="multipart/form-data">
+					<form action="/users/doModify" method="POST" class="formularioModifyUser" enctype="multipart/form-data">
 						<div class="contDatosModifyUser">
 							<span>Email</span><span><input name="email" type="text" class="inputText" value= <%= currentUser.email %> /></span>
 							<span>Contraseña</span><span><input name="password" type="password" class="inputText" placeholder="Dejar en blanco si no se quiere cambiar"/></span>
