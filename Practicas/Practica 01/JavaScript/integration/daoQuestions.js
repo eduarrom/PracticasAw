@@ -5,28 +5,28 @@ class DaoQuestion{
 	}
 
 
-    addQuestion(question,possibleAnswers,userId,callback){
+    addQuestion(question,userId,callback){
         this.pool.getConnection((err,connection)=>{
             
             if(err) callback(new Error("Error al obtener la conexion"));
             else
-                connection.query("insert into questions (text,questioner) VALUES (?,?);",[question,userId],(err,info)=>{
+                connection.query("insert into questions (text,questioner,answer) VALUES (?,?,?);",[question.text,userId,question.answer],(err,info)=>{
                     
                     if(err) callback(new Error("Error al introducir una nueva pregunta"));
                     else {
                         let query = "insert into possibleAnswers (number, question, answer) values ";
                         let parameters = [];
 
-                        for(let i = 0; i<possibleAnswers.length;i++){
+                        for(let i = 0; i<question.possibleAnswers.length;i++){
                             
                             query += "(?,?,?)";
                             
-                            if(i!=possibleAnswers.length-1)
+                            if(i!=question.possibleAnswers.length-1)
                                 query += ", ";
 
                             parameters.push(i+1);
                             parameters.push(info.insertId);
-                            parameters.push(possibleAnswers[i]);
+                            parameters.push(question.possibleAnswers[i]);
                         }
                         query += ";";
 

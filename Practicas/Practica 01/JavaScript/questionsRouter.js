@@ -23,4 +23,26 @@ questionsRouter.get("/question/:id",controlAcceso,(request,response)=>{
     });
 })
 
+questionsRouter.get("/new_question",controlAcceso,(request,response)=>{
+    response.render("new_question.ejs");
+})
+
+questionsRouter.post("/addQuestion",controlAcceso,(request,response)=>{
+    question = {
+        text: request.body.question,
+        possibleAnswers: request.body.answers.split(";"),
+        answer: request.body.correctAnswer,
+    }
+    saQuestions.addQuestion(question, request.session.currentUser.id, function(cod, err){
+        switch (cod){
+            case 0:
+                response.redirect("/questions/questions")
+                break;
+            case -1:
+                response.render("new_question.ejs");
+                break;
+        }
+    });   
+})
+
 module.exports = questionsRouter;
