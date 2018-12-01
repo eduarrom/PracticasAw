@@ -31,7 +31,6 @@ questionsRouter.post("/addQuestion",controlAcceso,(request,response)=>{
     question = {
         text: request.body.question,
         possibleAnswers: request.body.answers.split(";"),
-        answer: request.body.correctAnswer,
     }
     saQuestions.addQuestion(question, request.session.currentUser.id, function(cod, err){
         switch (cod){

@@ -10,19 +10,20 @@ class DaoQuestion{
             
             if(err) callback(new Error("Error al obtener la conexion"));
             else
-                connection.query("insert into questions (text,questioner,answer) VALUES (?,?,?);",[question.text,userId,question.answer],(err,info)=>{
+                connection.query("insert into questions (text,questioner) VALUES (?,?);",[question.text,userId],(err,info)=>{
                     
                     if(err) callback(new Error("Error al introducir una nueva pregunta"));
                     else {
                         let query = "insert into possibleAnswers (number, question, answer) values ";
                         let parameters = [];
 
-                        for(let i = 0; i<question.possibleAnswers.length;i++){
+                        for(let i = 0; i<question.possibleAnswers.length-1;i++){
                             
-                            query += "(?,?,?)";
-                            
-                            if(i!=question.possibleAnswers.length-1)
-                                query += ", ";
+                            if (i == 0){
+                                query += "(?,?,?)";
+                            } else {
+                                query += ", (?,?,?)";
+                            }
 
                             parameters.push(i+1);
                             parameters.push(info.insertId);
