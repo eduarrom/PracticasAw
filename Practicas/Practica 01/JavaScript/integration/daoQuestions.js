@@ -17,7 +17,7 @@ class DaoQuestion{
                         let query = "insert into possibleAnswers (number, question, answer) values ";
                         let parameters = [];
 
-                        for(let i = 0; i<question.possibleAnswers.length-1;i++){
+                        for(let i = 0; i<question.possibleAnswers.length;i++){
                             
                             if (i == 0){
                                 query += "(?,?,?)";

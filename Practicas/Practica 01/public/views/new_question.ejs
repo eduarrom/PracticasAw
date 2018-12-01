@@ -15,11 +15,20 @@
 			</div>
 			<div class="seccion">
 				<div class="anadirPregunta">
+					<% if (errors != null) { %>
+						<div class="contError">
+							<ul>
+							<% errors.forEach(error=>{ %>
+								<li><span class="error"><%= error.msg %></span></li>
+							<% }) %>
+							</ul>
+						</div>
+					<% } %>
 					<form class="formularioNewQuestion" action="/questions/addQuestion" method="post">
 						<div class="contDatosNewQuestion">
 							<span>Pregunta</span><span><input type="text" class="inputText" name="question"/></span>
 							<span>Respuestas (separador ;)</span><span><textarea class="inputText" name="answers"></textarea></span>
-							<span>Respuesta Correcta (nº)</span><span><input type="text" class="inputText" name="correctAnswer"/></span>
+							<!--<span>Respuesta Correcta (nº)</span><span><input type="text" class="inputText" name="correctAnswer"/></span>-->
 						</div>
 						<div class="contBoton">
 							<span><input type="submit" value="Crear" class="boton"/></span>

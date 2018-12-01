@@ -38,7 +38,7 @@ var app = express();
 app.get("/",(request,response)=>{
 	response.redirect("/users/login");
 })
-//Por si no existe un manejador para esa peticion...
+//Por si no existe un manejador para esa peticiton...
 app.use(function(request, response, next){
 	response.status(404);
 	response.render("404.ejs",{currentUser:request.session.currentUser});
