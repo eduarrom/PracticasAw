@@ -10,13 +10,13 @@ function getQuestion(questionId,callback){
     daoQuestions.getQuestions(questionId,callback);
 }
 
-function getWhoAnswered(questionId,callback){
+function getWhoAnswered(questionId,userId,callback){
     const daoQuestions = new DaoQuestions();
     daoQuestions.getAnswers(questionId,(err,result)=>{
         let users = [];
         result.forEach(user => {
-            if(user.supplanted==user.respondent)
-                users.push({name:name,id:id});
+            if(userId != user.id && user.supplanted==user.respondent)
+                users.push(user);
         });
         callback(err,users);
     })

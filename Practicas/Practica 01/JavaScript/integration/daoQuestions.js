@@ -89,7 +89,7 @@ class DaoQuestion{
                         callback(new Error("Error al obtener la pregunta"),null);
                     }
                     else{
-                        connection.query("select * from possibleanswers where id = ?",[questionId],(err,answers)=>{
+                        connection.query("select * from possibleanswers where question = ?",[questionId],(err,answers)=>{
                             connection.release();
                             if(err){
                                 callback(new Error("Error al obtener las posibles respuestas"),null);
@@ -106,6 +106,18 @@ class DaoQuestion{
         this.pool.getConnection((err,connection)=>{
             if(err) callback(new Error("Error al obtener la conexion"));
             else
+            connection.query("SELECT u.id, u.email, u.name, p.answer FROM answers a LEFT JOIN questions q ON q.id = a.question LEFT JOIN users u ON u.id = a.user LEFT JOIN possibleanswers p ON p.question = a.question AND p.number = a.answer WHERE a.question = ?;",[questionId],((err,result)=>{
+                connection.release();
+                if(err) callback(new Error("Error al obtener quien ha respondido"),null);
+                else callback(null,result);
+            }));
+        })
+    }
+/*
+    getAnswers(questionId,callback){
+        this.pool.getConnection((err,connection)=>{
+            if(err) callback(new Error("Error al obtener la conexion"));
+            else
             connection.query("select name,users.id,choosen,supplanted from users,answers where respondent = users.id and question = ?;",[questionId],((err,result)=>{
                 connection.release();
                 if(err) callback(new Error("Error al obtener quien ha respondido"),null);
@@ -113,6 +125,7 @@ class DaoQuestion{
             }));
         })
     }
+    */
 }
 
 module.exports = DaoQuestion;
