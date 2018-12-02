@@ -14,7 +14,7 @@ class DaoQuestion{
                     
                     if(err) callback(new Error("Error al introducir una nueva pregunta"));
                     else {
-                        let query = "insert into possibleAnswers (question, question, text) values ";
+                        let query = "insert into possibleAnswers (number, question, answer) values ";
                         let parameters = [];
 
                         for(let i = 0; i<question.possibleAnswers.length;i++){
@@ -59,8 +59,8 @@ class DaoQuestion{
         });
     }
     
-    //si no responde por nadie, por defecto responde por si mismo
-    answerQuestion(questionId, answer, userId, supplanted=userId,callback){
+    //si respondes por ti mismo, supplanted = userId
+    answerQuestion(questionId, answer, userId, supplanted,callback){
        
         this.pool.getConnection((err,connection)=>{
             

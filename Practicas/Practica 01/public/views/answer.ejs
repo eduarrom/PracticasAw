@@ -15,17 +15,18 @@
       </div>
       <div class="seccion">
         <div class ="seccionRespuestas">
-          <form class="" action="" method="post">
+          <form class="" action="/questions/doAnswer" method="post">
 
             <% let i = 0;
-            for(i=0; i<question.answers; i++){ %>
-            <div class="respuesta"><input class="" type="radio" name="gender" value=<%= i %>> checked><%=answer[i].text %></div>
+            for(i=0; i<question.possibleAnswers.length; i++){ %>
+            <div class="respuesta"><input class="" type="radio" name="answer" value=<%= i+1 %> checked><%=question.possibleAnswers[i].answer %></div>
             <% }; %>
 
-            <div class="respuesta"><input class="" type="radio" name="gender" value=<%=i %>>>Otra:&#32;<input class="inputText" type="text" name="" value=""></div>
+            <div class="respuesta"><input class="" type="radio" name="answer" value=<%=i+1 %>> Otra:&#32; <input class="inputText" type="text" name="" value=""></div>
             <div class="contBoton">
               <span><input type="submit" value="Contestar" class="boton"></span>
               <input type="hidden" name="friendId" value=<%=friend%>>
+              <input type="hidden" name="questionId" value=<%=question.question.id%>>
     				</div>
           </form>
         </div>

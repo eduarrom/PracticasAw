@@ -18,7 +18,7 @@ function getGuessed(questionId,userId,callback){
         let i = 0;
 
         while(!responsed && i<result.length){
-            if(result.id == userId){
+            if(result[i].id == userId){
                  responsed = true;
                  result.splice(i,1);
             }
@@ -39,9 +39,15 @@ function addQuestion(question,userId,callback){
         }
     })
 }
+
+function answerQuestion(questionId, answer, userId, supplanted,callback){
+    const daoQuestions = new DaoQuestions();
+    daoQuestions.answerQuestion(questionId, answer, userId, supplanted,callback);
+}
 module.exports = {
     getRandomQuestions:getRandomQuestions,
     getQuestion:getQuestion,
     getGuessed: getGuessed,
-    addQuestion: addQuestion
+    addQuestion: addQuestion,
+    answerQuestion: answerQuestion
 }

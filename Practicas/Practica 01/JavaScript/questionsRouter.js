@@ -80,4 +80,12 @@ questionsRouter.get("/answer/:questionId/:userId",controlAcceso,(request,respons
     })
 })
 
+
+questionsRouter.post("/doAnswer",(request,response)=>{
+    saQuestions.answerQuestion(request.body.questionId,request.body.answer,request.session.currentUser.id,
+    request.body.friendId,(err)=>{
+        response.redirect("/questions/question/"+request.body.questionId);
+    });
+})
+
 module.exports = questionsRouter;
