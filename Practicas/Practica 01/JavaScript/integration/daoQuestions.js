@@ -14,7 +14,7 @@ class DaoQuestion{
                     
                     if(err) callback(new Error("Error al introducir una nueva pregunta"));
                     else {
-                        let query = "insert into possibleAnswers (number, question, text) values ";
+                        let query = "insert into possibleAnswers (question, question, text) values ";
                         let parameters = [];
 
                         for(let i = 0; i<question.possibleAnswers.length;i++){
@@ -66,7 +66,7 @@ class DaoQuestion{
             
             if(err) callback(new Error("Error al obtener la conexion"));
             else
-                connection.query("insert into answers (respondent,answer,supplanted,question) values (?,?,?,?)",
+                connection.query("insert into answers (respondent,choosen,supplanted,question) values (?,?,?,?)",
                 [userId,answer,supplanted,questionId],(err)=>{
 
                     connection.release();
