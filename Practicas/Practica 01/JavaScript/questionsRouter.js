@@ -74,4 +74,10 @@ questionsRouter.post("/addQuestion",controlAcceso, [
     });   
 })
 
+questionsRouter.get("/answer/:questionId/:userId",controlAcceso,(request,response)=>{
+    saQuestions.getQuestion(request.params.questionId,(err,question)=>{
+        response.render("answer.ejs",{question:question,friend:request.params.userId});
+    })
+})
+
 module.exports = questionsRouter;

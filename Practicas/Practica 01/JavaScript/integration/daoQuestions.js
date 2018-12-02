@@ -14,7 +14,7 @@ class DaoQuestion{
                     
                     if(err) callback(new Error("Error al introducir una nueva pregunta"));
                     else {
-                        let query = "insert into possibleAnswers (number, question, answer) values ";
+                        let query = "insert into possibleAnswers (number, question, text) values ";
                         let parameters = [];
 
                         for(let i = 0; i<question.possibleAnswers.length;i++){
