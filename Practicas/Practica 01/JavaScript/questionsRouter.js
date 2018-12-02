@@ -23,9 +23,9 @@ questionsRouter.get("/questions",controlAcceso,(request,response)=>{
 
 questionsRouter.get("/question/:id",controlAcceso,(request,response)=>{
     saQuestions.getQuestion(request.params.id,(err,question)=>{
-        saQuestions.getWhoAnswered(request.params.id,request.session.currentUser.id, (err,users)=>{
+        saQuestions.getGuessed(request.params.id,request.session.currentUser.id, (err,users,responsed)=>{
             
-            response.render("question.ejs",{question:question, users:users});
+            response.render("question.ejs",{question:question, users:users,responsed:responsed});
         })
     });
 })

@@ -14,16 +14,20 @@
 
 			<div class="content">
 				<div class="titulo">
-					<h1><%= question.text %></h1>
+					<h1><%=question.question.text%></h1>
 				</div>
 				<div class="seccion">
 				
 			<div class="contestarPregunta">
+
+				<% if (!responsed){ %>
 				<h2>No has contestado a esta pregunta.</h2>
 				<div class="contBoton">
 					<span><input type="button" value="Contestar Pregunta" class="boton botonAncho" onClick="location.href = '/questions/questions'"/></span>
 				</div>
-
+				<% }else{ %>
+				<h2>Ya has contestado esta pregunta</h2>
+				<% } %>
 				<div class="contAmigos">
 
 				<h2>Los siguientes amigos han contestado a esta pregunta</h2>
@@ -34,7 +38,19 @@
 							<img src="/users/getUserImage/<%= friend.email %>" alt="Imagen de Usuario" class="miniaturaPerfil"/>
 							<a href=<%="/users/profile/"+friend.id %> class="linkNav"><span><%= friend.name %></span></a>
 							<div class="contBoton">
-								<span><input type="button" value="Adivinar" onClick="location.href = '/questions/questions'" class="boton botonMediano"/></span>
+								<span>
+									<% if (!friend.responsed) { %>
+									<form action="/guess" method="post">
+										<input type="submit" value="Adivinar" onClick="location.href = '/questions/questions'" class="boton botonMediano"/>
+										<input type="hidden" name="user" value=<%=friend.id%>>
+										<input type="hidden" name="answer" value=<%=question.id%>>
+									</form>
+									<% } else if (friend.guessed) { %>
+										<h3>Has acertado</h3>
+									<% } else { %>
+										<h3>Has fallado</h3>
+									<% } %>										
+									</span>
 							</div>
 						</div>
 					<% }) %>

@@ -7,18 +7,25 @@ function getRandomQuestions(callback){
 
 function getQuestion(questionId,callback){
     const daoQuestions = new DaoQuestions();
-    daoQuestions.getQuestions(questionId,callback);
+    daoQuestions.getQuestion(questionId,callback);
 }
 
-function getWhoAnswered(questionId,userId,callback){
+function getGuessed(questionId,userId,callback){
     const daoQuestions = new DaoQuestions();
-    daoQuestions.getAnswers(questionId,(err,result)=>{
-        let users = [];
-        result.forEach(user => {
-            if(userId != user.id && user.supplanted==user.respondent)
-                users.push(user);
-        });
-        callback(err,users);
+    daoQuestions.getGuessed(questionId,userId,(err,result)=>{
+        
+        let responsed = false;
+        let i = 0;
+
+        while(!responsed && i<result.length){
+            if(result.id == userId){
+                 responsed = true;
+                 result.splice(i,1);
+            }
+            i++;
+        }
+        
+        callback(err,result,responsed);
     })
 }
 
@@ -35,6 +42,6 @@ function addQuestion(question,userId,callback){
 module.exports = {
     getRandomQuestions:getRandomQuestions,
     getQuestion:getQuestion,
-    getWhoAnswered:getWhoAnswered,
+    getGuessed: getGuessed,
     addQuestion: addQuestion
 }

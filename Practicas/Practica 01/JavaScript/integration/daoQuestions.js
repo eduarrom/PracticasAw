@@ -77,14 +77,14 @@ class DaoQuestion{
         });
     }
 
-    getQuestions(questionId,callback){
+    getQuestion(questionId,callback){
 
         this.pool.getConnection((err,connection)=>{
 
             if(err) callback(new Error("Error al obtener la conexion"));
             else
-                connection.query("select * from questions where id = ?;",[questionId],(err,question)=>{
-                    if(err || question == null || question.length == 0){
+                connection.query("select * from questions where id = ?;",[questionId],(err,questions)=>{
+                    if(err || questions == null || questions.length == 0){
                         connection.release();
                         callback(new Error("Error al obtener la pregunta"),null);
                     }
@@ -94,7 +94,7 @@ class DaoQuestion{
                             if(err){
                                 callback(new Error("Error al obtener las posibles respuestas"),null);
                             }else
-                                callback(null,{question:question,possibleAnswers:answers});
+                                callback(null,{question:questions[0],possibleAnswers:answers});
                         })
 
                     }
@@ -126,6 +126,40 @@ class DaoQuestion{
         })
     }
     */
+
+
+   getGuessed(questionId,userId,callback){
+       this.pool.getConnection((err,connection)=>{
+            if(err) callback(new Error("Error al obtener la conexion"));
+            else connection.query("SELECT name, respondent, supplanted,choosen, users.id,email FROM answers,users WHERE users.id = respondent and (supplanted = respondent or respondent = ?) and question = ? order by supplanted;",[userId,questionId],(err,result)=>{
+
+                connection.release();
+
+                if(err) callback(new Error("Error al obtener quien ha respondido"),null);
+                else{
+                    let usuarios = [];
+
+                    for(let i = 0;i<result.length;i++){
+                        if(usuarios.length == 0 || usuarios[i-1].id != result[i].supplanted){
+                            usuarios.push({
+                                id:result[i].supplanted,
+                                name:result[i].name,
+                                responsed:result[i].respondent==userId,
+                                email:result[i].email
+                            })
+                        }
+                        else{
+                            usuarios[i-1].responsed = usuarios[i-1].responsed || result[i].respondent == userId; 
+                            usuarios[i-1].guessed = result[i].choosen==result[i-1].choosen;
+                        }
+                    }
+
+                    callback(null,usuarios);
+                }
+
+            })
+       })
+   }
 }
 
 module.exports = DaoQuestion;
