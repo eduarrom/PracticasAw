@@ -44,7 +44,7 @@
 							<div class="contBoton">
 								<span>
 									<% if (!friend.responsed) { %>
-									<form action="/questions/answer/<%=question.question.id%>/<%=friend.id%>" method="post">
+									<form action="/questions/answer/<%=question.question.id%>/<%=friend.id%>" method="get">
 										<input type="submit" value="Adivinar" class="boton botonMediano"/>
 									</form>
 									<% } else if (friend.guessed) { %>

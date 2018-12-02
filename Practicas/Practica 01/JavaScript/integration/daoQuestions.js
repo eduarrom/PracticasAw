@@ -140,7 +140,7 @@ class DaoQuestion{
                     let usuarios = [];
 
                     for(let i = 0;i<result.length;i++){
-                        if(usuarios.length == 0 || usuarios[i-1].id != result[i].supplanted){
+                        if(usuarios.length == 0 || usuarios[usuarios.length-1].id != result[i].supplanted){
                             usuarios.push({
                                 id:result[i].supplanted,
                                 name:result[i].name,
