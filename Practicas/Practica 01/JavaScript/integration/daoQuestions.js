@@ -113,48 +113,31 @@ class DaoQuestion{
             }));
         })
     }
-/*
-    getAnswers(questionId,callback){
-        this.pool.getConnection((err,connection)=>{
-            if(err) callback(new Error("Error al obtener la conexion"));
-            else
-            connection.query("select name,users.id,choosen,supplanted from users,answers where respondent = users.id and question = ?;",[questionId],((err,result)=>{
-                connection.release();
-                if(err) callback(new Error("Error al obtener quien ha respondido"),null);
-                else callback(null,result);
-            }));
-        })
-    }
-    */
-
 
    getGuessed(questionId,userId,callback){
        this.pool.getConnection((err,connection)=>{
             if(err) callback(new Error("Error al obtener la conexion"));
-            else connection.query("SELECT name, respondent, supplanted,choosen, users.id,email FROM answers,users WHERE users.id = respondent and (supplanted = respondent or respondent = ?) and question = ? order by supplanted;",[userId,questionId],(err,result)=>{
+            else connection.query("SELECT a.respondent, a.supplanted, u.name, u.email, a.choosen, a2.choosen as originalanswer FROM answers a JOIN users u on u.id = supplanted JOIN answers a2 on a2.respondent = a2.supplanted and a2.respondent = a.supplanted and a.question = a2.question WHERE ((a.respondent != ? and a.respondent = a.supplanted) or (a.respondent = ? and a.respondent != a.supplanted)) and a.question = ? ORDER BY a.supplanted",[userId,userId,questionId],(err,result)=>{
 
                 connection.release();
 
                 if(err) callback(new Error("Error al obtener quien ha respondido"),null);
                 else{
-                    let usuarios = [];
+                    let usuarios = new Map();
 
-                    for(let i = 0;i<result.length;i++){
-                        if(usuarios.length == 0 || usuarios[usuarios.length-1].id != result[i].supplanted){
-                            usuarios.push({
-                                id:result[i].supplanted,
-                                name:result[i].name,
-                                responsed:result[i].respondent==userId,
-                                email:result[i].email
+                    result.forEach(usuario => {
+                        if (usuarios.get(usuario.id) == undefined || usuarios.get(usuario.id).responsed == usuario.id){
+                            usuarios.set(usuario.supplanted,{
+                                id:usuario.supplanted,
+                                name:usuario.name,
+                                responsed:usuario.respondent==userId,
+                                email:usuario.email,
+                                guessed: usuario.choosen == usuario.originalanswer
                             })
                         }
-                        else{
-                            usuarios[i-1].responsed = usuarios[i-1].responsed || result[i].respondent == userId; 
-                            usuarios[i-1].guessed = result[i].choosen==result[i-1].choosen;
-                        }
-                    }
+                    })
 
-                    callback(null,usuarios);
+                    callback(null,Array.from(usuarios.values()));
                 }
 
             })
