@@ -22,7 +22,7 @@ questionsRouter.get("/questions",controlAcceso,(request,response)=>{
 })
 
 questionsRouter.get("/question/:id",controlAcceso,(request,response)=>{
-    saQuestions.getQuestion(request.params.id,(err,question)=>{
+    saQuestions.getQuestion(request.params.id,-1,(err,question)=>{
         saQuestions.getGuessed(request.params.id,request.session.currentUser.id, (err,users,responsed)=>{
             
             response.render("question.ejs",{question:question, users:users,responsed:responsed});
@@ -75,17 +75,9 @@ questionsRouter.post("/addQuestion",controlAcceso, [
 })
 
 questionsRouter.get("/answer/:questionId/:userId",controlAcceso,(request,response)=>{
-    if (request.params.userId != request.session.currentUser.id){
-        saQuestions.getQuestion(request.params.questionId,(err,question)=>{
-            saQuestions.getCustomAnswer(request.params.questionId,request.params.userId,(err,custom)=>{
-                response.render("answerFriend.ejs",{question:question,custom:custom.customAnswer,friend:request.params.userId});
-            })
-        })
-    } else {
-        saQuestions.getQuestion(request.params.questionId,(err,question)=>{
-            response.render("answer.ejs",{question:question,friend:request.params.userId});
-        })
-    }
+    saQuestions.getQuestion(request.params.questionId,request.params.userId,(err,question)=>{
+        response.render("answerFriend.ejs",{question:question,friend:request.params.userId});
+    })
 })
 
 

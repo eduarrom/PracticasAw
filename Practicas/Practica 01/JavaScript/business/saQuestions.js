@@ -8,14 +8,9 @@ function getRandomQuestions(callback){
     daoQuestions.getRandomQuestions(5,callback);
 }
 
-function getQuestion(questionId,callback){
+function getQuestion(questionId,userId,callback){
     const daoQuestions = new DaoQuestions();
-    daoQuestions.getQuestion(questionId,callback);
-}
-
-function getCustomAnswer(questionId,userId,callback){
-    const daoQuestions = new DaoQuestions();
-    daoQuestions.getCustomAnswer(questionId,userId,callback);
+    daoQuestions.getQuestion(questionId,userId,callback);
 }
 
 function getGuessed(questionId,userId,callback){
@@ -79,7 +74,6 @@ function answerQuestion(questionId, answer, userId, supplanted,newAnswerText,cal
 module.exports = {
     getRandomQuestions:getRandomQuestions,
     getQuestion:getQuestion,
-    getCustomAnswer:getCustomAnswer,
     getGuessed: getGuessed,
     addQuestion: addQuestion,
     answerQuestion: answerQuestion

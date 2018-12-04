@@ -77,7 +77,7 @@ class DaoQuestion{
         });
     }
 
-    getQuestion(questionId,callback){
+    getQuestion(questionId,userId,callback){
 
         this.pool.getConnection((err,connection)=>{
 
@@ -89,7 +89,7 @@ class DaoQuestion{
                         callback(new Error("Error al obtener la pregunta"),null);
                     }
                     else{
-                        connection.query("select * from possibleanswers where question = ?",[questionId],(err,answers)=>{
+                        connection.query("select number,question,answer from possibleanswers where question = ? UNION select number,question,answer from customanswers where question = ? and user = ? order by rand()",[questionId,questionId,userId],(err,answers)=>{
                             connection.release();
                             if(err){
                                 callback(new Error("Error al obtener las posibles respuestas"),null);
@@ -111,21 +111,6 @@ class DaoQuestion{
                 if(err) callback(new Error("Error al obtener quien ha respondido"),null);
                 else callback(null,result);
             }));
-        })
-    }
-
-    getCustomAnswer(questionId,userId,callback){
-        this.pool.getConnection((err,connection)=>{
-            if(err) callback(new Error("Error al obtener la conexion"));
-            else
-            connection.query("select * from customanswers where question = ? and user = ?",[questionId, userId],(err,custom)=>{
-                connection.release();
-                if(err){
-                    callback(new Error("Error al obtener las posibles respuestas personalizadas"),null);
-                } else {
-                    callback(null,{customAnswer: custom[0]});
-                }
-            })
         })
     }
 
