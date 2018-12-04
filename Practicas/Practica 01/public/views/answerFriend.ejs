@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <link rel="stylesheet" href="/CSS/cabecera.css">
+    <link rel="stylesheet" href="/CSS/practica.css">
+    <link rel="stylesheet" href="/css/answer.css">
+    <meta charset="utf-8">
+    <title>Answer - FaceBluff</title>
+  </head>
+  <body>
+    <%- include("headerLogged.ejs") %>
+    <div class="content">
+      <div class="titulo">
+        <h1> <%= question.question.text %> </h1>
+      </div>
+      <div class="seccion">
+        <div class ="seccionRespuestas">
+          <form class="" action="/questions/doAnswer" method="post">
+
+            <% let i = 0;
+            for(i=0; i<question.possibleAnswers.length; i++){ %>
+              <div class="respuesta"><input class="" type="radio" name="answer" value=<%= i+1 %> checked><%=question.possibleAnswers[i].answer %></div>
+            <% }; %>
+            <% if (custom != undefined){ %>
+              <div class="respuesta"><input class="" type="radio" name="answer" value=<%= i+1 %>><%=custom.answer %></div>
+            <% }; %>
+            <div class="contBoton">
+              <span><input type="submit" value="Contestar" class="boton"></span>
+              <input type="hidden" name="friendId" value=<%=friend%>>
+              <input type="hidden" name="questionId" value=<%=question.question.id%>>
+    				</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

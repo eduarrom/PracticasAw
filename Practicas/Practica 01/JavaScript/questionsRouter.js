@@ -75,9 +75,17 @@ questionsRouter.post("/addQuestion",controlAcceso, [
 })
 
 questionsRouter.get("/answer/:questionId/:userId",controlAcceso,(request,response)=>{
-    saQuestions.getQuestion(request.params.questionId,(err,question)=>{
-        response.render("answer.ejs",{question:question,friend:request.params.userId});
-    })
+    if (request.params.userId != request.session.currentUser.id){
+        saQuestions.getQuestion(request.params.questionId,(err,question)=>{
+            saQuestions.getCustomAnswer(request.params.questionId,request.params.userId,(err,custom)=>{
+                response.render("answerFriend.ejs",{question:question,custom:custom.customAnswer,friend:request.params.userId});
+            })
+        })
+    } else {
+        saQuestions.getQuestion(request.params.questionId,(err,question)=>{
+            response.render("answer.ejs",{question:question,friend:request.params.userId});
+        })
+    }
 })
 
 

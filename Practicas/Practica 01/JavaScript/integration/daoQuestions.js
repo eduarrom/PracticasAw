@@ -114,10 +114,25 @@ class DaoQuestion{
         })
     }
 
+    getCustomAnswer(questionId,userId,callback){
+        this.pool.getConnection((err,connection)=>{
+            if(err) callback(new Error("Error al obtener la conexion"));
+            else
+            connection.query("select * from customanswers where question = ? and user = ?",[questionId, userId],(err,custom)=>{
+                connection.release();
+                if(err){
+                    callback(new Error("Error al obtener las posibles respuestas personalizadas"),null);
+                } else {
+                    callback(null,{customAnswer: custom[0]});
+                }
+            })
+        })
+    }
+
    getGuessed(questionId,userId,callback){
        this.pool.getConnection((err,connection)=>{
             if(err) callback(new Error("Error al obtener la conexion"));
-            else connection.query("SELECT a.respondent, a.supplanted, u.name, u.email, a.choosen, a2.choosen as originalanswer FROM answers a JOIN users u on u.id = supplanted JOIN answers a2 on a2.respondent = a2.supplanted and a2.respondent = a.supplanted and a.question = a2.question WHERE ((a.respondent != ? and a.respondent = a.supplanted) or (a.respondent = ? and a.respondent != a.supplanted)) and a.question = ? ORDER BY a.supplanted",[userId,userId,questionId],(err,result)=>{
+            else connection.query("SELECT a.respondent, a.supplanted, u.name, u.email, a.choosen, a2.choosen as originalanswer FROM answers a JOIN users u on u.id = supplanted JOIN answers a2 on a2.respondent = a2.supplanted and a2.respondent = a.supplanted and a.question = a2.question WHERE ((a.respondent != ? and a.respondent = a.supplanted) or (a.respondent = ?)) and a.question = ? ORDER BY a.supplanted",[userId,userId,questionId],(err,result)=>{
 
                 connection.release();
 
@@ -126,14 +141,23 @@ class DaoQuestion{
                     let usuarios = new Map();
 
                     result.forEach(usuario => {
+                        if (usuario.respondent == userId){ 
                             usuarios.set(usuario.supplanted,{
                                 id:usuario.supplanted,
                                 name:usuario.name,
-                                responsed:usuarios.get(usuario.supplanted) == undefined ? usuario.respondent==userId : (usuario.supplanted==userId || usuarios.get(usuario.supplanted).responsed),
+                                responsed: true,
                                 email:usuario.email,
                                 guessed: usuario.choosen == usuario.originalanswer
                             })
-                        
+                        } else  if (usuario.respondent != userId && usuarios.get(usuario.supplanted) == undefined){
+                            usuarios.set(usuario.supplanted,{
+                                id:usuario.supplanted,
+                                name:usuario.name,
+                                responsed: false,
+                                email:usuario.email,
+                                guessed: false
+                            })
+                        }
                     })
 
                     callback(null,Array.from(usuarios.values()));
@@ -143,13 +167,13 @@ class DaoQuestion{
        })
    }
 
-   addAnswer(number,question,text,callback){
+   addAnswer(number,question,text,userId,callback){
        this.pool.getConnection((err,connection)=>{
            
             if(err) callback(new Error("Error al obtener la conexion"));
            
-            else connection.query("insert into possibleAnswers (number, question, answer) values (?,?,?);",
-                [number,question,text],(err)=>{
+            else connection.query("insert into customanswers (number, user, question, answer) values (?,?,?,?);",
+                [number,userId,question,text],(err)=>{
 
                     connection.release();
 

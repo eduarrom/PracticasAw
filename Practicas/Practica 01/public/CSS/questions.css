@@ -22,6 +22,11 @@
   border: 2px solid white;
 }
 
+.pregunta:hover{
+  background-color: white;
+  color: black;
+}
+
 .pregunta a{
   color:white;
   text-decoration: none;

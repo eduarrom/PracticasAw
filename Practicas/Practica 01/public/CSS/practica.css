@@ -238,5 +238,10 @@ html{
 
 .error{
 	color: white;
-	
+}
+
+.divLink{
+	color: white; 
+	text-decoration: none;
+	width: 100%
 }
