@@ -15,5 +15,56 @@
 }
 
 .perfil{
-	width: 50%;
+	width: 100%;
+}
+
+.contNotificaciones{
+	flex-basis: 70%;
+	align-content: center;
+}
+.perfilInfo{
+	flex-basis: 30%;
+	align-content: center;
+}
+.notificaciones{
+	width: 90%;
+}
+.contNotificacion{
+	display: grid;
+
+	grid-template-columns: 1fr 9fr;
+
+	grid-template-rows: 70px;
+
+	grid-column-gap: 15px;
+	
+	justify-content: center;
+	align-items: center;
+	
+	margin: 5px;
+	padding: 5px;
+	
+	border: white 2px solid;
+	
+	border-radius: 8px;
+	
+	color:white;
+	text-align: center;
+}
+
+.contAmigos span{
+	color: white;
+	text-decoration: none;
+}
+.contSinAmigos{
+	display: flex;
+	justify-content: center;
+	align-items: center	
+}
+.contentPerfil {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: top;	
+	width: 100%;
 }

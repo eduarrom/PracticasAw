@@ -53,6 +53,10 @@ html{
     )no-repeat fixed
 	;
 }
+
+a{
+	text-decoration: none;
+}
 .content{
 	margin-top: 70px;
 	font-family: K2D;
@@ -78,7 +82,7 @@ html{
 	align-items: center;
 }
 
-.login, .newUser, .resultados, .solucitudes, .amigos, .busqueda, .perfil, .contestarPregunta, .preguntas, .anadirPregunta, .seccionRespuestas{
+.notificaciones, .login, .newUser, .resultados, .solucitudes, .amigos, .busqueda, .perfil, .contestarPregunta, .preguntas, .anadirPregunta, .seccionRespuestas{
 	background-color: rgb(0, 0, 0, 0.4);
 	color: #FFFFFF;
 

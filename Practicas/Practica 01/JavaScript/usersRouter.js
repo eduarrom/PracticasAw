@@ -66,7 +66,7 @@ userRouter.post('/doLogin', [
 			case 0:
 				request.session.currentUser = content;
 				response.locals.currentUser = request.session.currentUser;
-				response.redirect("/users/friends");	
+				response.redirect("/users/profile/"+request.session.currentUser.id);	
 				break;
 			case -1:
 			case -2:
@@ -157,7 +157,7 @@ userRouter.post("/answerRequest", controlAcceso, (request,response)=>{
 
 userRouter.get('/profile/:id', controlAcceso, function(request, response){
 	saUsers.getUserData(request.params.id,(err,user)=>{
-		response.render("profile.ejs",{user:user,canModify:request.params.id == request.session.currentUser.id});
+		response.render("profile.ejs",{user:user,ownProfile:request.params.id == request.session.currentUser.id});
 	})
 });
 

@@ -9,32 +9,37 @@
   </head>
   <body>
 			<%- include("headerLogged.ejs") %>
-	<div class="content">
-		<div class="titulo">
-		  <h1>Perfil</h1>
-		</div>
-		<div class="seccion">
-			<div class="perfil">
-			
-				<div class="informacionPerfil">
-					<img src='/users/getUserImage/<%= user.email %>' class="miniaturaPerfilGrande" alt="Imagen de Perfil">
-					<h2 id="nombreUsuario"><%= user.name%></h2>
-					<h3 id="edadUsuario"><%= user.years+" Años" %> </h3>
-					<h3 id="sexoUsuario"><%= user.gender %> </h3>
-					<h3 id="puntuacionUsuario"> <%= user.points +" Puntos" %> </h3>
+	<div class="content contentPerfil">
+
+		<div class="perfilInfo">
+			<div class="titulo">
+				<h1>Perfil</h1>
+			</div>
+			<div class="seccion">
+				<div class="perfil">
 				
+					<div class="informacionPerfil">
+						<img src='/users/getUserImage/<%= user.email %>' class="miniaturaPerfilGrande" alt="Imagen de Perfil">
+						<h2 id="nombreUsuario"><%= user.name%></h2>
+						<h3 id="edadUsuario"><%= user.years+" Años" %> </h3>
+						<h3 id="sexoUsuario"><%= user.gender %> </h3>
+						<h3 id="puntuacionUsuario"> <%= user.points +" Puntos" %> </h3>
+					
+					</div>
+					<% if(ownProfile){ %>
+					<div class="contBoton">
+						<form action="/users/modify_user" method="get">
+							<input type="submit" name="botonModificarPerfil" class="boton modificarPerfil" value="Modificar Perfil"></input>
+						</form>
+					</div>
+					<% }; %>
 				</div>
-				<% if(canModify){ %>
-				<div class="contBoton">
-					<form action="/users/modify_user" method="get">
-						<input type="submit" name="botonModificarPerfil" class="boton modificarPerfil" value="Modificar Perfil"></input>
-					</form>
-				</div>
-				<% }; %>
-			
-				
+			</div>
 		</div>
-	  </div>
+
+		<% if(ownProfile){ %>
+			<%- include("notifications.ejs") %>
+		<% }; %>
 	</div>
 </body>
 </html>

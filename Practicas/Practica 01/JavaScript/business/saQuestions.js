@@ -70,7 +70,9 @@ function answerQuestion(questionId, answer, userId, supplanted,newAnswerText,cal
     const daoQuestions = new DaoQuestions();
     if(newAnswerText!=null)
         daoQuestions.addAnswer(answer,questionId,newAnswerText,userId,(err)=>{
-            daoQuestions.answerQuestion(questionId, answer, userId, supplanted,callback);
+            daoQuestions.answerQuestion(questionId, answer, userId, supplanted,(err)=>{
+                callback(err,0);
+            });
         })
     else{
         daoQuestions.answerQuestion(questionId, answer, userId, supplanted,(err)=>{
