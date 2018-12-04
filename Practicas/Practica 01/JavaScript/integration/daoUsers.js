@@ -218,6 +218,20 @@ class DAOUser{
 			}
 		})
 	}
+
+	addPoints(userId,points,callback){
+        this.pool.getConnection((err,connection)=>{
+           
+            if(err) callback(new Error("Error al obtener la conexion"));
+            else connection.query("UPDATE users SET points = points + ? WHERE users.id = ?;",[points,userId],(err,info)=>{
+                
+                connection.release();
+
+                if(err) callback(new Error("Error al actualizar puntos"));
+                else callback(null);
+            })
+        });
+    }
 }
 
 module.exports = DAOUser;

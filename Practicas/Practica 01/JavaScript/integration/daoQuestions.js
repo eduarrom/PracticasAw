@@ -126,15 +126,14 @@ class DaoQuestion{
                     let usuarios = new Map();
 
                     result.forEach(usuario => {
-                        if (usuarios.get(usuario.id) == undefined || usuarios.get(usuario.id).responsed == usuario.id){
                             usuarios.set(usuario.supplanted,{
                                 id:usuario.supplanted,
                                 name:usuario.name,
-                                responsed:usuario.respondent==userId,
+                                responsed:usuarios.get(usuario.supplanted) == undefined ? usuario.respondent==userId : (usuario.supplanted==userId || usuarios.get(usuario.supplanted).responsed),
                                 email:usuario.email,
                                 guessed: usuario.choosen == usuario.originalanswer
                             })
-                        }
+                        
                     })
 
                     callback(null,Array.from(usuarios.values()));
@@ -143,6 +142,39 @@ class DaoQuestion{
             })
        })
    }
+
+   addAnswer(number,question,text,callback){
+       this.pool.getConnection((err,connection)=>{
+           
+            if(err) callback(new Error("Error al obtener la conexion"));
+           
+            else connection.query("insert into possibleAnswers (number, question, answer) values (?,?,?);",
+                [number,question,text],(err)=>{
+
+                    connection.release();
+
+                    if(err) callback(new Error("Error al insertar una nueva respuesta"));
+                    else callback(null);
+                })
+       })
+   }
+
+   getAnswer(questionId,userId,callback){
+    this.pool.getConnection((err,connection)=>{
+           
+        if(err) callback(new Error("Error al obtener la conexion"));
+        
+        else connection.query("select * from answers where respondent = supplanted and respondent = ? and question = ?;",
+        [userId,questionId],(err,result)=>{
+
+            connection.release();
+
+            if(err) callback(new Error("Error al obtener respuesta"));
+            else callback(null,result[0]);
+        });
+    });
+    }
+
 }
 
 module.exports = DaoQuestion;

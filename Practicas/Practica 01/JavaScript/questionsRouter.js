@@ -81,11 +81,18 @@ questionsRouter.get("/answer/:questionId/:userId",controlAcceso,(request,respons
 })
 
 
-questionsRouter.post("/doAnswer",(request,response)=>{
-    saQuestions.answerQuestion(request.body.questionId,request.body.answer,request.session.currentUser.id,
-    request.body.friendId,(err)=>{
-        response.redirect("/questions/question/"+request.body.questionId);
-    });
+questionsRouter.post("/doAnswer",controlAcceso,(request,response)=>{
+    saQuestions.answerQuestion(
+        request.body.questionId,
+        request.body.answer == -1 ? request.body.number:request.body.answer,
+        request.session.currentUser.id,
+        request.body.friendId,
+        request.body.answer == -1 ? request.body.answerText : null,
+        (err,points)=>{
+            request.session.currentUser.points+=points;
+            response.redirect("/questions/question/"+request.body.questionId);
+        }
+    );
 })
 
 module.exports = questionsRouter;
