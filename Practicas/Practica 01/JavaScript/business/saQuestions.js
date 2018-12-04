@@ -10,7 +10,30 @@ function getRandomQuestions(callback){
 
 function getQuestion(questionId,userId,callback){
     const daoQuestions = new DaoQuestions();
-    daoQuestions.getQuestion(questionId,userId,callback);
+    daoQuestions.getQuestion(questionId,userId,function(err, result){
+        if (err){
+            callback(err, null);
+        } else {
+            if (userId != -1){
+                daoQuestions.getAnswer(questionId, userId, function(err, answer){
+                    if (err){
+                        callback(err, null);
+                    } else {
+                        if (answer != undefined){
+                            let correctAnswer = result.possibleAnswers.filter(val => val.number == answer.choosen);
+                            let restAnswers = result.possibleAnswers.filter(val => val.number != answer.choosen).sort(function(a, b){return 0.5 - Math.random()}).slice(0, 3);
+                            let defAnswers = restAnswers.concat(correctAnswer).sort(function(a, b){return 0.5 - Math.random()});
+                            callback(null,{question: result.question, possibleAnswers:defAnswers});
+                        } else {
+                            callback(null, result);
+                        }
+                    }
+                })
+            } else {
+                callback(null, result);
+            }
+        }
+    })
 }
 
 function getGuessed(questionId,userId,callback){

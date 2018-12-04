@@ -76,7 +76,12 @@ questionsRouter.post("/addQuestion",controlAcceso, [
 
 questionsRouter.get("/answer/:questionId/:userId",controlAcceso,(request,response)=>{
     saQuestions.getQuestion(request.params.questionId,request.params.userId,(err,question)=>{
-        response.render("answerFriend.ejs",{question:question,friend:request.params.userId});
+        if (request.params.userId != request.session.currentUser.id){
+            response.render("answerFriend.ejs",{question:question,friend:request.params.userId});
+        } else {
+            response.render("answer.ejs",{question:question,friend:request.params.userId});
+        }
+        
     })
 })
 

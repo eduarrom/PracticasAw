@@ -89,7 +89,7 @@ class DaoQuestion{
                         callback(new Error("Error al obtener la pregunta"),null);
                     }
                     else{
-                        connection.query("select number,question,answer from possibleanswers where question = ? UNION select number,question,answer from customanswers where question = ? and user = ? order by rand()",[questionId,questionId,userId],(err,answers)=>{
+                        connection.query("select number,question,answer from possibleanswers where question = ? UNION select number,question,answer from customanswers where question = ? and user = ?",[questionId,questionId,userId],(err,answers)=>{
                             connection.release();
                             if(err){
                                 callback(new Error("Error al obtener las posibles respuestas"),null);
