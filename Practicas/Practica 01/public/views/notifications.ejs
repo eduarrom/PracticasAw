@@ -1,11 +1,13 @@
 <div class="contNotificaciones">
     <div class="titulo"> <h1>Notificaciones</h1></div>
     <div class="notificaciones">
-            <a href="/users/profile/3">
-                <div class="contNotificacion">
-                    <img src="/users/getUserImage/carr@ucm.es" alt="Imagen de Perfil" class="miniaturaPerfil">
-                    <span>ErrrChar ha adivinado tu  respuesta</span>
+        <% notifications.forEach(n => { %>
+            <a href="/users/profile/<%= n.id %>">
+                <div class="contNotificacion <% if (n.resOtro == n.resPro) { %>acierto<% } else { %>error<% } %>">
+                    <img src="/users/getUserImage/<%= n.email %>" alt="Imagen de Perfil" class="miniaturaPerfil">
+                    <span><%= n.name %> ha respondido a la pregunta <%= n.question %> con <%= n.resOtro %>. Tu respuesta fue <%= n.resPro %></span>
                 </div>
-                </a>
+            </a>
+        <% }) %>
     </div>
 </div>

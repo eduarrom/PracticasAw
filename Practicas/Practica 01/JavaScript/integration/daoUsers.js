@@ -231,7 +231,37 @@ class DAOUser{
                 else callback(null);
             })
         });
-    }
+	}
+	
+	getNotifications(userId, callback){
+		this.pool.getConnection(function(err, connection) {
+			if (err) {
+				callback(new Error("Error al obtener la conexion"), null);
+			} else {
+				connection.query(
+					"SELECT u.id, u.email, u.name, q.text as question, p.answer as resOtro, c.answer as cusOtro, puser.answer as resPro, cuser.answer as cusPro" +
+					" FROM notifications n" + 
+					" LEFT JOIN users u on u.id = n.respondent" +
+					" LEFT JOIN questions q ON q.id = n.question" +
+					" LEFT JOIN answers a ON a.question = n.question AND a.supplanted = n.user AND a.respondent = n.respondent" +
+					" LEFT JOIN possibleanswers p on p.question = n.question and p.number = a.choosen" +
+					" LEFT JOIN customanswers c on c.question = n.question and c.user = n.user and c.number = a.choosen" +
+					" LEFT JOIN answers auser ON auser.question = n.question AND auser.supplanted = n.user AND auser.respondent = n.user" +
+					" LEFT JOIN possibleanswers puser on puser.question = n.question and puser.number = auser.choosen" +
+					" LEFT JOIN customanswers cuser on cuser.question = n.question and cuser.user = n.user and cuser.number = auser.choosen" +
+					" WHERE n.user = ? limit 4",
+					[userId],
+					function(err, rows) {
+					connection.release()
+					if (err) {
+						callback(new Error("Error al obtener las notificaciones"), null)
+					} else {
+						callback(null, rows)
+					}
+				})
+			}
+		})
+	}
 }
 
 module.exports = DAOUser;

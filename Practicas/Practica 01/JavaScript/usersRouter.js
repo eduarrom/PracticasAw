@@ -157,7 +157,19 @@ userRouter.post("/answerRequest", controlAcceso, (request,response)=>{
 
 userRouter.get('/profile/:id', controlAcceso, function(request, response){
 	saUsers.getUserData(request.params.id,(err,user)=>{
-		response.render("profile.ejs",{user:user,ownProfile:request.params.id == request.session.currentUser.id});
+		if (request.params.id == request.session.currentUser.id){
+			saUsers.getNotifications(request.params.id, function(err, notifications){
+				if(err){
+					response.render("profile.ejs",{user:user,notifications:null,ownProfile:true});
+				} else {
+					response.render("profile.ejs",{user:user,notifications:notifications,ownProfile:true});
+				}
+			})
+			
+		} else {
+			response.render("profile.ejs",{user:user,notifications:null,ownProfile:false});
+		}
+		
 	})
 });
 

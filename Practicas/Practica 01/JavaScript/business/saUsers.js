@@ -138,6 +138,28 @@ function sendFriendRequest(originUserId,destinationUserId,callback){
 	daoUser.sendFriendRequest(originUserId,destinationUserId,callback);
 }
 
+function getNotifications(userId, callback){
+	let daoUser = new daoUsers();
+	daoUser.getNotifications(userId, function(err, rows){
+		if (err){
+			callback(err, null);
+		} else {
+			let notFiltradas = [];
+			rows.forEach(n =>{
+				notFiltradas.push({
+					id: n.id,
+					email: n.email,
+					name: n.name,
+					question: n.question,
+					resPro: n.resPro != null ? n.resPro : n.cusPro,
+					resOtro: n.resOtro != null ? n.resOtro : n.cusOtro
+				})
+			})
+			callback(null,notFiltradas);
+		}
+	})
+}
+
 
 module.exports = {
 	doLogin: doLogin,
@@ -149,5 +171,6 @@ module.exports = {
 	getImage: getImage,
 	searchByName:searchByName,
 	getUserData:getUserData,
-	sendFriendRequest:sendFriendRequest
+	sendFriendRequest:sendFriendRequest,
+	getNotifications:getNotifications
 }

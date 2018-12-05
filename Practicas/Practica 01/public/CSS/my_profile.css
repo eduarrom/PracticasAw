@@ -21,6 +21,7 @@
 .contNotificaciones{
 	flex-basis: 70%;
 	align-content: center;
+	height: 100%;
 }
 .perfilInfo{
 	flex-basis: 30%;
@@ -29,6 +30,14 @@
 .notificaciones{
 	width: 90%;
 }
+.acierto{
+	background-color: rgba(0, 128, 0, 0.503);
+}
+
+.error{
+	background-color: rgba(255, 0, 0, 0.51);
+}
+
 .contNotificacion{
 	display: grid;
 
