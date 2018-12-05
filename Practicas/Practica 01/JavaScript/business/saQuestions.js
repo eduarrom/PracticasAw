@@ -84,13 +84,19 @@ function answerQuestion(questionId, answer, userId, supplanted,newAnswerText,cal
                     if(err){
                         callback(null,0);
                     }
-                    else if(result.choosen == answer){
-                        const daoUsers = new DaoUsers();
-                        daoUsers.addPoints(userId,CORRECTPOINTS,(err)=>{
-                            if(err) callback(null,0);
-                            else callback(null,CORRECTPOINTS);
-                        });
-                    }else callback(null,0);     
+                    daoQuestions.addNotification(userId,questionId,supplanted,function(){
+                        if(err){
+                            callback(null,0)
+                        } else {
+                            if(result.choosen == answer){
+                                const daoUsers = new DaoUsers();
+                                daoUsers.addPoints(userId,CORRECTPOINTS,(err)=>{
+                                    if(err) callback(null,0);
+                                    else callback(null,CORRECTPOINTS);
+                                });
+                            }else callback(null,0);
+                        }                       
+                    })     
             });
             else callback(null,0);
         });

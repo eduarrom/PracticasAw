@@ -184,6 +184,20 @@ class DaoQuestion{
     });
     }
 
+    addNotification(respondent,questionId,supplanted,callback){
+        this.pool.getConnection((err,connection)=>{
+           
+            if(err) callback(new Error("Error al obtener la conexion"));
+            
+            else connection.query("insert into notifications (user, question, respondent) values (?,?,?)",
+            [supplanted,questionId,respondent],(err)=>{  
+                connection.release();
+    
+                if(err) callback(new Error("Error al añadir notificacion"));
+                else callback(null);
+            });
+        })
+    }
 }
 
 module.exports = DaoQuestion;

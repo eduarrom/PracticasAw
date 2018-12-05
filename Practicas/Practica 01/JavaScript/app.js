@@ -21,7 +21,7 @@ var app = express();
 	app.use(bodyParser.urlencoded({extended:false}));
 
 	//Usar el directorio public para los directorios estaticos
-	app.use(express.static(path.join(__dirname, "../public")));
+	app.use(express.static(path.join(__dirname, "../public")));5
 
 	//Usar ejs y el directorio views de public para las paginas dinamicas
 	app.set("view engine","ejs");
