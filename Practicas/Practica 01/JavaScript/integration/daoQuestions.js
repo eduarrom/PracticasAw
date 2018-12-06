@@ -71,7 +71,7 @@ class DaoQuestion{
 
                     connection.release();
 
-                    if(err) callback(new Error("Error al responder pregunta"));
+                    if(err) callback(new Error("Error al enviar respuesta"));
                     else    callback(null);
                 });
         });
