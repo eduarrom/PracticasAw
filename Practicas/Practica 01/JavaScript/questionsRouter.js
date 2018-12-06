@@ -77,9 +77,9 @@ questionsRouter.post("/addQuestion",controlAcceso, [
 questionsRouter.get("/answer/:questionId/:userId",controlAcceso,(request,response)=>{
     saQuestions.getQuestion(request.params.questionId,request.params.userId,(err,question)=>{
         if (request.params.userId != request.session.currentUser.id){
-            response.render("answerFriend.ejs",{question:question,friend:request.params.userId});
+            response.render("answerFriend.ejs",{question:question,friend:request.params.userId,error:false});
         } else {
-            response.render("answer.ejs",{question:question,friend:request.params.userId});
+            response.render("answer.ejs",{question:question,friend:request.params.userId,error:false});
         }
         
     })
@@ -93,12 +93,16 @@ questionsRouter.post("/doAnswer",controlAcceso,(request,response)=>{
         request.session.currentUser.id,
         request.body.friendId,
         request.body.answer == -1 ? request.body.answerText : null,
-        (err,points)=>{
+        (error,points)=>{
             request.session.currentUser.points+=points;
-            if(err){
-            /**
-             * aqui tenemos un problema
-             */
+            if(error){
+                saQuestions.getQuestion(request.body.questionId,request.body.friendId,(err,question)=>{
+                    if (request.params.userId != request.session.currentUser.id){
+                        response.render("answerFriend.ejs",{question:question,friend:request.body.friendId,error:error});
+                    } else {
+                        response.render("answer.ejs",{question:question,friend:request.body.friendId,error:error});
+                    }
+                });
             }else
                 response.redirect("/questions/question/"+request.body.questionId);
         }

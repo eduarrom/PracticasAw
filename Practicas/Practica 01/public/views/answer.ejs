@@ -16,6 +16,14 @@
       <div class="seccion">
         <div class ="seccionRespuestas">
 
+          <% if(error){ %>
+            <div class="contError">
+              <ul>
+                <li><span class="error"><%= error.message %></span></li>
+              </ul>
+            </div>
+            <% }%>
+
           <form class="" action="/questions/doAnswer" method="post">
 
             <% let i = 0;
