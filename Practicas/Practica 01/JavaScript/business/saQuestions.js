@@ -70,6 +70,8 @@ function answerQuestion(questionId, answer, userId, supplanted,newAnswerText,cal
     const daoQuestions = new DaoQuestions();
     if(newAnswerText!=null)
         daoQuestions.addAnswer(answer,questionId,newAnswerText,userId,(err)=>{
+            if(err)callback(err,0);
+            
             daoQuestions.answerQuestion(questionId, answer, userId, supplanted,(err)=>{
                 callback(err,0);
             });
@@ -77,21 +79,21 @@ function answerQuestion(questionId, answer, userId, supplanted,newAnswerText,cal
     else{
         daoQuestions.answerQuestion(questionId, answer, userId, supplanted,(err)=>{
 
-            if(err){callback(null,0)}
+            if(err){callback(err,0)}
             //actualizo los puntos
             else if(userId != supplanted)
                 daoQuestions.getAnswer(questionId,supplanted,(err,result)=>{
                     if(err){
-                        callback(null,0);
+                        callback(err,0);
                     }
-                    daoQuestions.addNotification(userId,questionId,supplanted,function(){
+                    daoQuestions.addNotification(userId,questionId,supplanted,function(err){
                         if(err){
-                            callback(null,0)
+                            callback(err,0)
                         } else {
                             if(result.choosen == answer){
                                 const daoUsers = new DaoUsers();
                                 daoUsers.addPoints(userId,CORRECTPOINTS,(err)=>{
-                                    if(err) callback(null,0);
+                                    if(err) callback(err,0);
                                     else callback(null,CORRECTPOINTS);
                                 });
                             }else callback(null,0);

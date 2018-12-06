@@ -88,14 +88,21 @@ class DAOUser{
 			if (err) callback(new Error("Error al obtener la conexion"));
 
 			else 		//status -> 0=sin responder, 1=aceptada, 2=rechazada
-			connection.query("insert into friendRequests (originUser,destinationUser,status) values (?,?,0) on duplicate key update status = (status = 1)",
-			[originUserId,destinationUserId],(err)=>{
-				
-				connection.release();
+			connection.query("delete FROM friendrequests where (destinationUser = ? and originUser = ? ) or (destinationUser = ? and originUser = ? );",
+			[destinationUserId,originUserId,originUserId,destinationUserId],
+				(err)=>{
 
-				if (err) callback(new Error("Error al enviar solicitud"));
-				else callback(null);
-			});
+					if(err) callback(new Error("Error al borrar solicitud antigua"));
+
+					else connection.query("insert into friendRequests (originUser,destinationUser,status) values (?,?,0);",
+					[originUserId,destinationUserId],(err)=>{
+						
+						connection.release();
+		
+						if (err) callback(new Error("Error al enviar solicitud"));
+						else callback(null);
+					});
+				})
 		})
 	}
 

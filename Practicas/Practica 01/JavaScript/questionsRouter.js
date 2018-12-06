@@ -95,7 +95,12 @@ questionsRouter.post("/doAnswer",controlAcceso,(request,response)=>{
         request.body.answer == -1 ? request.body.answerText : null,
         (err,points)=>{
             request.session.currentUser.points+=points;
-            response.redirect("/questions/question/"+request.body.questionId);
+            if(err){
+            /**
+             * aqui tenemos un problema
+             */
+            }else
+                response.redirect("/questions/question/"+request.body.questionId);
         }
     );
 })
