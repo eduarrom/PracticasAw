@@ -92,9 +92,11 @@ class DAOUser{
 			[destinationUserId,originUserId,originUserId,destinationUserId],
 				(err)=>{
 
-					if(err) callback(new Error("Error al borrar solicitud antigua"));
-
-					else connection.query("insert into friendRequests (originUser,destinationUser,status) values (?,?,0);",
+					if(err){ 
+						connection.release();
+						callback(new Error("Error al borrar solicitud antigua"))
+					
+					}else connection.query("insert into friendRequests (originUser,destinationUser,status) values (?,?,0);",
 					[originUserId,destinationUserId],(err)=>{
 						
 						connection.release();
