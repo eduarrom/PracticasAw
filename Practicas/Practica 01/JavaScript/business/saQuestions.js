@@ -5,7 +5,13 @@ const CORRECTPOINTS = 50;
 
 function getRandomQuestions(callback){
     const daoQuestions = new DaoQuestions();
-    daoQuestions.getRandomQuestions(5,callback);
+    daoQuestions.getRandomQuestions(5,function(err){
+        if (err){
+            callback(err);
+        } else {
+            callback(null);
+        }
+    }
 }
 
 function getQuestion(questionId,userId,callback){

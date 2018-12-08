@@ -49,7 +49,13 @@ function getPendingFriendRequest(id,callback){
 
 function confirmRequest(originUserId,destinationUserId,accept,callback){
 	let daoUser = new daoUsers();
-	daoUser.confirmRequest(originUserId,destinationUserId,accept,callback);
+	daoUser.confirmRequest(originUserId,destinationUserId,accept,function(err){
+		if (err){
+			callback(err);
+		} else {
+			callback(null);
+		}
+	}=
 }
 
 function addUser(newUserData,callback){
@@ -110,7 +116,7 @@ function searchByName(name,currentUserId,callback){
 
 	daoUser.findByName(name,currentUserId,function(err, result){
 		if (err){
-
+			callback(err,null);
 		} else {
 			callback(null,result);
 		}
@@ -135,7 +141,13 @@ function getUserData(id,callback){
 
 function sendFriendRequest(originUserId,destinationUserId,callback){
 	let daoUser = new daoUsers();
-	daoUser.sendFriendRequest(originUserId,destinationUserId,callback);
+	daoUser.sendFriendRequest(originUserId,destinationUserId,function(err){
+		if(err){
+			callback(err);
+		} else {
+			callback(null);
+		}
+	}
 }
 
 function getNotifications(userId, callback){
