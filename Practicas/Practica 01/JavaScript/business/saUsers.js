@@ -55,7 +55,7 @@ function confirmRequest(originUserId,destinationUserId,accept,callback){
 		} else {
 			callback(null);
 		}
-	}=
+	})
 }
 
 function addUser(newUserData,callback){
@@ -147,7 +147,7 @@ function sendFriendRequest(originUserId,destinationUserId,callback){
 		} else {
 			callback(null);
 		}
-	}
+	})
 }
 
 function getNotifications(userId, callback){

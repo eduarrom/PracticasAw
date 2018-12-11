@@ -11,7 +11,7 @@ function getRandomQuestions(callback){
         } else {
             callback(null);
         }
-    }
+    })
 }
 
 function getQuestion(questionId,userId,callback){
