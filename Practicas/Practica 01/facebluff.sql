@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `facebluff` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `facebluff`;
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: facebluff
