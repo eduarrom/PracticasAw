@@ -8,8 +8,8 @@ const path = require('path');
 const config = require("./config");
 
 //Definicion de routers
-const questionsRouter =require("./questionsRouter");
-const userRouter = require("./usersRouter");
+const questionsRouter =require("./JavaScript/questionsRouter");
+const userRouter = require("./JavaScript/usersRouter");
 
 var app = express();
 
@@ -21,11 +21,11 @@ var app = express();
 	app.use(bodyParser.urlencoded({extended:false}));
 
 	//Usar el directorio public para los directorios estaticos
-	app.use(express.static(path.join(__dirname, "../public")));5
+	app.use(express.static(path.join(__dirname, "/public")));5
 
 	//Usar ejs y el directorio views de public para las paginas dinamicas
 	app.set("view engine","ejs");
-	app.set("views", path.join(__dirname, "../public", "views"))
+	app.set("views", path.join(__dirname, "/public", "views"))
 
 	app.use(expressSession({resave:false, saveUninitialized:false, secret:"foobar34", store:sessionStore}));
 
