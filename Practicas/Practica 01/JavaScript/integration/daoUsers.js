@@ -54,7 +54,7 @@ class DAOUser{
 				
 				connection.release();
 
-				if(err) callback(new Error("El email ya esta registrado"), null);
+				if(err) callback(new Error("Error al insertar usuario"), null);
 				else{
 					user.id = info.insertId;
 					callback(null, user.id);
@@ -122,7 +122,7 @@ class DAOUser{
 		
 							connection.release();
 							
-							if (err) callback(new Error("El email ya esta registrado"));
+							if (err) callback(new Error("Error al modificar"));
 							else callback(null);
 						}
 					)
@@ -134,7 +134,7 @@ class DAOUser{
 		
 							connection.release();
 							
-							if (err) callback(new Error("El email ya esta registrado"));
+							if (err) callback(new Error("Error al modificar"));
 							else callback(null);
 						}
 					)
