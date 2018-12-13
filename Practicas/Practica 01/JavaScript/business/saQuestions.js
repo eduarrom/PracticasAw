@@ -57,6 +57,27 @@ function getGuessed(questionId,userId,callback){
 
 function addQuestion(question,userId,callback){
     const daoQuestions = new DaoQuestions();
+    
+    let arrayControl = [];
+
+    question.possibleAnswers.filter(a => {
+           if (arrayControl.every(b => {
+               if(b != a){
+                   return true
+               }else{
+                   return false;
+               }
+            })){
+                arrayControl.push(a);
+            }
+        })
+
+    question.possibleAnswers = arrayControl;
+
+    if (question.possibleAnswers.length < 2){
+        callback(-1, "Tiene que insertar al menos dos respuestas diferentes");
+    } else {
+
     daoQuestions.addQuestion(question,userId,function(err){
         if (err){
             callback(-1, err.message);
@@ -64,6 +85,7 @@ function addQuestion(question,userId,callback){
             callback(0, null);
         }
     })
+}
 }
 
 function answerQuestion(questionId, answer, userId, supplanted,newAnswerText,callback){

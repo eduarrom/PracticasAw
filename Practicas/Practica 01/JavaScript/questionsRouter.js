@@ -10,7 +10,7 @@ const controlAcceso = middlewares.controlAcceso;
 //Expresiones regulares para parseo de campos:
 	
     const expresionQuestion = /^[¿a-zA-Z0-9]{1}[\w\s]+[?]{1}$/
-    const expresionPossibleAnswersSeparator = /[;]{1}[a-zA-Z0-9]{1}/
+    const expresionPossibleAnswersSeparator = /[;]?[a-zA-Z0-9]{1}/
     const expresionPossibleAnswers = /^[a-zA-Z0-9]{1}[\w\s;]+/
 
 const questionsRouter = express.Router();
@@ -60,15 +60,16 @@ questionsRouter.post("/addQuestion",controlAcceso, [
     
     question = {
         text: request.body.question,
-        possibleAnswers: request.body.answers.split(";"),
+        possibleAnswers: request.body.answers.split(";")
     }
+
     saQuestions.addQuestion(question, request.session.currentUser.id, function(cod, err){
         switch (cod){
             case 0:
                 response.redirect("/questions/questions")
                 break;
             case -1:
-                response.render("new_question.ejs",{errors: [{msg: err}] });
+                response.status(422).render("new_question.ejs",{errors: [{msg: err}] });
                 break;
         }
     });   
