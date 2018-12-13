@@ -22,21 +22,19 @@ $(function(){
                     $("#clicks").text(clicks + " clicks")
                     if (primera == undefined){
                         primera = $(this)
-                        primera.prop("src", "recursos/iconos/"+ cartas[primera.index()] +".png");
-                    } else {
+                        voltearCarta(cartas, primera);
+                    } else if (primera.index() != $(this).index()) {
                         segunda = $(this);
-                        segunda.prop("src", "recursos/iconos/"+ cartas[segunda.index()] +".png");
+                        voltearCarta(cartas, segunda);
                         bloqueado = true;
                         setTimeout(function(){
-                            if (cartas[segunda.index()] == cartas[primera.index()] && segunda.index() != primera.index()){
-                                primera.css("visibility", "hidden");
-                                segunda.css("visibility", "hidden");
+                            if (cartas[segunda.index()] == cartas[primera.index()]){
+                                deshabilitarAcertadas(primera, segunda);
                             } else {
-                                primera.prop("src", "recursos/card.png"); 
-                                segunda.prop("src", "recursos/card.png");
+                                voltearError(primera,segunda);
                             }
-
                             primera = undefined;
+                            segunda = undefined;                            
                             bloqueado = false;
                         }, 2000);
                     };
@@ -58,4 +56,31 @@ function obtenerAleatorios(tam){
 
 
     return aleatorios;
+}
+
+function deshabilitarAcertadas(primera, segunda){
+    primera.animate({
+        opacity: 0.2
+    })
+    primera.off("click")
+    segunda.animate({
+        opacity: 0.2
+    })
+    segunda.off("click");
+}
+
+function voltearCarta(cartas, carta){
+    carta.animate({opacity: 0},function(){
+        carta.prop("src", "recursos/iconos/"+ cartas[carta.index()] +".png").animate({opacity: 1})
+    })
+}
+function voltearError(primera, segunda){
+    primera.animate({opacity: 0},function(){
+        primera.prop("src", "recursos/card.png").animate({opacity: 1})
+        //primera = undefined;
+    })
+    segunda.animate({opacity: 0},function(){
+        segunda.prop("src", "recursos/card.png").animate({opacity: 1})
+        //segunda = undefined;
+    })
 }
