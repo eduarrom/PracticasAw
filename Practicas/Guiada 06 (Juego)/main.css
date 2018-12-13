@@ -29,14 +29,29 @@ body{
 }
 
 #board{
+    display: grid;
+
     border:10px solid #140A25;
     margin-left:50px;
     margin-right: 50px;
     background-color: #140A25;
     border-radius: 10px;
-    flex-direction: row;
-    flex-wrap: wrap;
+
     align-items: center;
     justify-items: center;
-    text-align: center;
+}
+
+#board.small{
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+#board.medium{
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+#board.big{
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
 }

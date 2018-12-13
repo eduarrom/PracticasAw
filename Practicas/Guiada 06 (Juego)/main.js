@@ -1,14 +1,27 @@
 $(function(){
     let cartas;
     let primera;
-    let clicks = 0;
+    let clicks;
     let bloqueado = false;
 
     $("#iniciar").on("click",function(){
         $("#board").empty();
+
+        clicks = 0;
         $("#clicks").text(clicks + " clicks")
 
         nCartas= Number($("#modo input:checked").val());
+        if (nCartas == 12){
+            $("#board").removeClass();
+            $("#board").addClass("small")
+        } else if (nCartas == 24){
+            $("#board").removeClass();
+            $("#board").addClass("medium")
+        } if (nCartas == 36){
+            $("#board").removeClass();
+            $("#board").addClass("big")
+        }
+       
         cartas=obtenerAleatorios(nCartas);
         let carta;
 
