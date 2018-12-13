@@ -258,7 +258,7 @@ class DAOUser{
 					" LEFT JOIN answers auser ON auser.question = n.question AND auser.supplanted = n.user AND auser.respondent = n.user" +
 					" LEFT JOIN possibleanswers puser on puser.question = n.question and puser.number = auser.choosen" +
 					" LEFT JOIN customanswers cuser on cuser.question = n.question and cuser.user = n.user and cuser.number = auser.choosen" +
-					" WHERE n.user = ? limit 4",
+					" WHERE n.user = ?",
 					[userId],
 					function(err, rows) {
 					connection.release()

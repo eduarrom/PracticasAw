@@ -90,14 +90,36 @@ function addQuestion(question,userId,callback){
 
 function answerQuestion(questionId, answer, userId, supplanted,newAnswerText,callback){
     const daoQuestions = new DaoQuestions();
+
     if(newAnswerText!=null)
-        daoQuestions.addAnswer(answer,questionId,newAnswerText,userId,(err)=>{
-            if(err)callback(err,0);
-            
-            daoQuestions.answerQuestion(questionId, answer, userId, supplanted,(err)=>{
-                callback(err,0);
-            });
+        daoQuestions.getPossibleAnswers(questionId, function(err, pos){
+            if (err){
+                callback(err, 0)
+            } else {
+                let id;
+                if (pos.every(a =>{
+                    if (a.answer != newAnswerText){
+                        return true;
+                    } else {
+                        id = a.number;
+                        return false;
+                    }
+                })){
+                    daoQuestions.addAnswer(answer,questionId,newAnswerText,userId,(err)=>{
+                        if(err)callback(err,0);
+                        
+                        daoQuestions.answerQuestion(questionId, answer, userId, supplanted,(err)=>{
+                            callback(err,0);
+                        });
+                    })
+                } else {
+                    daoQuestions.answerQuestion(questionId, id, userId, supplanted,(err)=>{
+                        callback(err,0);
+                    });
+                }
+            }
         })
+        
     else{
         daoQuestions.answerQuestion(questionId, answer, userId, supplanted,(err)=>{
 

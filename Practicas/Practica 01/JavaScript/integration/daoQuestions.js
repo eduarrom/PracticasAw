@@ -4,7 +4,20 @@ class DaoQuestion{
 		this.pool = require("./pool");
 	}
 
+    getPossibleAnswers(question, callback){
+        this.pool.getConnection((err,connection)=>{
+            
+            if(err) callback(new Error("Error al obtener la conexion"));
+            else
+                connection.query("SELECT * FROM possibleAnswers where question = ?",[question],(err,lista)=>{
 
+                    connection.release();
+
+                    if(err) callback(new Error("Error al obtener posibles respuestas"),null);
+                    else callback(null,lista);
+                })
+        });
+    }
     addQuestion(question,userId,callback){
         this.pool.getConnection((err,connection)=>{
             
