@@ -3,10 +3,13 @@ $(function(){
     let primera;
     let clicks;
     let bloqueado = false;
+    let descubiertas = 0;
 
     $("#iniciar").on("click",function(){
         $("#board").empty();
-
+        $("#acertadas").empty();
+        $("#acertadas").removeClass(); 
+        descubiertas = 0;
         clicks = 0;
         $("#clicks").text(clicks + " clicks")
 
@@ -14,20 +17,27 @@ $(function(){
         if (nCartas == 12){
             $("#board").removeClass();
             $("#board").addClass("small")
+            $("#acertadas").addClass("small");
+
         } else if (nCartas == 24){
             $("#board").removeClass();
-            $("#board").addClass("medium")
+            $("#board").addClass("medium");
+            $("#acertadas").addClass("medium");
+
         } if (nCartas == 36){
             $("#board").removeClass();
-            $("#board").addClass("big")
+            $("#board").addClass("big");
+            $("#acertadas").addClass("big");
         }
        
         cartas=obtenerAleatorios(nCartas);
         let carta;
 
+        for(let i = 0; i<nCartas/2;i++)
+            $("#acertadas").append('<img class="carta acertada" src="recursos/card.png" alt="carta">');
+
         for(let i = 0; i<nCartas;i++){
-            carta= $('<img class="carta" src="recursos/card.png" alt="carta">');       
-            carta.css("margin", "10px");     
+            carta= $('<img class="carta" src="recursos/card.png" alt="carta">');   
             $("#board").append(carta);
             carta.on("click",function(){ 
                 if (!bloqueado){
@@ -42,6 +52,12 @@ $(function(){
                         bloqueado = true;
                         setTimeout(function(){
                             if (cartas[segunda.index()] == cartas[primera.index()]){
+                                let cartaAcertada = cartas[primera.index()];
+
+                                $("#acertadas").children().eq(descubiertas).animate({opacity: 0},function(){
+                                    $(this).prop("src", "recursos/iconos/"+ cartaAcertada +".png").animate({opacity: 1})
+                                })
+                                descubiertas++;
                                 deshabilitarAcertadas(primera, segunda);
                             } else {
                                 voltearError(primera,segunda);
@@ -63,6 +79,7 @@ function obtenerAleatorios(tam){
     for (let i = 0; i < tam/2;i++){
         aleatorios.push(i);
         aleatorios.push(i);
+        aleatorios.sort(function(a, b){return 0.5 - Math.random()})
     }
 
     aleatorios.sort(function(a, b){return 0.5 - Math.random()})
