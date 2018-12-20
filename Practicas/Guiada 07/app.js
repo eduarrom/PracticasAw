@@ -21,6 +21,9 @@ let tasks = [
  text: "Reservar coche"
     }
     ];
+
+var currentId = tasks.length;
+
 app.use(express.static(path.join(__dirname,"/public")));
 app.use(bodyParser.json());
 
@@ -34,10 +37,14 @@ app.get("/tasks",function(request,response){
 })
 
 app.post("/tasks",function(request,response){
-    let id = tasks[tasks.length-1].id+1;
+
+    let id = currentId + 1;
     let text = request.body.text;
 
     tasks.push({id:id,text:text});
+
+    currentId++;
+    
     response.json({id:id,text:text});
     response.end();
 })

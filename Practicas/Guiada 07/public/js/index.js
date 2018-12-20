@@ -2,12 +2,10 @@ $(()=>{
     loadTasks();
     $(".contenedorTareas").on("click",".botonTerminarTarea",function(event){
         onRemoveButtonClick(event);
-        $(".contenedorTareas").empty();
     })
 
     $("#anadir").on("click",function(event){
         onAddButtonClick(event);
-        $(".contenedorTareas").empty();
     })
 })
 
@@ -42,7 +40,9 @@ function onRemoveButtonClick(event){
         url:"/tasks/" + $(event.target).parent().data("id"),
         type:"DELETE",
         contentType:"application/json",
-        sucess:loadTasks()
+        success: function(){
+            $(event.target).parent().remove();
+        }
     })
 }
 
@@ -52,7 +52,9 @@ function onAddButtonClick(event){
         url:"/tasks/",
         type:"POST",
         contentType:"application/json",
-        sucess:loadTasks(),
+        success: function(data){
+            tasktoDOMElement(data);
+        }
 
     })
 }
