@@ -227,7 +227,9 @@ body{
 	margin-bottom: 20px;
 	width: 75%;
 }
-
+.botonTerminarTarea{
+	font-size: 30px;
+}
 .botonEliminar{
 	flex-shrink: 0;
 	border: 2px solid #3F51B5;
