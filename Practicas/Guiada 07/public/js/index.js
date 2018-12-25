@@ -1,4 +1,8 @@
 $(()=>{
+    init();
+})
+
+function init(){
     loadTasks();
     $(".contenedorTareas").on("click",".botonTerminarTarea",function(event){
         onRemoveButtonClick(event);
@@ -7,7 +11,7 @@ $(()=>{
     $("#anadir").on("click",function(event){
         onAddButtonClick(event);
     })
-})
+}
 
 function tasktoDOMElement(task){
 
@@ -20,7 +24,7 @@ function tasktoDOMElement(task){
     contenedor.append($("<span></span>").prop("class","nombreTarea").text(task.text));
     
     tarea.append(contenedor);
-    tarea.append($('<input type="button" class="botonTerminarTarea" value="Marcar como Terminada"></input>'));
+    tarea.append($('<input type="button" class="botonTerminarTarea" value="Eliminar"></input>'));
     
     $(".contenedorTareas").append(tarea);
 }

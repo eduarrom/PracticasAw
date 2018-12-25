@@ -22,7 +22,7 @@ let tasks = [
     }
     ];
 
-var currentId = tasks.length;
+let idCounter = tasks.length;
 
 app.use(express.static(path.join(__dirname,"/public")));
 app.use(bodyParser.json());
@@ -38,12 +38,12 @@ app.get("/tasks",function(request,response){
 
 app.post("/tasks",function(request,response){
 
-    let id = currentId + 1;
+    let id = idCounter + 1;
     let text = request.body.text;
 
     tasks.push({id:id,text:text});
 
-    currentId++;
+    idCounter++;
     
     response.json({id:id,text:text});
     response.end();
